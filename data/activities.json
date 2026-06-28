@@ -1,0 +1,14 @@
+[
+  { "icon": "⛺", "name": "Camping",          "desc": "D.L. Bliss, Sugar Pine, Fallen Leaf — 300+ sites with lake views.",               "tier": "f", "page": "camp" },
+  { "icon": "🥾", "name": "Hiking",           "desc": "165+ miles of trails from Tahoe Rim to Desolation Wilderness.",                    "tier": "f", "page": "plan" },
+  { "icon": "🛶", "name": "Kayaking",         "desc": "Paddle Emerald Bay, Cave Rock, and Sand Harbor on crystal-clear water.",           "tier": "b", "page": "plan" },
+  { "icon": "🚵", "name": "Mountain Biking",  "desc": "Flume Trail, Mr Toads Wild Ride — world-class Sierra singletrack.",                "tier": "b", "page": "plan" },
+  { "icon": "⛷️","name": "Skiing & Riding",  "desc": "14 resorts: Palisades, Heavenly, Northstar, Sierra-at-Tahoe, and more.",           "tier": "o", "page": "plan" },
+  { "icon": "🏔️","name": "Snowshoeing",      "desc": "Ellis Peak, Spooner Lake, Cascade Falls — serene winter wonderlands.",             "tier": "o", "page": "plan" },
+  { "icon": "🎣", "name": "Fishing",          "desc": "Mackinaw trout up to 37 lbs. Guided lake charters year-round.",                   "tier": "b", "page": "plan" },
+  { "icon": "🏄", "name": "Paddleboarding",  "desc": "Glassy morning water, 70+ ft visibility. Rentals at 8 locations.",                 "tier": "b", "page": "plan" },
+  { "icon": "🧗", "name": "Rock Climbing",   "desc": "Lovers Leap and Luther Spires — world-class granite sport climbing.",               "tier": "o", "page": "plan" },
+  { "icon": "🌲", "name": "Backpacking",     "desc": "Desolation Wilderness multi-day routes through dramatic Sierra terrain.",           "tier": "o", "page": "plan" },
+  { "icon": "🏊", "name": "Swimming",        "desc": "Sand Harbor, Emerald Bay, Kings Beach — pristine, 70+ ft visibility.",              "tier": "f", "page": "plan" },
+  { "icon": "🦅", "name": "Wildlife Watching","desc": "Black bears, bald eagles, mule deer, osprey — guided tours spring–fall.",         "tier": "b", "page": "plan" }
+]

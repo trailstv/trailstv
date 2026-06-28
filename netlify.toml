@@ -1,0 +1,42 @@
+# netlify.toml — place at project root
+
+[build]
+  publish = "."   # serve from root (index.html is here)
+
+# Route /api/campsites → the serverless function (keeps API key off browser)
+[[redirects]]
+  from   = "/api/campsites"
+  to     = "/.netlify/functions/campsites"
+  status = 200
+
+# SPA fallback — route everything else to index.html
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=()"
+
+# Cache JSON data files for 15 min
+[[headers]]
+  for = "/data/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=900"
+
+# Cache CSS/JS for 1 week (cache-busting via filename in future)
+[[headers]]
+  for = "/css/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/js/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
