@@ -55,7 +55,7 @@ main{padding-top:58px;position:relative;z-index:1;}
 .ctag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px;}
 .cf{background:rgba(139,158,168,.08);color:#8B9EA8;}
 .cb{background:rgba(74,173,188,.08);color:var(--glacial);}
-.co{background:rgba(212,168,83,.08);color:var(--gold);}
+.co{background:rgba(74,173,188,.08);color:var(--glacial);}
 .cbtn{width:100%;margin-top:.85rem;background:rgba(74,173,188,.08);color:var(--glacial);border:1px solid rgba(74,173,188,.2);border-radius:7px;font-family:var(--fb);font-size:.77rem;font-weight:500;padding:8px;cursor:pointer;transition:all .2s;}
 .cbtn:hover{background:rgba(74,173,188,.18);}
 .ws{display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:1.75rem;}
@@ -239,10 +239,10 @@ main{padding-top:58px;position:relative;z-index:1;}
 .hero-logo-lockup{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;background:rgba(13,27,42,.4);backdrop-filter:blur(8px);border:1px solid rgba(74,173,188,.2);border-radius:30px;padding:8px 18px;}
 .hero-site-tag{font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--glacial);}
 
-.hero-ribbon{position:relative;z-index:3;background:rgba(13,27,42,.88);backdrop-filter:blur(12px);border-top:1px solid rgba(74,173,188,.18);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;padding:.85rem 2rem;}
-.ribbon-item{display:flex;flex-direction:column;align-items:center;padding:0 1.5rem;}
-.ri-label{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--granite);margin-bottom:2px;}
-.ri-val{font-size:.88rem;font-weight:700;color:var(--snow);}
+.hero-ribbon{position:relative;z-index:3;background:rgba(13,27,42,.88);backdrop-filter:blur(12px);border-top:1px solid rgba(74,173,188,.18);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;padding:.85rem 2rem;width:100%;text-align:center;}
+.ribbon-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 1.5rem;text-align:center;}
+.ri-label{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--granite);margin-bottom:2px;text-align:center;}
+.ri-val{font-size:.88rem;font-weight:700;color:var(--snow);text-align:center;}
 .ribbon-div{width:1px;height:28px;background:rgba(74,173,188,.15);flex-shrink:0;}
 @media(max-width:640px){.ribbon-item{padding:0 .75rem;}.ri-val{font-size:.78rem;}.ribbon-div{display:none;}.hero-ribbon{gap:.5rem;}}
 
@@ -528,3 +528,149 @@ main{padding-top:58px;position:relative;z-index:1;}
 @media(max-width:560px){
   .hero-unified{height:80vh;min-height:440px;}
 }
+
+/* ══════════ PLAN YOUR TRIP WIZARD ══════════ */
+
+/* ══════════ PLAN YOUR TRIP — AUTH GATE ══════════ */
+.plan-auth-card{
+  background:var(--cbg);
+  border:1px solid var(--cborder);
+  border-radius:14px;
+  padding:2rem;
+  max-width:420px;
+  width:100%;
+}
+.plan-auth-methods{
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+}
+.auth-btn-large{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 16px;
+  border-radius:9px;
+  border:1px solid var(--cborder);
+  background:rgba(13,27,42,.7);
+  font-family:var(--fb);
+  font-size:.86rem;
+  font-weight:600;
+  color:var(--snow);
+  cursor:pointer;
+  transition:all .2s;
+  width:100%;
+  text-align:left;
+}
+.auth-btn-large:hover{
+  border-color:var(--glacial);
+  background:var(--glacial-glow);
+  color:var(--glacial);
+}
+.auth-btn-icon{
+  font-size:1rem;
+  width:22px;
+  height:22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  background:rgba(255,255,255,.08);
+  border-radius:5px;
+}
+.plan-auth-or{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  margin:1rem 0;
+  color:var(--granite);
+  font-size:.76rem;
+}
+.plan-auth-or::before,
+.plan-auth-or::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--cborder);
+}
+.plan-email-form{
+  display:flex;
+  flex-direction:column;
+}
+
+
+/* Step progress dots */
+.plan-steps{
+  display:flex;gap:8px;align-items:center;
+  margin-bottom:2rem;
+}
+.plan-step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(74,173,188,.2);
+  cursor:pointer;transition:all .25s;flex-shrink:0;
+}
+.plan-step-dot.done{background:rgba(74,173,188,.5);}
+.plan-step-dot.active{background:var(--glacial);width:24px;border-radius:4px;}
+.plan-step-label{font-size:.72rem;color:var(--granite);margin-left:4px;}
+
+/* Wizard step card */
+.plan-step-card{
+  background:var(--cbg);border:1px solid var(--cborder);
+  border-radius:14px;padding:2rem;max-width:720px;
+  animation:fadeUp .3s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.plan-step-q{font-family:var(--fd);font-size:1.35rem;font-weight:700;margin-bottom:.4rem;}
+.plan-step-hint{font-size:.82rem;color:var(--granite);margin-bottom:1.25rem;line-height:1.6;}
+
+/* Option chips in wizard */
+.plan-opts{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
+.plan-opt{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:22px;
+  border:1px solid var(--cborder);background:rgba(13,27,42,.5);
+  font-size:.84rem;font-weight:500;color:var(--granite);
+  cursor:pointer;transition:all .18s;user-select:none;
+}
+.plan-opt:hover{border-color:var(--glacial);color:var(--glacial);}
+.plan-opt.sel{border-color:var(--glacial);background:var(--glacial-glow);color:var(--glacial);}
+
+/* Wizard nav buttons */
+.plan-nav{display:flex;align-items:center;gap:.75rem;margin-top:1.5rem;}
+.plan-btn-back{
+  background:none;border:1px solid var(--cborder);
+  color:var(--granite);font-family:var(--fb);font-size:.82rem;
+  padding:9px 20px;border-radius:7px;cursor:pointer;transition:all .2s;
+}
+.plan-btn-back:hover{border-color:var(--glacial);color:var(--snow);}
+.plan-btn-next{
+  background:var(--glacial);color:var(--midnight);border:none;
+  font-family:var(--fb);font-size:.85rem;font-weight:700;
+  padding:10px 26px;border-radius:7px;cursor:pointer;transition:all .2s;
+}
+.plan-btn-next:hover{background:#5BBFCE;transform:translateY(-1px);}
+.plan-btn-next.finish{background:var(--gold);}
+.plan-btn-next.finish:hover{background:#E0B85C;}
+.plan-skip{
+  background:none;border:none;color:var(--granite);
+  font-family:var(--fb);font-size:.76rem;cursor:pointer;
+  padding:5px 10px;margin-left:auto;transition:color .2s;
+}
+.plan-skip:hover{color:var(--snow);}
+
+/* Summary card at end of wizard */
+.plan-summary-card{
+  background:rgba(22,35,51,.9);border:1px solid var(--cborder);
+  border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;max-width:600px;
+}
+.plan-summary-row{
+  display:flex;justify-content:space-between;
+  padding:6px 0;border-bottom:1px solid rgba(74,173,188,.08);
+  font-size:.82rem;
+}
+.plan-summary-row:last-child{border:none;}
+.plan-summary-label{color:var(--granite);}
+.plan-summary-val{font-weight:600;color:var(--snow);}
+
+/* Campsite availability sidebar in plan page */
+.plan-sidebar{display:flex;flex-direction:column;gap:.9rem;}

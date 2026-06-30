@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Lake Tahoe Planner · TrailsTV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --midnight:#0D1B2A; --mid2:#142030; --mid3:#1C2D3F;
+  --glacial:#4AADBC;  --glacial2:#2E8A98; --glow:rgba(74,173,188,.14);
+  --gold:#D4A853;     --gold2:#A67D35;
+  --granite:#8B9EA8;  --snow:#F2F5F7;
+  --pine:#2D5016;     --pine2:#3E6E20;
+  --cborder:rgba(74,173,188,.18);
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'Inter',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;font-family:var(--fb);background:var(--midnight);color:var(--snow);overflow:hidden;}
+
+/* TOPO */
+.topo{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:.05;}
+.topo svg{width:100%;height:100%;}
+
+/* SHELL */
+#shell{width:100vw;height:100vh;display:flex;flex-direction:column;position:relative;}
+
+/* TRACK */
+#track{flex:1;position:relative;overflow:hidden;z-index:1;}
+
+/* SLIDES */
+.slide{
+  position:absolute;inset:0;
+  display:grid;grid-template-columns:1fr 1fr;
+  opacity:0;transform:translateX(56px);
+  transition:opacity .44s cubic-bezier(.4,0,.2,1),transform .44s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+.slide.exit-left{opacity:0;transform:translateX(-56px);}
+@media(max-width:700px){.slide{grid-template-columns:1fr;}.slide-art{display:none!important;}}
+
+/* ART PANEL */
+.slide-art{
+  position:relative;background:var(--mid2);
+  border-right:1px solid var(--cborder);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.slide-art svg{width:100%;height:100%;}
+
+/* CONTENT PANEL */
+.slide-content{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:3.5rem 3rem 2.5rem;position:relative;overflow-y:auto;
+}
+.slide-line{position:absolute;top:0;left:3rem;right:3rem;height:2px;background:var(--cborder);overflow:hidden;}
+.slide-line-fill{height:100%;background:var(--glacial);transform-origin:left;transform:scaleX(0);transition:transform .55s .2s cubic-bezier(.4,0,.2,1);}
+.slide.active .slide-line-fill{transform:scaleX(1);}
+
+/* Animate-in helpers */
+.ob-eye,.ob-title,.ob-body,.ob-inputs,.ob-opts,.ob-tier-cards,.ob-feat-checks{
+  opacity:0;transform:translateY(10px);transition:opacity .38s,transform .38s;
+}
+.slide.active .ob-eye{opacity:1;transform:none;transition-delay:.2s;}
+.slide.active .ob-title{opacity:1;transform:none;transition-delay:.28s;}
+.slide.active .ob-body{opacity:1;transform:none;transition-delay:.36s;}
+.slide.active .ob-inputs{opacity:1;transform:none;transition-delay:.42s;}
+.slide.active .ob-opts{opacity:1;transform:none;transition-delay:.44s;}
+.slide.active .ob-tier-cards{opacity:1;transform:none;transition-delay:.38s;}
+.slide.active .ob-feat-checks{opacity:1;transform:none;transition-delay:.5s;}
+
+.ob-eye{font-size:.66rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--glacial);margin-bottom:.85rem;}
+.ob-title{font-family:var(--fd);font-size:clamp(1.7rem,3vw,2.5rem);font-weight:900;line-height:1.08;margin-bottom:.7rem;}
+.ob-title em{font-style:italic;color:var(--glacial);}
+.ob-title .go{color:var(--gold);}
+.ob-body{font-size:.88rem;color:rgba(242,245,247,.76);line-height:1.7;margin-bottom:1.5rem;}
+
+/* AUTH SLIDE */
+.auth-methods{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem;}
+.auth-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 16px;border-radius:9px;
+  border:1px solid var(--cborder);background:rgba(13,27,42,.6);
+  font-family:var(--fb);font-size:.85rem;font-weight:600;color:var(--snow);
+  cursor:pointer;transition:all .2s;width:100%;text-align:left;
+}
+.auth-btn:hover{border-color:var(--glacial);background:var(--glow);color:var(--glacial);}
+.auth-btn.primary{background:var(--glacial);color:var(--midnight);border-color:var(--glacial);}
+.auth-btn.primary:hover{background:#5BBFCE;}
+.auth-icon{font-size:1.1rem;width:22px;text-align:center;flex-shrink:0;}
+.auth-or{display:flex;align-items:center;gap:.75rem;margin:.85rem 0;color:var(--granite);font-size:.75rem;}
+.auth-or::before,.auth-or::after{content:'';flex:1;height:1px;background:var(--cborder);}
+.ob-inputs{display:flex;flex-direction:column;gap:.65rem;}
+.ob-input-wrap{display:flex;flex-direction:column;gap:.3rem;}
+.ob-label{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--granite);}
+.ob-input{
+  background:rgba(13,27,42,.7);border:1px solid var(--cborder);
+  border-radius:8px;padding:10px 14px;font-family:var(--fb);font-size:.86rem;color:var(--snow);
+  transition:border-color .2s;width:100%;
+}
+.ob-input:focus{outline:none;border-color:var(--glacial);}
+.ob-input::placeholder{color:rgba(139,158,168,.42);}
+.ob-input-row{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;}
+.ob-select{
+  background:rgba(13,27,42,.7);border:1px solid var(--cborder);
+  border-radius:8px;padding:10px 14px;font-family:var(--fb);font-size:.84rem;color:var(--snow);
+  transition:border-color .2s;width:100%;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238B9EA8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.ob-select:focus{outline:none;border-color:var(--glacial);}
+.ob-select option{background:var(--mid2);}
+
+/* MULTI-SELECT CHIPS */
+.ob-chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.2rem;}
+.ob-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:7px 13px;border-radius:20px;
+  border:1px solid var(--cborder);background:rgba(13,27,42,.5);
+  font-size:.78rem;font-weight:500;color:var(--granite);
+  cursor:pointer;transition:all .18s;user-select:none;
+}
+.ob-chip:hover{border-color:var(--glacial);color:var(--glacial);}
+.ob-chip.sel{border-color:var(--glacial);background:var(--glow);color:var(--glacial);}
+
+/* TIER CARDS (slide 5) */
+.ob-tier-cards{display:flex;flex-direction:column;gap:.65rem;margin-top:.25rem;}
+.tier-card{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 15px;border-radius:10px;
+  border:1px solid var(--cborder);background:rgba(13,27,42,.5);
+  cursor:pointer;transition:all .2s;
+}
+.tier-card:hover{border-color:var(--glacial);}
+.tier-card.selected{border-color:var(--glacial);background:var(--glow);}
+.tier-card.selected-gold{border-color:var(--gold);background:rgba(212,168,83,.1);}
+.tier-radio{
+  width:18px;height:18px;border-radius:50%;border:2px solid var(--cborder);
+  flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.tier-card.selected .tier-radio{border-color:var(--glacial);background:var(--glacial);}
+.tier-card.selected-gold .tier-radio{border-color:var(--gold);background:var(--gold);}
+.tier-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--midnight);display:none;}
+.tier-card.selected .tier-radio::after,.tier-card.selected-gold .tier-radio::after{display:block;}
+.tier-card-body{flex:1;}
+.tier-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;}
+.tier-card-name{font-size:.88rem;font-weight:700;}
+.tier-card-price{font-size:.8rem;font-weight:600;color:var(--granite);}
+.tier-card-desc{font-size:.74rem;color:var(--granite);line-height:1.5;}
+.tier-pill{font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-left:6px;}
+.tp-f{background:rgba(139,158,168,.12);color:#8B9EA8;}
+.tp-b{background:rgba(74,173,188,.12);color:var(--glacial);}
+.tp-a{background:rgba(212,168,83,.12);color:var(--gold);}
+
+/* FEATURE CHECKS (slide 5 locked features) */
+.ob-feat-checks{display:flex;flex-direction:column;gap:.45rem;margin-top:.85rem;}
+.feat-row{display:flex;align-items:center;gap:9px;font-size:.78rem;}
+.feat-ck{
+  width:18px;height:18px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.58rem;flex-shrink:0;
+}
+.ck-on{background:rgba(74,173,188,.18);color:var(--glacial);}
+.ck-off{background:rgba(139,158,168,.1);color:rgba(139,158,168,.35);}
+.feat-locked{color:var(--granite);}
+
+/* UPGRADE NUDGE BANNER */
+.upgrade-nudge{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.25);
+  border-radius:9px;padding:10px 14px;margin-top:1rem;
+  font-size:.76rem;color:var(--gold);
+}
+.upgrade-nudge .nudge-icon{font-size:1rem;flex-shrink:0;}
+
+/* BOTTOM BAR */
+#ob-bar{
+  height:68px;border-top:1px solid var(--cborder);
+  background:rgba(13,27,42,.96);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;position:relative;z-index:10;flex-shrink:0;
+}
+.dot-nav{display:flex;gap:7px;align-items:center;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(74,173,188,.22);cursor:pointer;transition:all .25s;}
+.dot.done{background:rgba(74,173,188,.5);}
+.dot.active{background:var(--glacial);width:20px;border-radius:3px;}
+.step-count{font-size:.7rem;font-weight:500;color:var(--granite);letter-spacing:.05em;}
+.ob-nav{display:flex;gap:.7rem;align-items:center;}
+.btn-skip{background:none;border:none;color:var(--granite);font-family:var(--fb);font-size:.78rem;cursor:pointer;padding:5px 10px;border-radius:6px;transition:color .2s;}
+.btn-skip:hover{color:var(--snow);}
+.btn-back{background:none;border:1px solid var(--cborder);color:var(--granite);font-family:var(--fb);font-size:.8rem;font-weight:500;cursor:pointer;padding:8px 18px;border-radius:7px;transition:all .2s;}
+.btn-back:hover{border-color:var(--glacial);color:var(--snow);}
+.btn-next{background:var(--glacial);color:var(--midnight);border:none;font-family:var(--fb);font-size:.83rem;font-weight:700;cursor:pointer;padding:9px 24px;border-radius:7px;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.btn-next:hover{background:#5BBFCE;transform:translateY(-1px);}
+.btn-next.finish{background:var(--gold);}
+.btn-next.finish:hover{background:#E0B85C;}
+
+/* COMPLETE SCREEN */
+#complete-screen{
+  display:none;position:absolute;inset:0;z-index:50;
+  background:var(--midnight);flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+#complete-screen.show{display:flex;}
+.complete-ring{
+  width:76px;height:76px;border-radius:50%;border:2px solid var(--glacial);
+  display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin-bottom:1.3rem;
+  animation:pulse-ring 2s infinite;
+}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(74,173,188,.35);}50%{box-shadow:0 0 0 12px rgba(74,173,188,0);}}
+.complete-title{font-family:var(--fd);font-size:2.3rem;font-weight:900;margin-bottom:.5rem;}
+.complete-sub{color:var(--granite);font-size:.9rem;max-width:420px;line-height:1.65;margin-bottom:1.75rem;}
+.complete-summary{
+  background:rgba(22,35,51,.9);border:1px solid var(--cborder);border-radius:12px;
+  padding:1.25rem 1.5rem;max-width:480px;width:100%;margin-bottom:1.5rem;text-align:left;
+}
+.cs-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(74,173,188,.08);font-size:.8rem;}
+.cs-row:last-child{border:none;}
+.cs-label{color:var(--granite);}
+.cs-val{font-weight:600;color:var(--snow);}
+.btn-launch{background:var(--glacial);color:var(--midnight);border:none;font-family:var(--fb);font-size:.88rem;font-weight:800;cursor:pointer;padding:13px 34px;border-radius:9px;transition:all .2s;margin-bottom:.75rem;}
+.btn-launch:hover{background:#5BBFCE;transform:translateY(-1px);}
+.btn-launch-upgrade{background:var(--gold);color:var(--midnight);border:none;font-family:var(--fb);font-size:.78rem;font-weight:700;cursor:pointer;padding:9px 22px;border-radius:7px;transition:all .2s;}
+.btn-launch-upgrade:hover{background:#E0B85C;}
+.complete-badges{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.75rem;max-width:480px;}
+.cb{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:600;}
+</style>
+</head>
+<body>
+
+<div id="shell">
+<div class="topo"><svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#4AADBC" stroke-width="1"><ellipse cx="720" cy="450" rx="680" ry="340"/><ellipse cx="720" cy="450" rx="535" ry="258"/><ellipse cx="720" cy="450" rx="390" ry="185"/><ellipse cx="720" cy="450" rx="255" ry="118"/><ellipse cx="720" cy="450" rx="128" ry="58"/><ellipse cx="200" cy="150" rx="290" ry="165"/><ellipse cx="200" cy="150" rx="185" ry="103"/><ellipse cx="200" cy="150" rx="90" ry="50"/><ellipse cx="1220" cy="720" rx="340" ry="180"/><ellipse cx="1220" cy="720" rx="215" ry="112"/><ellipse cx="1220" cy="720" rx="108" ry="56"/></g></svg></div>
+
+<div id="track">
+
+<!-- ═══ SLIDE 0 — Auth / Sign In ═══ -->
+<div class="slide active" data-idx="0">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#091420"/>
+      <g fill="#F2F5F7" opacity=".5"><circle cx="60" cy="55" r="1.1"/><circle cx="130" cy="35" r="1.3"/><circle cx="210" cy="75" r=".9"/><circle cx="300" cy="42" r="1"/><circle cx="390" cy="62" r="1.2"/><circle cx="440" cy="28" r=".8"/><circle cx="85" cy="105" r=".9"/><circle cx="270" cy="28" r="1.1"/><circle cx="350" cy="95" r=".8"/></g>
+      <circle cx="380" cy="82" r="30" fill="#14293D"/><circle cx="394" cy="73" r="28" fill="#091420"/>
+      <ellipse cx="240" cy="185" rx="225" ry="32" fill="none" stroke="rgba(74,173,188,.13)" stroke-width="42"/>
+      <polygon points="0,425 85,268 162,342 242,205 322,302 408,228 480,312 480,425" fill="#0D2035"/>
+      <polygon points="242,205 268,242 216,242" fill="rgba(242,245,247,.55)"/>
+      <polygon points="408,228 430,262 386,262" fill="rgba(242,245,247,.42)"/>
+      <polygon points="85,268 105,298 65,298" fill="rgba(242,245,247,.38)"/>
+      <polygon points="0,640 0,463 118,382 198,442 298,362 378,422 480,372 480,640" fill="#0A1929"/>
+      <g fill="#162B1A"><polygon points="28,505 45,462 62,505"/><rect x="38" y="505" width="14" height="16"/><polygon points="68,512 87,466 106,512"/><rect x="79" y="512" width="16" height="18"/><polygon points="390,495 408,452 426,495"/><rect x="401" y="495" width="16" height="18"/><polygon points="432,508 448,468 464,508"/><rect x="440" y="508" width="14" height="17"/></g>
+      <ellipse cx="240" cy="582" rx="195" ry="38" fill="#0E2A3A" opacity=".9"/>
+      <ellipse cx="240" cy="578" rx="145" ry="18" fill="rgba(74,173,188,.11)"/>
+      <!-- TrailsTV mark -->
+      <g transform="translate(196,295)">
+        <path d="M0 18 C8-10 24-10 32 18" stroke="#4AADBC" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M0 27 C8 5 24 5 32 27" stroke="#D4A853" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <circle cx="16" cy="8" r="4.5" fill="rgba(74,173,188,.72)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div style="display:flex;align-items:center;gap:9px;margin-bottom:1.5rem">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 19c2-4.5 4-7 7-7s4 5.5 7 5.5 4-3.2 6-3.2" stroke="#4AADBC" stroke-width="2" stroke-linecap="round"/><path d="M3 23c2-3.2 4-5 7-5s4 4 7 4 4-2.5 6-2.5" stroke="#D4A853" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="10" r="3.2" fill="rgba(74,173,188,.68)"/></svg>
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--glacial)">TrailsTV · Lake Tahoe Planner</div>
+    </div>
+    <div class="ob-eye">Welcome</div>
+    <h1 class="ob-title">The lake is<br>calling.<br><em>Let's go.</em></h1>
+    <p class="ob-body">Create a free account to save your adventures, get personalized trail recommendations, and access live campsite availability.</p>
+    <div class="ob-inputs">
+      <div class="auth-methods">
+        <button class="auth-btn primary" onclick="authWith('google')">
+  <svg viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0"><path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#ffffff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#ffffff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#ffffff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+  Continue with Google
+</button>
+
+      </div>
+      <div class="auth-or">or use your email</div>
+      <div class="ob-input-wrap">
+        <div class="ob-label">Email address</div>
+        <input class="ob-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="ob-input-wrap" id="auth-pw-wrap">
+        <div class="ob-label">Password</div>
+        <input class="ob-input" type="password" id="auth-pw" placeholder="Create a password (8+ chars)" autocomplete="new-password">
+      </div>
+      <div style="font-size:.72rem;color:var(--granite);margin-top:.25rem">Already have an account? <span style="color:var(--glacial);cursor:pointer;text-decoration:underline" onclick="switchToSignIn()">Sign in instead</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 1 — Your Profile ═══ -->
+<div class="slide" data-idx="1">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#091E2E"/>
+      <g fill="#F2F5F7" opacity=".5"><circle cx="50" cy="50" r="1"/><circle cx="130" cy="30" r="1.2"/><circle cx="220" cy="68" r=".9"/><circle cx="320" cy="40" r="1"/><circle cx="400" cy="62" r="1.1"/><circle cx="440" cy="29" r=".8"/></g>
+      <polygon points="0,425 90,282 168,338 248,222 330,292 412,232 480,302 480,425" fill="#0D2035"/>
+      <polygon points="248,222 274,256 222,256" fill="rgba(242,245,247,.54)"/>
+      <rect x="0" y="425" width="480" height="215" fill="#0A1922"/>
+      <!-- Campfire -->
+      <g transform="translate(240,460)"><line x1="-20" y1="10" x2="20" y2="-5" stroke="#5C3010" stroke-width="6" stroke-linecap="round"/><line x1="20" y1="10" x2="-20" y2="-5" stroke="#5C3010" stroke-width="6" stroke-linecap="round"/><ellipse cx="0" cy="-12" rx="14" ry="20" fill="rgba(212,100,30,.52)"/><ellipse cx="0" cy="-17" rx="9" ry="15" fill="rgba(212,148,30,.68)"/><ellipse cx="0" cy="-21" rx="5" ry="10" fill="rgba(242,218,78,.73)"/><ellipse cx="0" cy="12" rx="40" ry="9" fill="rgba(212,100,30,.1)"/></g>
+      <!-- Tent -->
+      <polygon points="160,425 240,334 320,425" fill="#1C3A5A"/><polygon points="215,425 240,358 265,425" fill="#112840"/>
+      <g fill="#0D2015"><polygon points="28,506 48,460 68,506"/><rect x="40" y="506" width="16" height="20"/><polygon points="60,514 82,464 104,514"/><rect x="73" y="514" width="18" height="22"/><polygon points="392,504 410,460 428,504"/><rect x="403" y="504" width="14" height="20"/></g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div class="ob-eye">Step 1 of 5 · Your Profile</div>
+    <h2 class="ob-title">Tell us about<br>your <em>crew</em></h2>
+    <p class="ob-body">This helps us surface the right spots, trails, and recommendations for your style.</p>
+    <div class="ob-inputs">
+      <div class="ob-input-row">
+        <div class="ob-input-wrap"><div class="ob-label">First Name</div><input class="ob-input" id="p-first" placeholder="First name" autocomplete="given-name"></div>
+        <div class="ob-input-wrap"><div class="ob-label">Last Name</div><input class="ob-input" id="p-last" placeholder="Last name" autocomplete="family-name"></div>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Home City / State</div><input class="ob-input" id="p-city" placeholder="e.g. Sacramento, CA"></div>
+      <div class="ob-input-wrap"><div class="ob-label">Who's coming?</div>
+        <select class="ob-select" id="p-group">
+          <option value="">Choose group type…</option>
+          <option value="solo">Solo explorer</option>
+          <option value="couple">Partner / couple</option>
+          <option value="family">Family with young kids</option>
+          <option value="family-teens">Family with teens</option>
+          <option value="friends">Friend group</option>
+          <option value="corporate">Corporate / team outing</option>
+        </select>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Typical group size</div>
+        <select class="ob-select" id="p-size">
+          <option value="">How many people?</option>
+          <option value="1">Just me</option>
+          <option value="2">2 people</option>
+          <option value="3-4">3–4 people</option>
+          <option value="5-8">5–8 people</option>
+          <option value="9+">9 or more</option>
+        </select>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Overall experience level</div>
+        <select class="ob-select" id="p-level">
+          <option value="">Choose level…</option>
+          <option value="beginner">Beginner — new to outdoor adventure</option>
+          <option value="intermediate">Intermediate — comfortable on trails</option>
+          <option value="advanced">Advanced — multi-day trips, all conditions</option>
+          <option value="expert">Expert — technical, backcountry, self-sufficient</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2 — Activities ═══ -->
+<div class="slide" data-idx="2">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#091E2E"/>
+      <rect width="480" height="340" fill="#0A1E30"/>
+      <rect x="0" y="380" width="480" height="260" fill="#0D2A3A"/>
+      <ellipse cx="240" cy="380" rx="480" ry="30" fill="#0E2F40"/>
+      <g stroke="rgba(74,173,188,.14)" stroke-width="1.5" fill="none"><path d="M60,400 Q120,390 180,400 Q240,410 300,400 Q360,390 420,400"/><path d="M40,430 Q110,418 200,430 Q290,442 380,430 Q430,422 460,430"/></g>
+      <!-- Kayaker -->
+      <g transform="translate(200,358)"><ellipse cx="40" cy="8" rx="52" ry="9" fill="#D4A853" opacity=".9"/><rect x="30" y="-24" width="18" height="22" rx="4" fill="#4AADBC" opacity=".85"/><circle cx="39" cy="-30" r="8" fill="#F2C99A"/><line x1="10" y1="-10" x2="-8" y2="14" stroke="#8B9EA8" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="-11" cy="17" rx="6" ry="3" fill="#4AADBC" opacity=".7"/><line x1="68" y1="-10" x2="88" y2="14" stroke="#8B9EA8" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="91" cy="17" rx="6" ry="3" fill="#4AADBC" opacity=".7"/></g>
+      <polygon points="0,380 100,272 178,322 242,195 322,252 412,218 480,260 480,380" fill="#0D2035" opacity=".92"/>
+      <polygon points="242,195 266,228 218,228" fill="rgba(242,245,247,.55)"/>
+      <g fill="#0C1F12"><polygon points="0,380 22,336 44,380"/><polygon points="38,380 64,328 90,380"/><polygon points="398,380 418,336 438,380"/><polygon points="440,380 460,332 480,380"/></g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div class="ob-eye">Step 2 of 5 · Activities</div>
+    <h2 class="ob-title">What gets you<br><em>outside?</em></h2>
+    <p class="ob-body">Select everything that excites you — we'll build your Tahoe dashboard around what you love. Pick as many as you want.</p>
+    <div class="ob-opts">
+      <div class="ob-chips" id="act-chips">
+        <div class="ob-chip" onclick="toggleChip(this,'camping')">⛺ Camping</div>
+        <div class="ob-chip" onclick="toggleChip(this,'hiking')">🥾 Hiking</div>
+        <div class="ob-chip" onclick="toggleChip(this,'kayaking')">🛶 Kayaking</div>
+        <div class="ob-chip" onclick="toggleChip(this,'mtb')">🚵 Mountain Biking</div>
+        <div class="ob-chip" onclick="toggleChip(this,'skiing')">⛷️ Skiing / Riding</div>
+        <div class="ob-chip" onclick="toggleChip(this,'snowshoeing')">🏔️ Snowshoeing</div>
+        <div class="ob-chip" onclick="toggleChip(this,'boating')">⛵ Boating</div>
+        <div class="ob-chip" onclick="toggleChip(this,'fishing')">🎣 Fishing</div>
+        <div class="ob-chip" onclick="toggleChip(this,'sup')">🏄 Paddleboarding</div>
+        <div class="ob-chip" onclick="toggleChip(this,'climbing')">🧗 Rock Climbing</div>
+        <div class="ob-chip" onclick="toggleChip(this,'backpacking')">🌲 Backpacking</div>
+        <div class="ob-chip" onclick="toggleChip(this,'swimming')">🏊 Swimming</div>
+        <div class="ob-chip" onclick="toggleChip(this,'wildlife')">🦅 Wildlife Watching</div>
+      </div>
+      <div id="act-nudge" style="display:none" class="upgrade-nudge"><span class="nudge-icon">🔒</span><span>Kayaking, boating, and skiing depth guides require <strong>Basic or All Tahoe</strong></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3 — Season & Trip Style ═══ -->
+<div class="slide" data-idx="3">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#071420"/>
+      <g fill="#F2F5F7" opacity=".52"><circle cx="42" cy="42" r="1.2"/><circle cx="112" cy="26" r="1"/><circle cx="192" cy="60" r=".9"/><circle cx="280" cy="34" r="1.1"/><circle cx="362" cy="54" r="1"/><circle cx="432" cy="27" r=".8"/></g>
+      <polygon points="0,500 0,205 480,100 480,500" fill="#0D2035"/>
+      <polygon points="0,205 480,100 480,182 0,282" fill="rgba(242,245,247,.54)"/>
+      <path d="M100,242 Q200,322 300,382" stroke="rgba(74,173,188,.38)" stroke-width="2" fill="none"/>
+      <path d="M110,237 Q210,317 310,377" stroke="rgba(74,173,188,.26)" stroke-width="1.5" fill="none"/>
+      <!-- Skier -->
+      <g transform="translate(280,342)"><circle cx="0" cy="-32" r="8" fill="#F2C99A"/><path d="M-8,-36 Q0,-46 8,-36" fill="#D4A853"/><rect x="-10" y="-22" width="20" height="18" rx="4" fill="#4AADBC"/><line x1="-5" y1="-4" x2="-12" y2="16" stroke="#1C3A5A" stroke-width="3"/><line x1="5" y1="-4" x2="12" y2="16" stroke="#1C3A5A" stroke-width="3"/><line x1="-20" y1="16" x2="-4" y2="18" stroke="#D4A853" stroke-width="2.5"/><line x1="4" y1="18" x2="22" y2="16" stroke="#D4A853" stroke-width="2.5"/><line x1="-12" y1="-10" x2="-22" y2="14" stroke="#8B9EA8" stroke-width="1.5"/><line x1="12" y1="-10" x2="24" y2="14" stroke="#8B9EA8" stroke-width="1.5"/></g>
+      <g stroke="#8B9EA8" stroke-width="2" fill="none"><line x1="120" y1="500" x2="130" y2="222"/><line x1="110" y1="222" x2="140" y2="222"/><line x1="115" y1="222" x2="115" y2="242"/><line x1="135" y1="222" x2="135" y2="242"/></g>
+      <g fill="#0D2015"><polygon points="30,520 50,472 70,520"/><polygon points="34,477 50,472 66,477" fill="rgba(242,245,247,.68)"/><polygon points="420,510 438,464 456,510"/><polygon points="424,469 438,464 452,469" fill="rgba(242,245,247,.6)"/></g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div class="ob-eye">Step 3 of 5 · When &amp; How</div>
+    <h2 class="ob-title">Plan your<br><span class="go">Tahoe season</span></h2>
+    <p class="ob-body">We'll surface the right campsite windows, snow reports, and rental availability for your timing.</p>
+    <div class="ob-inputs">
+      <div class="ob-input-wrap"><div class="ob-label">Primary season</div>
+        <select class="ob-select" id="s-season">
+          <option value="">Choose a season…</option>
+          <option value="spring">🌸 Spring (Mar – May)</option>
+          <option value="summer">☀️ Summer (Jun – Sep)</option>
+          <option value="fall">🍂 Fall (Oct – Nov)</option>
+          <option value="winter">❄️ Winter (Dec – Feb)</option>
+          <option value="all">🗓️ All year — I come often</option>
+        </select>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Typical trip length</div>
+        <select class="ob-select" id="s-length">
+          <option value="">How long do you typically stay?</option>
+          <option value="day">Day trip</option>
+          <option value="weekend">Weekend (2–3 days)</option>
+          <option value="week">4–7 days</option>
+          <option value="long">A week or more</option>
+        </select>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Preferred accommodation</div>
+        <select class="ob-select" id="s-stay">
+          <option value="">Where do you stay?</option>
+          <option value="tent">Tent camping</option>
+          <option value="rv">RV / van</option>
+          <option value="cabin">Cabin / vacation rental</option>
+          <option value="hotel">Hotel / lodge</option>
+          <option value="backcountry">Backcountry / dispersed</option>
+          <option value="mix">Mix of the above</option>
+        </select>
+      </div>
+      <div class="ob-input-wrap"><div class="ob-label">Approximate annual budget for Tahoe trips</div>
+        <select class="ob-select" id="s-budget">
+          <option value="">Choose a range…</option>
+          <option value="under500">Under $500</option>
+          <option value="500-1500">$500 – $1,500</option>
+          <option value="1500-3000">$1,500 – $3,000</option>
+          <option value="3000+">$3,000+</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4 — Camping Preferences ═══ -->
+<div class="slide" data-idx="4">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#091E2E"/>
+      <g fill="#F2F5F7" opacity=".48"><circle cx="55" cy="48" r="1"/><circle cx="128" cy="32" r="1.2"/><circle cx="218" cy="72" r=".9"/><circle cx="315" cy="38" r="1.1"/><circle cx="405" cy="65" r="1"/></g>
+      <rect width="480" height="300" fill="#0A1D2E"/>
+      <rect x="0" y="340" width="480" height="300" fill="#0C2535"/>
+      <ellipse cx="240" cy="340" rx="480" ry="28" fill="#0E2F42"/>
+      <ellipse cx="240" cy="380" rx="100" ry="14" fill="rgba(212,168,83,.18)"/>
+      <polygon points="0,375 80,265 158,312 245,214 328,272 415,228 480,262 480,375" fill="#0D2035"/>
+      <polygon points="245,214 270,248 220,248" fill="rgba(242,245,247,.54)"/>
+      <circle cx="240" cy="310" r="46" fill="rgba(212,168,83,.58)"/>
+      <circle cx="240" cy="313" r="32" fill="rgba(212,168,83,.8)"/>
+      <circle cx="240" cy="316" r="20" fill="rgba(242,210,78,.88)"/>
+      <g stroke="rgba(212,168,83,.13)" stroke-width="32"><line x1="240" y1="315" x2="100" y2="180"/><line x1="240" y1="315" x2="240" y2="142"/><line x1="240" y1="315" x2="380" y2="180"/></g>
+      <g fill="#0C1F12"><polygon points="0,375 24,330 48,375"/><polygon points="44,375 70,326 96,375"/><polygon points="398,375 418,330 438,375"/></g>
+      <g fill="rgba(212,168,83,.45)"><circle cx="160" cy="415" r="2"/><circle cx="200" cy="438" r="1.5"/><circle cx="285" cy="432" r="2"/><circle cx="335" cy="452" r="1.5"/><circle cx="380" cy="420" r="2"/></g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div class="ob-eye">Step 4 of 5 · Camping Setup</div>
+    <h2 class="ob-title">Your<br><em>campsite</em><br>preferences</h2>
+    <p class="ob-body">We'll match you to the right campgrounds and alert you when your preferred sites open up.</p>
+    <div class="ob-inputs">
+      <div class="ob-input-wrap"><div class="ob-label">Preferred shore / area</div>
+        <div class="ob-chips" id="shore-chips" style="margin-top:.3rem">
+          <div class="ob-chip" onclick="toggleChip(this,'north')">North Shore</div>
+          <div class="ob-chip" onclick="toggleChip(this,'south')">South Shore</div>
+          <div class="ob-chip" onclick="toggleChip(this,'west')">West Shore</div>
+          <div class="ob-chip" onclick="toggleChip(this,'east')">East Shore</div>
+          <div class="ob-chip" onclick="toggleChip(this,'any-shore')">No preference</div>
+        </div>
+      </div>
+      <div class="ob-input-wrap" style="margin-top:.65rem"><div class="ob-label">Must-have campground features</div>
+        <div class="ob-chips" id="camp-feat-chips" style="margin-top:.3rem">
+          <div class="ob-chip" onclick="toggleChip(this,'beach-access')">🏖️ Beach access</div>
+          <div class="ob-chip" onclick="toggleChip(this,'showers')">🚿 Showers</div>
+          <div class="ob-chip" onclick="toggleChip(this,'hookups')">🔌 Hookups</div>
+          <div class="ob-chip" onclick="toggleChip(this,'pets')">🐕 Pets OK</div>
+          <div class="ob-chip" onclick="toggleChip(this,'reservable')">📅 Reservable</div>
+          <div class="ob-chip" onclick="toggleChip(this,'first-come')">🎲 First-come OK</div>
+          <div class="ob-chip" onclick="toggleChip(this,'quiet')">🤫 Quiet / secluded</div>
+          <div class="ob-chip" onclick="toggleChip(this,'family')">👨‍👩‍👧 Family-friendly</div>
+        </div>
+      </div>
+      <div class="ob-input-wrap" style="margin-top:.65rem"><div class="ob-label">Arrival notification preference</div>
+        <select class="ob-select" id="c-notify">
+          <option value="">When should we alert you?</option>
+          <option value="2weeks">2 weeks before I want to go</option>
+          <option value="1month">1 month before</option>
+          <option value="6months">6 months out (when bookings open)</option>
+          <option value="anytime">Any time a site opens — I'm flexible</option>
+        </select>
+      </div>
+    </div>
+    <div class="upgrade-nudge" style="margin-top:.85rem"><span class="nudge-icon">⭐</span><span><strong>Basic & All Tahoe</strong> members get real-time availability alerts the moment sites open.</span></div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5 — Choose Your Plan ═══ -->
+<div class="slide" data-idx="5">
+  <div class="slide-art">
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="640" fill="#091E2E"/>
+      <rect width="480" height="300" fill="#0A1D2E"/>
+      <rect x="0" y="340" width="480" height="300" fill="#0C2535"/>
+      <ellipse cx="240" cy="340" rx="480" ry="28" fill="#0E2F42"/>
+      <rect x="0" y="310" width="480" height="35" fill="rgba(180,80,40,.08)"/>
+      <polygon points="0,370 80,262 160,308 245,212 330,265 415,228 480,258 480,370" fill="#0D2035"/>
+      <polygon points="245,212 270,244 220,244" fill="rgba(242,245,247,.54)"/>
+      <g fill="#0C1F12"><polygon points="0,370 24,326 48,370"/><polygon points="44,370 70,322 96,370"/><polygon points="400,370 420,326 440,370"/></g>
+      <!-- 3 plan cards floating -->
+      <g transform="translate(54,398)"><rect width="96" height="118" rx="7" fill="#142030" stroke="rgba(139,158,168,.28)" stroke-width="1"/><text x="10" y="20" fill="#8B9EA8" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">FREE</text><text x="10" y="40" fill="#F2F5F7" font-size="15" font-family="'Playfair Display',serif" font-weight="700">$0</text><line x1="10" y1="50" x2="86" y2="50" stroke="rgba(139,158,168,.18)" stroke-width=".5"/><circle cx="18" cy="64" r="3.5" fill="rgba(139,158,168,.22)"/><rect x="27" y="60" width="50" height="4" rx="2" fill="rgba(139,158,168,.18)"/><circle cx="18" cy="78" r="3.5" fill="rgba(139,158,168,.22)"/><rect x="27" y="74" width="38" height="4" rx="2" fill="rgba(139,158,168,.18)"/><circle cx="18" cy="92" r="3.5" fill="rgba(139,158,168,.22)"/><rect x="27" y="88" width="44" height="4" rx="2" fill="rgba(139,158,168,.18)"/></g>
+      <g transform="translate(192,378)"><rect width="106" height="138" rx="7" fill="#142030" stroke="rgba(74,173,188,.38)" stroke-width="1.5"/><text x="10" y="22" fill="#4AADBC" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">BASIC</text><text x="10" y="46" fill="#F2F5F7" font-size="17" font-family="'Playfair Display',serif" font-weight="700">$3.99</text><text x="10" y="58" fill="#8B9EA8" font-size="6.5" font-family="Inter,sans-serif">/month</text><line x1="10" y1="66" x2="96" y2="66" stroke="rgba(74,173,188,.18)" stroke-width=".5"/><circle cx="18" cy="80" r="3.5" fill="rgba(74,173,188,.22)"/><rect x="27" y="76" width="58" height="4" rx="2" fill="rgba(74,173,188,.18)"/><circle cx="18" cy="94" r="3.5" fill="rgba(74,173,188,.22)"/><rect x="27" y="90" width="44" height="4" rx="2" fill="rgba(74,173,188,.18)"/><circle cx="18" cy="108" r="3.5" fill="rgba(74,173,188,.22)"/><rect x="27" y="104" width="52" height="4" rx="2" fill="rgba(74,173,188,.18)"/></g>
+      <g transform="translate(326,362)"><rect width="112" height="154" rx="7" fill="#1C2C1A" stroke="rgba(212,168,83,.55)" stroke-width="1.5"/><rect x="20" y="-8" width="72" height="14" rx="7" fill="#D4A853"/><text x="56" y="0" text-anchor="middle" fill="#091420" font-size="6.5" font-family="Inter,sans-serif" font-weight="800">MOST POPULAR</text><text x="10" y="25" fill="#D4A853" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">ALL TAHOE</text><text x="10" y="50" fill="#F2F5F7" font-size="17" font-family="'Playfair Display',serif" font-weight="700">$10.99</text><text x="10" y="62" fill="#8B9EA8" font-size="6.5" font-family="Inter,sans-serif">/month</text><line x1="10" y1="70" x2="102" y2="70" stroke="rgba(212,168,83,.18)" stroke-width=".5"/><circle cx="18" cy="84" r="3.5" fill="rgba(212,168,83,.28)"/><rect x="27" y="80" width="62" height="4" rx="2" fill="rgba(212,168,83,.18)"/><circle cx="18" cy="98" r="3.5" fill="rgba(212,168,83,.28)"/><rect x="27" y="94" width="50" height="4" rx="2" fill="rgba(212,168,83,.18)"/><circle cx="18" cy="112" r="3.5" fill="rgba(212,168,83,.28)"/><rect x="27" y="108" width="56" height="4" rx="2" fill="rgba(212,168,83,.18)"/><circle cx="18" cy="126" r="3.5" fill="rgba(212,168,83,.28)"/><rect x="27" y="122" width="44" height="4" rx="2" fill="rgba(212,168,83,.18)"/></g>
+    </svg>
+  </div>
+  <div class="slide-content">
+    <div class="slide-line"><div class="slide-line-fill"></div></div>
+    <div class="ob-eye">Step 5 of 5 · Your Plan</div>
+    <h2 class="ob-title">Choose your<br><em>Tahoe</em></h2>
+    <p class="ob-body">Based on your interests, here's what each plan unlocks for you. You can always upgrade later.</p>
+    <div class="ob-tier-cards">
+      <div class="tier-card" id="tc-free" onclick="selectTierCard('free')">
+        <div class="tier-radio"></div>
+        <div class="tier-card-body">
+          <div class="tier-card-head"><span class="tier-card-name">Free <span class="tier-pill tp-f">Free</span></span><span class="tier-card-price">$0 forever</span></div>
+          <div class="tier-card-desc">Activity overviews, weather, basic amenities map, 2 saved trips. Great for exploring what's possible.</div>
+        </div>
+      </div>
+      <div class="tier-card" id="tc-basic" onclick="selectTierCard('basic')">
+        <div class="tier-radio"></div>
+        <div class="tier-card-body">
+          <div class="tier-card-head"><span class="tier-card-name" style="color:var(--glacial)">Basic <span class="tier-pill tp-b">$3.99/mo</span></span><span class="tier-card-price" style="color:var(--glacial)">$3.99 / month</span></div>
+          <div class="tier-card-desc">Kayak &amp; bike rental directory, live campsite availability, 14-day calendars, 15 saved trips.</div>
+        </div>
+      </div>
+      <div class="tier-card" id="tc-alltahoe" onclick="selectTierCard('alltahoe')">
+        <div class="tier-radio"></div>
+        <div class="tier-card-body">
+          <div class="tier-card-head"><span class="tier-card-name" style="color:var(--gold)">All Tahoe <span class="tier-pill tp-a">$10.99/mo</span></span><span class="tier-card-price" style="color:var(--gold)">$10.99 / month</span></div>
+          <div class="tier-card-desc">Everything in Basic + in-depth boating, camping fees &amp; permits, live ski conditions, offline maps, unlimited trips.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Dynamic feature check based on activity picks -->
+    <div class="ob-feat-checks" id="feat-checks"></div>
+  </div>
+</div>
+
+</div><!-- /track -->
+
+<!-- BOTTOM BAR -->
+<div id="ob-bar">
+  <div class="dot-nav" id="dot-nav"></div>
+  <div class="step-count" id="step-count">1 of 6</div>
+  <div class="ob-nav">
+    <button class="btn-skip" id="btn-skip" onclick="skipToTier()">Skip to plans</button>
+    <button class="btn-back" id="btn-back" onclick="prevSlide()" style="display:none">← Back</button>
+    <button class="btn-next" id="btn-next" onclick="nextSlide()">Next <span style="opacity:.7">→</span></button>
+  </div>
+</div>
+</div><!-- /shell -->
+
+<!-- COMPLETE SCREEN -->
+<div id="complete-screen">
+  <div class="topo" style="opacity:.04"><svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#4AADBC" stroke-width="1"><ellipse cx="720" cy="450" rx="680" ry="340"/><ellipse cx="720" cy="450" rx="500" ry="240"/><ellipse cx="720" cy="450" rx="320" ry="145"/><ellipse cx="720" cy="450" rx="160" ry="72"/></g></svg></div>
+  <div class="complete-ring" id="complete-icon">🏔️</div>
+  <h2 class="complete-title" id="complete-title">Summit unlocked.</h2>
+  <p class="complete-sub" id="complete-msg">Your Tahoe Planner is personalized and ready.</p>
+  <div class="complete-summary" id="complete-summary"></div>
+  <button class="btn-launch" id="btn-launch" onclick="launchApp()">Open My Dashboard →</button>
+  <button class="btn-launch-upgrade" id="btn-upgrade" style="display:none" onclick="upgradeAndLaunch()">Upgrade to All Tahoe &amp; Launch →</button>
+  <div class="complete-badges" id="complete-badges"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  STATE — all user decisions tracked here
+// ═══════════════════════════════════════════════════
+const USER = {
+  auth:       { method: null, email: '', name: '' },
+  profile:    { first:'', last:'', city:'', group:'', size:'', level:'' },
+  activities: [],   // array of activity keys
+  season:     { season:'', length:'', stay:'', budget:'' },
+  camping:    { shores:[], features:[], notify:'' },
+  tier:       'free',  // 'free' | 'basic' | 'alltahoe'
+};
+
+// Features that need upgrades
+const NEEDS_BASIC    = ['kayaking','mtb','boating','fishing','sup','climbing'];
+const NEEDS_ALLTAHOE = ['skiing','snowshoeing','backpacking','boating'];
+
+// ═══════════════════════════════════════════════════
+//  NAV STATE
+// ═══════════════════════════════════════════════════
+const TOTAL = 6; // slides 0-5
+let current = 0, isAnim = false, isSignIn = false;
+
+// Build dots
+const dotNav = document.getElementById('dot-nav');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goTo(i);
+  dotNav.appendChild(d);
+}
+
+function updateUI(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot'+(i<current?' done':i===current?' active':'');
+  });
+  document.getElementById('step-count').textContent=(current+1)+' of '+TOTAL;
+  document.getElementById('btn-back').style.display=current>0?'':'none';
+  document.getElementById('btn-skip').style.display=current<TOTAL-1&&current>0?'':'none';
+  const btn=document.getElementById('btn-next');
+  if(current===TOTAL-1){
+    btn.innerHTML='Launch My Planner 🏔️';btn.classList.add('finish');
+  } else if(current===0){
+    btn.innerHTML='Create Account →';btn.classList.remove('finish');
+  } else {
+    btn.innerHTML='Continue <span style="opacity:.7">→</span>';btn.classList.remove('finish');
+  }
+  // update feat checks on tier slide
+  if(current===5) renderFeatChecks();
+}
+
+function goTo(idx, dir){
+  if(isAnim||idx===current) return;
+  isAnim=true;
+  const prev=document.querySelectorAll('.slide')[current];
+  const next=document.querySelectorAll('.slide')[idx];
+  prev.classList.remove('active');
+  prev.style.transform=dir==='back'?'translateX(56px)':'translateX(-56px)';
+  prev.style.opacity='0';
+  next.style.transform=dir==='back'?'translateX(-56px)':'translateX(56px)';
+  next.style.opacity='0';
+  next.style.transition='none';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    next.style.transition='';
+    next.classList.add('active');
+    next.style.transform='';next.style.opacity='';
+    prev.style.transform='';prev.style.opacity='';
+    current=idx;updateUI();
+    setTimeout(()=>isAnim=false,480);
+  }));
+}
+
+function nextSlide(){
+  if(current===0){ if(!validateAuth()) return; collectAuth(); }
+  else if(current===1) collectProfile();
+  else if(current===2) collectActivities();
+  else if(current===3) collectSeason();
+  else if(current===4) collectCamping();
+  else if(current===TOTAL-1){ completeOnboarding(); return; }
+  goTo(current+1,'forward');
+}
+function prevSlide(){ goTo(current-1,'back'); }
+function skipToTier(){ goTo(TOTAL-1,'forward'); }
+
+// ═══════════════════════════════════════════════════
+//  AUTH SLIDE
+// ═══════════════════════════════════════════════════
+function authWith(method){
+  if (method !== 'google') return;
+  // Google OAuth — in production:
+  // window.location.href = '/api/auth/google';
+  USER.auth.method = 'google';
+  USER.auth.name   = 'Tahoe Explorer';  // replaced by real name from Google
+  USER.auth.email  = 'user@example.com'; // replaced by real email from Google
+  toast('Connecting with Google… ✓');
+  setTimeout(()=>{ collectAuth(); goTo(1,'forward'); }, 500);
+}
+
+function validateAuth(){
+  const email = document.getElementById('auth-email').value.trim();
+  const pw    = document.getElementById('auth-pw').value;
+  if(!email || !email.includes('@')){ toast('Please enter a valid email address.'); return false; }
+  if(!isSignIn && pw.length < 8){ toast('Password must be at least 8 characters.'); return false; }
+  return true;
+}
+
+function collectAuth(){
+  if(!USER.auth.method){
+    USER.auth.method = 'email';
+    USER.auth.email  = document.getElementById('auth-email').value.trim();
+  }
+}
+
+function switchToSignIn(){
+  isSignIn = !isSignIn;
+  const wrap = document.getElementById('auth-pw-wrap');
+  const link = document.querySelector('[onclick="switchToSignIn()"]');
+  if(isSignIn){
+    wrap.querySelector('.ob-label').textContent='Password';
+    wrap.querySelector('.ob-input').placeholder='Your password';
+    link.textContent='Create an account instead';
+    document.getElementById('btn-next').innerHTML='Sign In →';
+  } else {
+    wrap.querySelector('.ob-label').textContent='Password';
+    wrap.querySelector('.ob-input').placeholder='Create a password (8+ chars)';
+    link.textContent='Sign in instead';
+    document.getElementById('btn-next').innerHTML='Create Account →';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  DATA COLLECTION
+// ═══════════════════════════════════════════════════
+function collectProfile(){
+  USER.profile.first = document.getElementById('p-first').value.trim();
+  USER.profile.last  = document.getElementById('p-last').value.trim();
+  USER.profile.city  = document.getElementById('p-city').value.trim();
+  USER.profile.group = document.getElementById('p-group').value;
+  USER.profile.size  = document.getElementById('p-size').value;
+  USER.profile.level = document.getElementById('p-level').value;
+}
+
+function collectActivities(){
+  USER.activities = [...document.querySelectorAll('#act-chips .ob-chip.sel')]
+    .map(el => el.getAttribute('data-key'));
+}
+
+function collectSeason(){
+  USER.season.season = document.getElementById('s-season').value;
+  USER.season.length = document.getElementById('s-length').value;
+  USER.season.stay   = document.getElementById('s-stay').value;
+  USER.season.budget = document.getElementById('s-budget').value;
+}
+
+function collectCamping(){
+  USER.camping.shores   = [...document.querySelectorAll('#shore-chips .ob-chip.sel')].map(e=>e.getAttribute('data-key'));
+  USER.camping.features = [...document.querySelectorAll('#camp-feat-chips .ob-chip.sel')].map(e=>e.getAttribute('data-key'));
+  USER.camping.notify   = document.getElementById('c-notify').value;
+}
+
+// ═══════════════════════════════════════════════════
+//  CHIP TOGGLE
+// ═══════════════════════════════════════════════════
+function toggleChip(el, key){
+  el.setAttribute('data-key', key);
+  el.classList.toggle('sel');
+  // Show upgrade nudge if gated activities are selected
+  if(document.getElementById('act-nudge')){
+    const selected = [...document.querySelectorAll('#act-chips .ob-chip.sel')]
+      .map(e=>e.getAttribute('data-key')||e.textContent.toLowerCase());
+    const needsUpgrade = selected.some(a=>NEEDS_BASIC.includes(a)||NEEDS_ALLTAHOE.includes(a));
+    document.getElementById('act-nudge').style.display = needsUpgrade ? 'flex' : 'none';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  TIER SELECTION
+// ═══════════════════════════════════════════════════
+function selectTierCard(tier){
+  USER.tier = tier;
+  document.querySelectorAll('.tier-card').forEach(c=>{
+    c.classList.remove('selected','selected-gold');
+  });
+  const card = document.getElementById('tc-'+tier);
+  if(tier==='alltahoe') card.classList.add('selected-gold');
+  else card.classList.add('selected');
+  renderFeatChecks();
+}
+
+function renderFeatChecks(){
+  const acts = USER.activities.length
+    ? USER.activities
+    : [...document.querySelectorAll('#act-chips .ob-chip.sel')].map(e=>e.getAttribute('data-key'));
+  if(!acts.length){ document.getElementById('feat-checks').innerHTML=''; return; }
+
+  const t = USER.tier;
+  const tierLevel = {free:0,basic:1,alltahoe:2};
+  const tl = tierLevel[t]||0;
+
+  const actMap = {
+    camping:{label:'⛺ Camping',needBasic:false,needAll:false},
+    hiking: {label:'🥾 Hiking',needBasic:false,needAll:false},
+    kayaking:{label:'🛶 Kayaking rental directory',needBasic:true,needAll:false},
+    mtb:    {label:'🚵 Bike rental directory',needBasic:true,needAll:false},
+    boating:{label:'⛵ Boating & marina in-depth guide',needBasic:false,needAll:true},
+    skiing: {label:'⛷️ Live ski & snow conditions',needBasic:false,needAll:true},
+    snowshoeing:{label:'🏔️ Snowshoe trail guides',needBasic:false,needAll:true},
+    fishing:{label:'🎣 Fishing charter listings',needBasic:true,needAll:false},
+    sup:    {label:'🏄 SUP rental locations',needBasic:true,needAll:false},
+    climbing:{label:'🧗 Climbing route info',needBasic:true,needAll:false},
+    backpacking:{label:'🌲 Backcountry permit guide',needBasic:false,needAll:true},
+    swimming:{label:'🏊 Beach & swim spot guide',needBasic:false,needAll:false},
+    wildlife:{label:'🦅 Wildlife tour listings',needBasic:true,needAll:false},
+  };
+
+  const rows = acts.map(a=>{
+    const info = actMap[a]||{label:a,needBasic:false,needAll:false};
+    const unlocked = (info.needAll && tl>=2)||(info.needBasic && tl>=1)||(!info.needBasic&&!info.needAll);
+    const needed = info.needAll?'All Tahoe':info.needBasic?'Basic':'';
+    return `<div class="feat-row">
+      <span class="feat-ck ${unlocked?'ck-on':'ck-off'}">${unlocked?'✓':'—'}</span>
+      <span class="${unlocked?'':'feat-locked'}">${info.label}${!unlocked?` <span style="font-size:.68rem;color:var(--gold)">→ Needs ${needed}</span>`:''}</span>
+    </div>`;
+  }).join('');
+
+  const locked = acts.filter(a=>{
+    const info=actMap[a]||{needBasic:false,needAll:false};
+    return (info.needAll&&tl<2)||(info.needBasic&&tl<1);
+  });
+
+  const nudge = locked.length && t!=='alltahoe' ? `
+    <div class="upgrade-nudge" style="margin-top:.85rem">
+      <span class="nudge-icon">⬆️</span>
+      <span>${locked.length} of your activities need an upgrade. <strong style="cursor:pointer;text-decoration:underline" onclick="selectTierCard('${locked.some(a=>NEEDS_ALLTAHOE.includes(a))?'alltahoe':'basic'}')">Upgrade now →</strong></span>
+    </div>` : '';
+
+  document.getElementById('feat-checks').innerHTML = rows + nudge;
+}
+
+// ═══════════════════════════════════════════════════
+//  COMPLETE
+// ═══════════════════════════════════════════════════
+function completeOnboarding(){
+  collectProfile(); collectActivities(); collectSeason(); collectCamping();
+  USER.tier = USER.tier || 'free';
+
+  const first = USER.profile.first || (USER.auth.email ? USER.auth.email.split('@')[0] : 'Explorer');
+  const tierLabels = {free:'Free',basic:'Basic',alltahoe:'All Tahoe'};
+  const tierColors = {free:'#8B9EA8',basic:'#4AADBC',alltahoe:'#D4A853'};
+
+  // Summary rows
+  const seasonLabel = {spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter',all:'Year-round','':'-'}[USER.season.season]||'-';
+  const stayLabel   = {tent:'Tent camping',rv:'RV / van',cabin:'Cabin',hotel:'Hotel',backcountry:'Backcountry',mix:'Mix',''  :'-'}[USER.season.stay]||'-';
+  const groupLabel  = {solo:'Solo',couple:'Couple',family:'Family (kids)',  'family-teens':'Family (teens)',friends:'Friend group',corporate:'Team/Corporate',''  :'-'}[USER.profile.group]||'-';
+
+  document.getElementById('complete-summary').innerHTML=`
+    <div class="cs-row"><span class="cs-label">Name</span><span class="cs-val">${first} ${USER.profile.last||''}</span></div>
+    <div class="cs-row"><span class="cs-label">Group type</span><span class="cs-val">${groupLabel}</span></div>
+    <div class="cs-row"><span class="cs-label">Season</span><span class="cs-val">${seasonLabel}</span></div>
+    <div class="cs-row"><span class="cs-label">Stay type</span><span class="cs-val">${stayLabel}</span></div>
+    <div class="cs-row"><span class="cs-label">Activities</span><span class="cs-val">${USER.activities.length?USER.activities.length+' selected':'Not specified'}</span></div>
+    <div class="cs-row"><span class="cs-label">Plan</span><span class="cs-val" style="color:${tierColors[USER.tier]}">${tierLabels[USER.tier]}</span></div>
+  `;
+
+  // Activity badges
+  const actEmoji={camping:'⛺',hiking:'🥾',kayaking:'🛶',mtb:'🚵',skiing:'⛷️',snowshoeing:'🏔️',boating:'⛵',fishing:'🎣',sup:'🏄',climbing:'🧗',backpacking:'🌲',swimming:'🏊',wildlife:'🦅'};
+  const tierColors2={free:'rgba(139,158,168,.15)',basic:'rgba(74,173,188,.15)',alltahoe:'rgba(212,168,83,.15)'};
+  document.getElementById('complete-badges').innerHTML=USER.activities.slice(0,8).map(a=>`<div class="cb" style="background:${tierColors2[USER.tier]};color:${tierColors[USER.tier]}">${actEmoji[a]||''} ${a}</div>`).join('');
+
+  // Message
+  document.getElementById('complete-msg').textContent=`Welcome${first?' back, '+first:''}! Your personalized Tahoe dashboard is ready. ${USER.activities.length} activities queued up for ${seasonLabel} adventures.`;
+
+  // Show upgrade button if they have locked activities
+  const tierLevel={free:0,basic:1,alltahoe:2}[USER.tier]||0;
+  const hasLockedAll = USER.activities.some(a=>NEEDS_ALLTAHOE.includes(a)) && tierLevel<2;
+  const hasLockedBasic = USER.activities.some(a=>NEEDS_BASIC.includes(a)) && tierLevel<1;
+  if(hasLockedAll||hasLockedBasic){
+    const upgTo = hasLockedAll?'All Tahoe':'Basic';
+    const btn=document.getElementById('btn-upgrade');
+    btn.textContent=`Upgrade to ${upgTo} & Launch →`;
+    btn.style.display='';
+  }
+
+  document.getElementById('complete-screen').classList.add('show');
+}
+
+function launchApp(){
+  // Build payload for main planner
+  const payload = {
+    type:'onboarding-complete',
+    user: USER,
+    plannerInit:{
+      tier: USER.tier,
+      name: USER.profile.first+' '+USER.profile.last,
+      email: USER.auth.email,
+      activities: USER.activities,
+      season: USER.season.season,
+      stayType: USER.season.stay,
+      group: USER.profile.group,
+      campShores: USER.camping.shores,
+      campFeatures: USER.camping.features,
+    }
+  };
+  // Post to parent window (main planner)
+  window.parent?.postMessage(payload,'*');
+  // Also store in sessionStorage for same-tab navigation
+  try{ sessionStorage.setItem('tahoe_user', JSON.stringify(payload.plannerInit)); }catch(e){}
+
+  // Redirect to main planner with params
+  const params = new URLSearchParams({
+    tier: USER.tier,
+    name: USER.profile.first||'',
+    season: USER.season.season||'',
+    acts: USER.activities.join(','),
+  });
+  // In production: window.location.href = '/planner?' + params;
+  toast('Launching your personalized Tahoe Planner… 🏔️');
+  setTimeout(()=>{
+    document.getElementById('complete-screen').classList.remove('show');
+    // Demonstrate the carry-through in a summary toast
+    const actStr = USER.activities.slice(0,3).join(', ')+(USER.activities.length>3?' +more':'');
+    alert(`✅ Onboarding complete!\n\nCarrying into planner:\n• Name: ${USER.profile.first||'Explorer'}\n• Tier: ${USER.tier}\n• Activities: ${actStr||'not set'}\n• Season: ${USER.season.season||'not set'}\n• Stay: ${USER.season.stay||'not set'}\n\nIn production this redirects to lake-tahoe-planner.html?${params}`);
+  },300);
+}
+
+function upgradeAndLaunch(){
+  const tierLevel={free:0,basic:1,alltahoe:2}[USER.tier]||0;
+  const hasLockedAll=USER.activities.some(a=>NEEDS_ALLTAHOE.includes(a))&&tierLevel<2;
+  USER.tier = hasLockedAll?'alltahoe':'basic';
+  launchApp();
+}
+
+// ═══════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════
+function toast(msg){
+  let t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:999;background:#1C2D3F;border:1px solid #4AADBC;border-radius:9px;padding:9px 18px;font-size:.8rem;color:#F2F5F7;pointer-events:none;transition:opacity .3s;opacity:0;white-space:nowrap;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',2800);
+}
+
+// Init
+updateUI();
+</script>
+</body>
+</html>

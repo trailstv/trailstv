@@ -38,29 +38,122 @@ let markers    = {};
 let amF        = 'all';
 let loginTier  = 'free';
 let campsData  = [];
-let qStep      = 0;
-let qAns       = {};
-let qMulti     = {};
 let billingAnnual = false;
 let _refreshLock  = false;
+
+// ═══════════════════════════════════════════════════════════════
+//  INLINE FALLBACK DATA
+//  Used immediately on boot so the page works on any protocol.
+//  Also used as .catch() fallback if JSON files can't be fetched.
+// ═══════════════════════════════════════════════════════════════
+const ACTS_FALLBACK = [
+  {icon:'⛺',name:'Camping',         desc:"D.L. Bliss, Sugar Pine, Fallen Leaf — 300+ sites with lake views.",              tier:'f'},
+  {icon:'🥾',name:'Hiking',          desc:"165+ miles of trails from Tahoe Rim to Desolation Wilderness.",                  tier:'f'},
+  {icon:'🛶',name:'Kayaking',        desc:"Paddle Emerald Bay, Cave Rock, and Sand Harbor on crystal-clear water.",         tier:'b'},
+  {icon:'🚵',name:'Mountain Biking', desc:"Flume Trail, Mr Toads Wild Ride — world-class Sierra singletrack.",              tier:'b'},
+  {icon:'⛷️',name:'Skiing & Riding', desc:"14 resorts: Palisades, Heavenly, Northstar, Sierra-at-Tahoe, and more.",        tier:'b'},
+  {icon:'🏔️',name:'Snowshoeing',    desc:"Ellis Peak, Spooner Lake, Cascade Falls — serene winter wonderlands.",           tier:'b'},
+  {icon:'🎣',name:'Fishing',         desc:"Mackinaw trout up to 37 lbs. Guided lake charters year-round.",                 tier:'b'},
+  {icon:'🏄',name:'Paddleboarding',  desc:"Glassy morning water, 70+ ft visibility. Rentals at 8 locations.",              tier:'b'},
+  {icon:'🧗',name:'Rock Climbing',   desc:"Lovers Leap and Luther Spires — world-class granite sport climbing.",            tier:'b'},
+  {icon:'🌲',name:'Backpacking',     desc:"Desolation Wilderness multi-day routes through dramatic Sierra terrain.",        tier:'b'},
+  {icon:'🏊',name:'Swimming',        desc:"Sand Harbor, Emerald Bay, Kings Beach — pristine, 70+ ft clarity.",             tier:'f'},
+  {icon:'🦅',name:'Wildlife Watching',desc:"Black bears, bald eagles, mule deer — guided tours spring through fall.",      tier:'b'},
+];
+
+const AMENITIES_FALLBACK = [
+  {name:'Tahoe Sports Ltd',          type:'bike',    lat:39.1682, lng:-120.1513, loc:'Tahoe City',        note:'Rentals & repair'},
+  {name:'Shoreline MTB Shop',        type:'bike',    lat:38.9380, lng:-119.9820, loc:'South Lake Tahoe',  note:'MTB specialists'},
+  {name:'REI — South Lake Tahoe',    type:'sport',   lat:38.9310, lng:-119.9780, loc:'South Lake Tahoe',  note:'Full outfitter'},
+  {name:'Tahoe Outdoor Center',      type:'sport',   lat:39.1690, lng:-120.1490, loc:'Tahoe City',        note:'Gear & advice'},
+  {name:'Basin Gear & Supply',       type:'camp',    lat:39.2350, lng:-120.0200, loc:'Kings Beach',       note:'Camping specialist'},
+  {name:'Safeway — Lake Tahoe Blvd', type:'grocery', lat:38.9270, lng:-119.9820, loc:'South Lake Tahoe',  note:'Open 6am–11pm'},
+  {name:'New Moon Natural Foods',    type:'grocery', lat:39.1695, lng:-120.1500, loc:'Tahoe City',        note:'Organic & local'},
+  {name:'Shell — Stateline Ave',     type:'gas',     lat:38.9670, lng:-119.9430, loc:'Stateline',         note:'24hr · Convenience'},
+  {name:'Chevron — Kings Beach',     type:'gas',     lat:39.2370, lng:-120.0220, loc:'Kings Beach',       note:'Firewood available'},
+  {name:'Tahoe Paddle & Oar',        type:'rental',  lat:39.2360, lng:-120.0230, loc:'Kings Beach',       note:'Kayak, SUP, pontoon'},
+  {name:'Emerald Bay Water Sports',  type:'rental',  lat:38.9540, lng:-120.1060, loc:'South Lake Tahoe',  note:'Guided kayak tours'},
+];
+
+const CAMPS_FALLBACK = [
+  {id:'dlbliss',name:"D.L. Bliss State Park",lat:38.9695,lng:-120.1035,shore:'west',sites:168,available:18,limited:false,full:false,fee:35,hookups:false,pets:true,res:true,amenities:['Flush Toilets','Hot Showers','Dump Station','Beach Access','Bear Boxes'],desc:"One of Tahoe's most beloved campgrounds — reopened May 2026.",phone:'530-525-7277',url:'https://www.reservecalifornia.com/CaliforniaWebHome/Facilities/AdvanceSearch.aspx',bookSystem:'ReserveCalifornia',img:'⛺',region:'CA State Parks · West Shore'},
+  {id:'eaglepoint',name:"Emerald Bay — Eagle Point",lat:38.9540,lng:-120.1060,shore:'west',sites:97,available:4,limited:true,full:false,fee:35,hookups:false,pets:false,res:true,amenities:['Flush Toilets','Coin Showers','Fire Rings','Bear Boxes'],desc:"97-site campground inside Emerald Bay State Park.",phone:'530-541-3030',url:'https://www.reservecalifornia.com/CaliforniaWebHome/Facilities/AdvanceSearch.aspx',bookSystem:'ReserveCalifornia',img:'🏰',region:'CA State Parks · West Shore'},
+  {id:'sugarpine',name:"Sugar Pine Point — General Creek",lat:39.0418,lng:-120.1120,shore:'west',sites:175,available:31,limited:false,full:false,fee:35,hookups:false,pets:true,res:true,amenities:['Flush Toilets','Showers','Fire Rings','Boat Ramp'],desc:"175 sites — one loop stays open year-round.",phone:'530-525-7982',url:'https://www.reservecalifornia.com/CaliforniaWebHome/Facilities/AdvanceSearch.aspx',bookSystem:'ReserveCalifornia',img:'🌲',region:'CA State Parks · West Shore'},
+  {id:'232769',name:'Fallen Leaf Lake Campground',lat:38.8980,lng:-120.0540,shore:'south',sites:206,available:0,limited:false,full:true,fee:30,hookups:false,pets:true,res:true,amenities:['Flush Toilets','6 Yurts','Boat Ramp','Dump Station'],desc:"206 sites on serene Fallen Leaf Lake. Yurts sleep 5-6.",phone:'530-541-1537',url:'https://www.recreation.gov/camping/campgrounds/232769',bookSystem:'Recreation.gov',img:'🍂',region:'USFS · South Shore'},
+  {id:'232768',name:'Nevada Beach Campground',lat:38.9630,lng:-119.9280,shore:'east',sites:54,available:12,limited:false,full:false,fee:32,hookups:false,pets:true,res:true,amenities:['Flush Toilets','Sandy Beach','Fire Rings','Accessible Sites'],desc:"USFS camp with the widest beach on Tahoe.",phone:'775-588-5562',url:'https://www.recreation.gov/camping/campgrounds/232768',bookSystem:'Recreation.gov',img:'🏖️',region:'USFS · East Shore'},
+  {id:'232874',name:'William Kent Campground',lat:39.0895,lng:-120.1340,shore:'west',sites:95,available:19,limited:false,full:false,fee:32,hookups:false,pets:true,res:true,amenities:['Flush Toilets','Showers','3 Yurts','Fire Rings'],desc:"USFS camp 2 miles south of Tahoe City under tall pines.",phone:'530-541-1537',url:'https://www.recreation.gov/camping/campgrounds/232874',bookSystem:'Recreation.gov',img:'🌲',region:'USFS · West Shore'},
+  {id:'10220612',name:'Meeks Bay Resort & Campground',lat:39.0226,lng:-120.1182,shore:'west',sites:77,available:8,limited:false,full:false,fee:42,hookups:true,pets:false,res:true,amenities:['Sandy Beach','Kayak & SUP Rentals','Washoe Tribe Operated'],desc:"Washoe Tribe-operated resort. Sandy beach, kayak rentals. No pets.",phone:'530-214-9422',url:'https://www.recreation.gov/camping/campgrounds/10220612',bookSystem:'Recreation.gov',img:'🌊',region:'Meeks Bay Resort · West Shore'},
+  {id:'10300216',name:'Zephyr Cove RV & Campground',lat:38.9945,lng:-119.9390,shore:'east',sites:149,available:22,limited:false,full:false,fee:45,hookups:true,pets:true,res:true,amenities:['92 Full-Hookup RV Sites','47 Walk-In Tent Sites','Marina','Restaurant'],desc:"Southeast shore resort. Steps from the MS Dixie II and marina.",phone:'775-589-4906',url:'https://www.recreation.gov/camping/campgrounds/10300216',bookSystem:'Recreation.gov',img:'⚓',region:'Zephyr Cove Resort · East Shore'},
+  {id:'10305470',name:"Camp Richardson — RV Village",lat:38.9345,lng:-120.0485,shore:'south',sites:98,available:15,limited:false,full:false,fee:55,hookups:true,pets:false,res:true,amenities:['Full Hookup RV Sites','Bar & Grill','General Store','Full Marina'],desc:"Historic Camp Richardson on the south shore. RV-only with full hookups.",phone:'530-494-2228',url:'https://www.recreation.gov/camping/campgrounds/10305470',bookSystem:'Recreation.gov',img:'🏕️',region:'Camp Richardson · South Shore'},
+  {id:'spooner',name:'Spooner Backcountry Campgrounds',lat:39.1020,lng:-119.9080,shore:'east',sites:15,available:6,limited:false,full:false,fee:15,hookups:false,pets:false,res:false,amenities:['Vault Toilets','Bear Boxes','Walk-In Only','Flume Trail Access'],desc:"Three primitive hike-in campgrounds. First-come, first-served.",phone:'775-831-0494',url:'https://parks.nv.gov/parks/lake-tahoe-nevada-state-park',bookSystem:'Nevada State Parks (First-Come)',img:'🚵',region:'NV State Parks · East Shore'},
+];
+
+const SITE_DATA_FALLBACK = {
+  meta:{lastUpdated:null,source:'fallback'},
+  weather:{
+    current:{tempF:72,feelsLike:69,humidity:38,windMph:8,condition:'Sunny',icon:'☀️'},
+    waterTempF:65,
+    forecast:[
+      {day:'Today',    icon:'☀️', hi:72,lo:48,cond:'Sunny',         precip:0 },
+      {day:'Tomorrow', icon:'⛅', hi:68,lo:45,cond:'Partly Cloudy', precip:10},
+      {day:'Thu',      icon:'🌤',hi:74,lo:50,cond:'Mostly Clear',  precip:5 },
+      {day:'Fri',      icon:'⛈', hi:61,lo:44,cond:'PM Storms',     precip:75},
+      {day:'Sat',      icon:'☀️', hi:76,lo:49,cond:'Sunny',         precip:0 },
+      {day:'Sun',      icon:'🌤',hi:73,lo:47,cond:'Mostly Clear',  precip:5 },
+      {day:'Mon',      icon:'⛅', hi:69,lo:46,cond:'Partly Cloudy', precip:15},
+    ],
+  },
+  lake:{levelFt:6222.4,levelStatus:'normal',clarityFt:71,visibility:'exceptional'},
+  trails:{status:'open',statusLabel:'All Open',snowFreeBelow:7200,mudConditions:'dry',alerts:[]},
+  fire:{restrictionLevel:1,restrictionLabel:'Stage 1',activeIncidents:0,alertText:'Stage 1 Fire Restrictions in effect. No campfires outside designated fire rings.',alertActive:true},
+  camping:{totalAvailable:0},
+  ski:{season:'off',baseDepthIn:0,newSnow48hrIn:0,resortCount:14,openResorts:0,
+    resorts:[
+      {name:'Palisades Tahoe',open:false,base:0,new48:0},
+      {name:'Heavenly',       open:false,base:0,new48:0},
+      {name:'Northstar',      open:false,base:0,new48:0},
+      {name:'Sierra-at-Tahoe',open:false,base:0,new48:0},
+    ]},
+};
 
 // ═══════════════════════════════════════════════════════════════
 //  BOOT — load all JSON then initialise
 // ═══════════════════════════════════════════════════════════════
 async function boot() {
+  // ── Always start immediately with inline fallback data ───────────────────
+  // This guarantees the page renders and navigation works on ANY protocol
+  // including file://, before any network requests are attempted.
+  CAMPS     = CAMPS_FALLBACK;
+  AMENITIES = AMENITIES_FALLBACK;
+  ACTS      = ACTS_FALLBACK;
+  SITE_DATA = { ...SITE_DATA_FALLBACK };
+  campsData = CAMPS_FALLBACK;
+  SITE_DATA.camping = SITE_DATA.camping || {};
+  SITE_DATA.camping.totalAvailable = CAMPS.reduce(
+    (n, c) => n + (avSt(c) !== 'full' ? c.available : 0), 0
+  );
+  SITE_DATA.meta = { lastUpdated: new Date(), source: 'fallback' };
+
+  // ── Render everything now — page is fully interactive ────────────────────
+  renderSiteData(SITE_DATA);
+
+  // ── Upgrade data from JSON files if running on http:// ───────────────────
+  // Skip silently on file:// to avoid console errors
+  if (window.location.protocol === 'file:') return;
+
   try {
     const [camps, amenities, acts, siteData] = await Promise.all([
-      fetchJSON(`${CONFIG.DATA_BASE}/camps.json`),
-      fetchJSON(`${CONFIG.DATA_BASE}/amenities.json`),
-      fetchJSON(`${CONFIG.DATA_BASE}/activities.json`),
-      fetchJSON(`${CONFIG.DATA_BASE}/site-data.json`),
+      fetchJSON(`${CONFIG.DATA_BASE}/camps.json`).catch(() => CAMPS_FALLBACK),
+      fetchJSON(`${CONFIG.DATA_BASE}/amenities.json`).catch(() => AMENITIES_FALLBACK),
+      fetchJSON(`${CONFIG.DATA_BASE}/activities.json`).catch(() => ACTS_FALLBACK),
+      fetchJSON(`${CONFIG.DATA_BASE}/site-data.json`).catch(() => SITE_DATA_FALLBACK),
     ]);
 
-    CAMPS      = camps;
-    AMENITIES  = amenities;
-    ACTS       = acts;
-    SITE_DATA  = siteData;
-    campsData  = camps;  // default to static data until API loads
+    CAMPS     = camps;
+    AMENITIES = amenities;
+    ACTS      = acts;
+    SITE_DATA = siteData;
+    campsData = camps;
 
     // Compute initial camping total
     SITE_DATA.camping = SITE_DATA.camping || {};
@@ -92,8 +185,10 @@ async function fetchJSON(url) {
 //  NAVIGATION
 // ═══════════════════════════════════════════════════════════════
 function SP(id) {
+  const target = document.getElementById('page-' + id);
+  if (!target) { console.warn('SP: no page found for id:', id); return; }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+  target.classList.add('active');
   document.querySelectorAll('.nl').forEach(b => b.classList.remove('active'));
   const nb = document.getElementById('nav-' + id);
   if (nb) nb.classList.add('active');
@@ -102,7 +197,7 @@ function SP(id) {
   if (id === 'camp' && !lmap)   initCampMap();
   if (id === 'map'  && !amap)   initAMap();
   if (id === 'act')              renderActs();
-  if (id === 'quiz')             initQuiz();
+  if (id === 'plan')             initPlanPage();
 }
 
 function scrollToActivity(id) {
@@ -431,8 +526,8 @@ function renderAMCards() {
 // ═══════════════════════════════════════════════════════════════
 //  ACTIVITIES PAGE (rendered from activities.json)
 // ═══════════════════════════════════════════════════════════════
-const TL = { f: 'Free', b: 'Basic', o: 'Oyster' };
-const TC = { f: 'cf',   b: 'cb',    o: 'co' };
+const TL = { f: 'Free', b: 'Basic', o: 'Basic' };
+const TC = { f: 'cf',   b: 'cb',    o: 'cb' };
 
 function renderActs() {
   if (!ACTS.length) return;
@@ -449,16 +544,15 @@ function renderActs() {
     document.getElementById('abtn' + idx).onclick = () => {
       if (a.tier === 'f') { SP('plan'); return; }
       if (a.tier === 'b') reqTier('basic');
-      if (a.tier === 'o') reqTier('oyster');
+      if (a.tier === 'o') reqTier('basic');
     };
   });
 }
 
 function reqTier(needed) {
-  const lv = { free: 0, basic: 1, oyster: 2, alltahoe: 2 };
-  const nm = { basic: 'Basic ($3.99/mo)', oyster: 'All Tahoe ($10.99/mo)', alltahoe: 'All Tahoe ($10.99/mo)' };
-  if (lv[tier] >= lv[needed]) { SP('plan'); return; }
-  toast(`Upgrade to ${nm[needed]} to unlock this.`);
+  const lv = { free: 0, basic: 1 };
+  if ((lv[tier] || 0) >= (lv[needed] || 1)) { SP('plan'); return; }
+  toast('Upgrade to Basic ($3.99/mo) to unlock this.');
   setTimeout(() => SP('price'), 1700);
 }
 
@@ -480,98 +574,37 @@ function updateCampMini() {
 //  PLANNER
 // ═══════════════════════════════════════════════════════════════
 function addTrip() {
-  const act = document.getElementById('asel').value;
-  const loc = document.getElementById('locin').value.trim();
+  const act = document.getElementById('asel')?.value || '';
+  const loc = (document.getElementById('locin')?.value || '').trim();
   if (!act || !loc) { toast('Choose an activity and enter a location.'); return; }
   const icon = act.split(' ')[0];
   const name = act.replace(/^[^\s]+\s/, '') + ' — ' + loc;
-  const s    = document.getElementById('tstart').value;
+  const s    = document.getElementById('tstart')?.value || '';
   const date = s ? new Date(s + 'T12:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Upcoming';
   const li   = document.createElement('li');
   li.className = 'ti';
   li.innerHTML = `<span class="tic">${icon}</span><div class="tin"><div class="tn">${name}</div><div class="td">${date}</div></div><button class="rmv" onclick="remTrip(this)">✕</button>`;
   document.getElementById('tlist').appendChild(li);
-  document.getElementById('asel').value  = '';
-  document.getElementById('locin').value = '';
+  const _a=document.getElementById('asel'); if(_a)_a.value='';
+  const _l=document.getElementById('locin'); if(_l)_l.value='';
   toast('Trip added to your itinerary! ✓');
 }
 
 function remTrip(btn) { btn.closest('.ti').remove(); }
 
 // ═══════════════════════════════════════════════════════════════
-//  QUIZ
-// ═══════════════════════════════════════════════════════════════
-const QS = [
-  { q: 'What season are you planning for?', h: 'Conditions vary dramatically.', multi: false, opts: [{ e: '🌸', l: 'Spring (Mar–May)' }, { e: '☀️', l: 'Summer (Jun–Sep)' }, { e: '🍂', l: 'Fall (Oct–Nov)' }, { e: '❄️', l: 'Winter (Dec–Feb)' }] },
-  { q: "What's your experience level?",     h: 'Tahoe rewards all skill levels.', multi: false, opts: [{ e: '🌱', l: 'Total beginner' }, { e: '🥾', l: 'Some experience' }, { e: '⛰️', l: 'Intermediate' }, { e: '🏆', l: 'Seasoned athlete' }] },
-  { q: 'Who are you adventuring with?',     h: 'Group dynamics shape the ideal itinerary.', multi: false, opts: [{ e: '🧍', l: 'Solo' }, { e: '👫', l: 'Partner / couple' }, { e: '👨‍👩‍👧', l: 'Family with kids' }, { e: '👯', l: 'Friend group' }] },
-  { q: 'What type of adventure calls to you?', h: 'Pick all that sound exciting.', multi: true, opts: [{ e: '🥾', l: 'Hiking' }, { e: '🛶', l: 'Water activities' }, { e: '⛷️', l: 'Snow sports' }, { e: '🚵', l: 'Mountain biking' }, { e: '⛺', l: 'Camping' }, { e: '🎣', l: 'Fishing & wildlife' }] },
-  { q: 'How long is your trip?',            h: 'Helps us suggest realistic daily itineraries.', multi: false, opts: [{ e: '🌅', l: 'Day trip' }, { e: '🏕️', l: 'Weekend (2–3 days)' }, { e: '📅', l: '4–7 days' }, { e: '🏔️', l: 'A week or more' }] },
-];
-const RECS = {
-  Spring: ['🌸 Cascade Falls Hike', '🎣 Spring Fishing', '🦅 Wildlife Watching', '🚵 Flume Trail MTB'],
-  Summer: ['🥾 Tahoe Rim Trail Hike', '🛶 Emerald Bay Kayak', '🏊 Sand Harbor Swim', '⛺ D.L. Bliss Camp'],
-  Fall:   ['🍂 TRT Foliage Hike', '🧗 Lovers Leap Climb', '⛺ Nevada Beach Camp', '🛶 Fall Paddle'],
-  Winter: ['⛷️ Palisades Tahoe Ski', '🏔️ Ellis Peak Snowshoe', '❄️ Northstar Nordic', '🌲 Donner Summit Hike'],
-};
-
-function initQuiz() { qStep = 0; qAns = {}; qMulti = {}; renderQ(); }
-
-function renderQ() {
-  const area = document.getElementById('qarea');
-  if (qStep >= QS.length) { renderRes(); return; }
-  const q    = QS[qStep];
-  const dots = QS.map((_, i) => `<div class="qpd ${i < qStep ? 'done' : i === qStep ? 'cur' : ''}"></div>`).join('');
-  const opts = q.opts.map((o, i) => `<div class="qopt" data-i="${i}" onclick="selOpt(this,${i},${q.multi})">${o.e} ${o.l}</div>`).join('');
-  area.innerHTML = `<div class="qwrap"><div class="qprog">${dots}</div><div class="qq">${q.q}</div><div class="qhint">${q.h}</div><div class="qopts">${opts}</div><div class="qnav"><button class="qbk" onclick="qBack()" ${qStep === 0 ? 'style="visibility:hidden"' : ''}>← Back</button>${q.multi ? '<button class="bp" onclick="qNext()">Continue →</button>' : '<span style="font-size:.74rem;color:var(--granite)">Tap to continue</span>'}</div></div>`;
-  if (q.multi && qMulti[qStep]) area.querySelectorAll('.qopt').forEach((el, i) => { if (qMulti[qStep].includes(i)) el.classList.add('sel'); });
-}
-
-function selOpt(el, idx, multi) {
-  if (multi) {
-    el.classList.toggle('sel');
-    if (!qMulti[qStep]) qMulti[qStep] = [];
-    const s = qMulti[qStep], p = s.indexOf(idx);
-    p > -1 ? s.splice(p, 1) : s.push(idx);
-  } else { qAns[qStep] = idx; setTimeout(qNext, 270); }
-}
-
-function qNext() { if (QS[qStep].multi) qAns[qStep] = qMulti[qStep] || []; qStep++; renderQ(); }
-function qBack() { if (qStep > 0) { qStep--; renderQ(); } }
-
-function renderRes() {
-  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-  const season  = seasons[qAns[0]] || 'Summer';
-  const recs    = RECS[season] || RECS.Summer;
-  document.getElementById('qarea').innerHTML = `<div class="qres">
-    <div style="text-align:center;margin-bottom:1.4rem">
-      <div style="font-size:2.3rem;margin-bottom:.55rem">🏔️</div>
-      <h3 style="font-family:var(--fd);font-size:1.45rem;margin-bottom:.38rem">Your Tahoe Match</h3>
-      <p style="font-size:.83rem;color:var(--granite)">Best adventures for a <strong style="color:var(--snow)">${season}</strong> trip</p>
-    </div>
-    <div class="rgrid">${recs.map(r => `<div class="ri"><span>${r.split(' ')[0]}</span><span>${r.split(' ').slice(1).join(' ')}</span></div>`).join('')}</div>
-    <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem">
-      <button class="bp" onclick="SP('plan')">Start Planning →</button>
-      <button class="bs" onclick="initQuiz()">Retake</button>
-    </div>
-  </div>`;
-}
-
-// ═══════════════════════════════════════════════════════════════
 //  TIER / LOGIN
 // ═══════════════════════════════════════════════════════════════
 function selTier(t) {
   tier = t;
-  const b      = document.getElementById('tbadge');
-  const labels = { free: 'Free', basic: 'Basic', alltahoe: 'All Tahoe', oyster: 'All Tahoe' };
-  const classes = { free: 'tf', basic: 'tb', alltahoe: 'to', oyster: 'to' };
-  b.className  = 'tbadge ' + (classes[t] || 'tf');
+  const b       = document.getElementById('tbadge');
+  const labels  = { free: 'Free', basic: 'Basic' };
+  const classes = { free: 'tf',   basic: 'tb'    };
+  b.className   = 'tbadge ' + (classes[t] || 'tf');
   b.textContent = labels[t] || t;
   const msgs = {
-    free:     'Free plan active. Explore Tahoe!',
-    basic:    'Basic unlocked — kayak & bike rentals + live campsite data. 🛶🚵',
-    alltahoe: 'All Tahoe unlocked! The entire basin is yours. 🏔️🌊⛷️',
-    oyster:   'All Tahoe unlocked! The entire basin is yours. 🏔️🌊⛷️',
+    free:  'Free plan active. Explore Tahoe!',
+    basic: 'Basic unlocked — full access to the entire basin. 🏔️🌊⛷️🛶',
   };
   toast(msgs[t] || 'Plan updated.');
 }
@@ -585,10 +618,10 @@ function swTab(t) {
 function selR(el, t) {
   document.querySelectorAll('.tr-row').forEach(r => r.classList.remove('sel'));
   el.classList.add('sel');
-  loginTier = t;
+  loginTier = (t === 'alltahoe' || t === 'oyster') ? 'basic' : t;
 }
 function doLogin() {
-  selTier(loginTier);
+  selTier(loginTier || 'free');
   document.getElementById('lmodal').classList.remove('open');
   toast('Welcome to Lake Tahoe Planner! 🏔️');
 }
@@ -601,7 +634,7 @@ function doLogin() {
 // ═══════════════════════════════════════════════════════════════
 //  BILLING TOGGLE
 // ═══════════════════════════════════════════════════════════════
-const PRICES = { free: { mo: '$0', yr: '$0' }, basic: { mo: '$3.99', yr: '$3.19' }, alltahoe: { mo: '$10.99', yr: '$8.79' } };
+const PRICES = { free: { mo: '$0', yr: '$0' }, basic: { mo: '$3.99', yr: '$3.19' } };
 
 function toggleBilling() {
   billingAnnual = !billingAnnual;
@@ -609,11 +642,9 @@ function toggleBilling() {
   document.getElementById('bill-label-mo').style.color = billingAnnual ? 'var(--granite)' : 'var(--snow)';
   document.getElementById('bill-label-yr').style.color = billingAnnual ? 'var(--snow)' : 'var(--granite)';
   const key = billingAnnual ? 'yr' : 'mo';
-  document.getElementById('price-free').textContent    = PRICES.free[key];
-  document.getElementById('price-basic').innerHTML     = PRICES.basic[key]    + '<span class="pamt2-sub">/mo</span>';
-  document.getElementById('price-alltahoe').innerHTML  = PRICES.alltahoe[key] + '<span class="pamt2-sub">/mo</span>';
-  document.getElementById('pper-basic').textContent    = billingAnnual ? 'billed annually' : 'billed monthly';
-  document.getElementById('pper-alltahoe').textContent = billingAnnual ? 'billed annually' : 'billed monthly';
+  document.getElementById('price-free').textContent  = PRICES.free[key];
+  document.getElementById('price-basic').innerHTML   = PRICES.basic[key] + '<span class="pamt2-sub">/mo</span>';
+  document.getElementById('pper-basic').textContent  = billingAnnual ? 'billed annually' : 'billed monthly';
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -763,4 +794,354 @@ if (fyEl) fyEl.textContent = new Date().getFullYear();
 // ═══════════════════════════════════════════════════════════════
 //  START
 // ═══════════════════════════════════════════════════════════════
-boot();
+boot();// ═══════════════════════════════════════════════════════════════
+//  PLAN YOUR TRIP — unified auth-gated wizard
+// ═══════════════════════════════════════════════════════════════
+
+// Wizard state
+let planUser   = null;   // set after auth { email, name, provider }
+let planStep   = 0;
+let planAns    = {};     // step index → selected value(s)
+let planMulti  = {};     // step index → array for multi-select
+
+// ── WIZARD STEPS ────────────────────────────────────────────────────────────
+const PLAN_STEPS = [
+  {
+    q:    'What season are you planning for?',
+    hint: "We'll surface the right campsite windows, snow reports, and trail conditions for your timing.",
+    key:  'season',
+    multi: false,
+    opts: [
+      { e:'🌸', l:'Spring (Mar – May)' },
+      { e:'☀️', l:'Summer (Jun – Sep)' },
+      { e:'🍂', l:'Fall (Oct – Nov)'   },
+      { e:'❄️', l:'Winter (Dec – Feb)' },
+    ]
+  },
+  {
+    q:    "Who's coming with you?",
+    hint: "Group dynamics shape the ideal campsite, trail, and activity mix.",
+    key:  'group',
+    multi: false,
+    opts: [
+      { e:'🧍', l:'Solo'              },
+      { e:'👫', l:'Partner / Couple'  },
+      { e:'👨‍👩‍👧', l:'Family with Kids'  },
+      { e:'👯', l:'Friend Group'       },
+      { e:'🏢', l:'Corporate / Team'  },
+    ]
+  },
+  {
+    q:    'How long is your trip?',
+    hint: "Helps us suggest realistic daily itineraries and campsite booking windows.",
+    key:  'length',
+    multi: false,
+    opts: [
+      { e:'🌅', l:'Day trip'          },
+      { e:'🏕️', l:'Weekend (2–3 days)'},
+      { e:'📅', l:'4–7 days'          },
+      { e:'🏔️', l:'A week or more'   },
+    ]
+  },
+  {
+    q:    'What activities excite you?',
+    hint: "Select everything that sounds good — we'll build around what you love.",
+    key:  'activities',
+    multi: true,
+    opts: [
+      { e:'⛺', l:'Camping'           },
+      { e:'🥾', l:'Hiking'            },
+      { e:'🛶', l:'Kayaking'          },
+      { e:'🚵', l:'Mountain Biking'   },
+      { e:'⛷️', l:'Skiing / Riding'  },
+      { e:'⛵', l:'Boating'           },
+      { e:'🎣', l:'Fishing'           },
+      { e:'🏄', l:'Paddleboarding'    },
+      { e:'🌲', l:'Backpacking'       },
+      { e:'🏊', l:'Swimming'          },
+    ]
+  },
+  {
+    q:    "What's your experience level?",
+    hint: "Helps us match trail difficulty, campsite type, and gear recommendations.",
+    key:  'level',
+    multi: false,
+    opts: [
+      { e:'🌱', l:'Beginner — new to outdoor adventure'      },
+      { e:'🥾', l:'Intermediate — comfortable on trails'    },
+      { e:'⛰️', l:'Advanced — multi-day, all conditions'    },
+      { e:'🏆', l:'Expert — technical & self-sufficient'    },
+    ]
+  },
+];
+
+// Recommendations by season
+const PLAN_RECS = {
+  'Spring (Mar – May)': ['🌸 Cascade Falls Hike','🎣 Spring Fishing at Fallen Leaf','🦅 Wildlife Walk — Taylor Creek','🚵 Flume Trail MTB Opening Weekend'],
+  'Summer (Jun – Sep)': ['🥾 Tahoe Rim Trail Day Hike','🛶 Emerald Bay Kayak','🏊 Sand Harbor Beach Day','⛺ D.L. Bliss Camping'],
+  'Fall (Oct – Nov)':   ['🍂 TRT Foliage Hike','⛺ Nevada Beach — Shoulder Season Camp','🛶 Fall Paddle — Kings Beach to Carnelian','🌲 Glen Alpine Backpack'],
+  'Winter (Dec – Feb)': ['⛷️ Palisades Tahoe Powder Day','🏔️ Ellis Peak Snowshoe','❄️ Northstar Nordic Ski','🌲 Donner Summit Hike'],
+};
+
+// ── AUTH GATE FUNCTIONS ──────────────────────────────────────────────────────
+function planAuthWith(provider) {
+  // Google OAuth — in production redirect to your OAuth endpoint:
+  // window.location.href = '/api/auth/google';
+  //
+  // To connect Google OAuth:
+  // 1. Go to console.cloud.google.com → APIs & Services → Credentials
+  // 2. Create OAuth 2.0 Client ID
+  // 3. Add redirect URI: https://trailstv.com/api/auth/google/callback
+  // 4. Set environment variable GOOGLE_CLIENT_ID in Netlify dashboard
+  // 5. Replace the line below with: window.location.href = '/api/auth/google';
+  if (provider !== 'google') return;
+  planUser = { email: '', name: 'Tahoe Explorer', provider: 'google' };
+  toast('Connecting with Google… ✓');
+  setTimeout(launchPlanWizard, 400);
+}
+
+function planAuthEmail() {
+  const email = document.getElementById('plan-email').value.trim();
+  if (!email || !email.includes('@')) {
+    toast('Please enter a valid email address.');
+    return;
+  }
+  planUser = { email, name: email.split('@')[0], provider: 'email' };
+  toast('Welcome, ' + planUser.name + '! ✓');
+  setTimeout(launchPlanWizard, 400);
+}
+
+function launchPlanWizard() {
+  document.getElementById('plan-auth-gate').style.display  = 'none';
+  document.getElementById('plan-wizard').style.display     = 'block';
+  planStep = 0; planAns = {}; planMulti = {};
+  buildPlanStepDots();
+  renderPlanStep();
+}
+
+// ── STEP DOTS ────────────────────────────────────────────────────────────────
+function buildPlanStepDots() {
+  const container = document.getElementById('plan-steps');
+  if (!container) return;
+  container.innerHTML = PLAN_STEPS.map((s, i) =>
+    `<div class="plan-step-dot${i===0?' active':''}" id="pdot-${i}" onclick="goToPlanStep(${i})"></div>`
+  ).join('') + `<span class="plan-step-label" id="plan-step-label">Step 1 of ${PLAN_STEPS.length}</span>`;
+}
+
+function updatePlanDots() {
+  PLAN_STEPS.forEach((_, i) => {
+    const d = document.getElementById('pdot-' + i);
+    if (!d) return;
+    d.className = 'plan-step-dot' + (i < planStep ? ' done' : i === planStep ? ' active' : '');
+  });
+  const lbl = document.getElementById('plan-step-label');
+  if (lbl) lbl.textContent = 'Step ' + (planStep + 1) + ' of ' + PLAN_STEPS.length;
+}
+
+// ── RENDER STEP ──────────────────────────────────────────────────────────────
+function renderPlanStep() {
+  const area = document.getElementById('plan-step-area');
+  if (!area) return;
+
+  if (planStep >= PLAN_STEPS.length) {
+    renderPlanSummary();
+    return;
+  }
+
+  updatePlanDots();
+  const s     = PLAN_STEPS[planStep];
+  const isSel = (i) => s.multi
+    ? (planMulti[planStep] || []).includes(i)
+    : planAns[planStep] === i;
+
+  const opts = s.opts.map((o, i) =>
+    `<div class="plan-opt${isSel(i) ? ' sel' : ''}" onclick="selectPlanOpt(this,${i})">
+      <span>${o.e}</span><span>${o.l}</span>
+    </div>`
+  ).join('');
+
+  const isLast  = planStep === PLAN_STEPS.length - 1;
+  const isFirst = planStep === 0;
+
+  area.innerHTML = `
+    <div class="plan-step-card">
+      <div class="plan-step-q">${s.q}</div>
+      <div class="plan-step-hint">${s.hint}</div>
+      <div class="plan-opts">${opts}</div>
+      <div class="plan-nav">
+        ${!isFirst ? '<button class="plan-btn-back" onclick="prevPlanStep()">← Back</button>' : ''}
+        ${s.multi
+          ? `<button class="plan-btn-next${isLast?' finish':''}" onclick="nextPlanStep()">
+               ${isLast ? 'Build My Trip 🏔️' : 'Continue →'}</button>`
+          : `<span style="font-size:.76rem;color:var(--granite)">Tap an option to continue</span>`
+        }
+        <button class="plan-skip" onclick="nextPlanStep()">Skip →</button>
+      </div>
+    </div>`;
+}
+
+function selectPlanOpt(el, idx) {
+  const s = PLAN_STEPS[planStep];
+  if (s.multi) {
+    el.classList.toggle('sel');
+    if (!planMulti[planStep]) planMulti[planStep] = [];
+    const arr = planMulti[planStep];
+    const pos = arr.indexOf(idx);
+    pos > -1 ? arr.splice(pos, 1) : arr.push(idx);
+  } else {
+    planAns[planStep] = idx;
+    setTimeout(nextPlanStep, 280);
+  }
+}
+
+function nextPlanStep() {
+  const s = PLAN_STEPS[planStep];
+  if (s.multi) planAns[planStep] = planMulti[planStep] || [];
+  planStep++;
+  renderPlanStep();
+}
+
+function prevPlanStep() {
+  if (planStep > 0) { planStep--; renderPlanStep(); }
+}
+
+function goToPlanStep(i) {
+  if (i <= planStep) { planStep = i; renderPlanStep(); }
+}
+
+// ── SUMMARY & ITINERARY ──────────────────────────────────────────────────────
+function renderPlanSummary() {
+  const area = document.getElementById('plan-step-area');
+  if (!area) return;
+  updatePlanDots();
+
+  // Build readable answers
+  const get = (stepIdx) => {
+    const s    = PLAN_STEPS[stepIdx];
+    const ans  = planAns[stepIdx];
+    if (ans === undefined || ans === null) return 'Not specified';
+    if (Array.isArray(ans)) {
+      return ans.length
+        ? ans.map(i => s.opts[i]?.l || '').join(', ')
+        : 'Not specified';
+    }
+    return s.opts[ans]?.l || 'Not specified';
+  };
+
+  const season     = get(0);
+  const group      = get(1);
+  const length     = get(2);
+  const activities = get(3);
+  const level      = get(4);
+  const recs       = PLAN_RECS[season] || PLAN_RECS['Summer (Jun – Sep)'];
+
+  area.innerHTML = `
+    <div class="plan-step-card">
+      <div class="plan-step-q" style="color:var(--glacial)">Your Tahoe Plan ✓</div>
+      <div class="plan-step-hint">Here's what we built based on your answers. Save it to your account or refine any step.</div>
+
+      <div class="plan-summary-card">
+        <div class="plan-summary-row"><span class="plan-summary-label">Season</span><span class="plan-summary-val">${season}</span></div>
+        <div class="plan-summary-row"><span class="plan-summary-label">Group</span><span class="plan-summary-val">${group}</span></div>
+        <div class="plan-summary-row"><span class="plan-summary-label">Trip Length</span><span class="plan-summary-val">${length}</span></div>
+        <div class="plan-summary-row"><span class="plan-summary-label">Activities</span><span class="plan-summary-val">${activities}</span></div>
+        <div class="plan-summary-row"><span class="plan-summary-label">Level</span><span class="plan-summary-val">${level}</span></div>
+        <div class="plan-summary-row"><span class="plan-summary-label">Account</span><span class="plan-summary-val">${planUser?.email || 'Guest'}</span></div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--glacial);margin-bottom:.75rem">
+        Recommended for ${season}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.5rem">
+        ${recs.map(r => `
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 12px;background:rgba(13,27,42,.5);border:1px solid rgba(74,173,188,.1);border-radius:8px;font-size:.82rem;">
+            <span>${r.split(' ')[0]}</span><span>${r.split(' ').slice(1).join(' ')}</span>
+          </div>`).join('')}
+      </div>
+
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="plan-btn-next" onclick="saveItinerary()">Save My Trip →</button>
+        <button class="plan-btn-back" onclick="planStep=0;renderPlanStep()">Start Over</button>
+        <button class="plan-btn-back" onclick="SP('camp')">Browse Campsites →</button>
+      </div>
+    </div>`;
+
+  // Show itinerary section
+  const itin = document.getElementById('plan-itinerary-section');
+  if (itin) itin.style.display = 'block';
+
+  // Pre-populate itinerary with recommendations
+  const tlist = document.getElementById('tlist');
+  if (tlist) {
+    tlist.innerHTML = recs.map(r => {
+      const icon = r.split(' ')[0];
+      const name = r.split(' ').slice(1).join(' ');
+      return `<li class="ti"><span class="tic">${icon}</span><div class="tin"><div class="tn">${name}</div><div class="td">${season}</div></div><button class="rmv" onclick="remTrip(this)">✕</button></li>`;
+    }).join('');
+  }
+}
+
+function saveItinerary() {
+  // In production: POST to /api/trips with planAns + planUser
+  // MySQL payload:
+  // INSERT INTO trips (user_id, season, group_type, trip_length, activities, level, created_at)
+  // VALUES (?, ?, ?, ?, ?, ?, NOW())
+  const payload = {
+    user:       planUser,
+    season:     PLAN_STEPS[0].opts[planAns[0]]?.l,
+    group:      PLAN_STEPS[1].opts[planAns[1]]?.l,
+    length:     PLAN_STEPS[2].opts[planAns[2]]?.l,
+    activities: (planAns[3] || []).map(i => PLAN_STEPS[3].opts[i]?.l),
+    level:      PLAN_STEPS[4].opts[planAns[4]]?.l,
+  };
+  // Store in sessionStorage until backend is wired
+  try { sessionStorage.setItem('tahoe_trip', JSON.stringify(payload)); } catch(e){}
+  console.log('Trip payload ready for MySQL:', payload);
+  toast('Trip saved! ✓ (Connect MySQL to persist across sessions)');
+}
+
+function clearItinerary() {
+  planStep = 0; planAns = {}; planMulti = {};
+  renderPlanStep();
+  const itin = document.getElementById('plan-itinerary-section');
+  if (itin) itin.style.display = 'none';
+}
+
+function remTrip(btn) { btn.closest('.ti').remove(); }
+
+function addTrip() {
+  const act = document.getElementById('asel')?.value;
+  const loc = document.getElementById('locin')?.value?.trim();
+  if (!act || !loc) { toast('Choose an activity and enter a location.'); return; }
+  const icon = act.split(' ')[0];
+  const name = act.replace(/^[^\s]+\s/, '') + ' — ' + loc;
+  const s    = document.getElementById('tstart')?.value;
+  const date = s ? new Date(s + 'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'Upcoming';
+  const li   = document.createElement('li');
+  li.className = 'ti';
+  li.innerHTML = `<span class="tic">${icon}</span><div class="tin"><div class="tn">${name}</div><div class="td">${date}</div></div><button class="rmv" onclick="remTrip(this)">✕</button>`;
+  document.getElementById('tlist')?.appendChild(li);
+  toast('Added to itinerary ✓');
+}
+
+// ── SP override: show auth gate when plan page is opened if not logged in ────
+// (called by the existing SP() function — we hook initPlanPage)
+function initPlanPage() {
+  const gate   = document.getElementById('plan-auth-gate');
+  const wizard = document.getElementById('plan-wizard');
+  if (!gate || !wizard) return;
+  if (planUser || tier !== 'free') {
+    // Already authenticated — skip gate
+    gate.style.display   = 'none';
+    wizard.style.display = 'block';
+    if (planStep === 0 && !planAns[0]) {
+      buildPlanStepDots();
+      renderPlanStep();
+    }
+  } else {
+    gate.style.display   = 'block';
+    wizard.style.display = 'none';
+  }
+}
+
+

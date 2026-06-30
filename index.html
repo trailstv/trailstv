@@ -8,6 +8,13 @@
 
   <title>Lake Tahoe Planner — TrailsTV</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <meta name="theme-color" content="#0D1B2A">
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -30,11 +37,9 @@
   </div>
   <div class="nav-links">
     <button class="nl active" id="nav-home"  onclick="SP('home')">Explore</button>
-    <button class="nl" id="nav-camp"  onclick="SP('camp')">⛺ Campsites</button>
-    <button class="nl" id="nav-plan"  onclick="SP('plan')">Plan a Trip</button>
+    <button class="nl" id="nav-plan"  onclick="SP('plan')">Plan Your Trip</button>
     <button class="nl" id="nav-act"   onclick="SP('act')">Activities</button>
     <button class="nl" id="nav-map"   onclick="SP('map')">Map</button>
-    <button class="nl" id="nav-quiz"  onclick="SP('quiz')">Walk Me Through</button>
     <button class="nl" id="nav-price" onclick="SP('price')">Plans</button>
   </div>
   <div class="nav-right">
@@ -52,16 +57,16 @@
   <div class="hero-unified">
     <!-- Background photo -->
     <picture>
-      <source media="(min-width:1200px)" srcset="https://images.unsplash.com/photo-1669475416775-8ca56bda9bf3?w=2400&q=90&auto=format&fit=crop"/>
-      <source media="(min-width:700px)"  srcset="https://images.unsplash.com/photo-1669475416775-8ca56bda9bf3?w=1600&q=85&auto=format&fit=crop"/>
-      <img
-        src="https://images.unsplash.com/photo-1669475416775-8ca56bda9bf3?w=900&q=80&auto=format&fit=crop"
-        alt="Aerial drone view of Lake Tahoe east shore — turquoise water, Sierra Nevada mountains, pine forest"
-        class="hero-bg-photo"
-        loading="eager"
-        onerror="this.closest('.hero-unified').classList.add('hero-photo-fallback')"
-      />
-    </picture>
+  		<source media="(min-width:1200px)" srcset="assets/hero-tahoe.jpg"/>
+  		<source media="(min-width:700px)"  srcset="assets/hero-tahoe.jpg"/>
+  		<img
+    		src="assets/hero-tahoe.jpg"
+    		alt="Lake Tahoe's East Shore looking north."
+    		class="hero-bg-photo"
+    		loading="eager"
+    		onerror="this.closest('.hero-unified').classList.add('hero-photo-fallback')"
+  		/>
+	</picture>
     <!-- Dark gradient overlay -->
     <div class="hero-unified-overlay"></div>
     <!-- Content -->
@@ -82,7 +87,7 @@
       </div>
       <div class="hctas">
         <button class="bp" onclick="SP('camp')">Find a Campsite →</button>
-        <button class="bs" onclick="SP('quiz')">Walk Me Through</button>
+        <button class="bs" onclick="SP('plan')">Plan Your Trip</button>
         <button class="bs" style="border-color:rgba(212,168,83,.4);color:var(--gold)" onclick="document.getElementById('home-activities').scrollIntoView({behavior:'smooth'})">Explore Activities ↓</button>
       </div>
       <!-- Caption badges -->
@@ -121,7 +126,7 @@
 
   <!-- ══════════ ACTIVITY CARDS ══════════ -->
   <div class="sw" id="home-activities">
-    <div class="eye">What"s Out There</div>
+    <div class="eye">What's Out There</div>
     <h2 class="stitle" style="margin-bottom:.4rem">Six Ways to<br>Experience Tahoe</h2>
     <p class="ssub">From alpine powder to crystal-clear water — the basin has it all, every season.</p>
 
@@ -156,9 +161,15 @@
             <a href="https://parks.nv.gov/parks/lake-tahoe-nevada-state-park" target="_blank" class="act-article-link">🏕️ NV State Parks</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/N3bKxN2oEEI" title="Camping Lake Tahoe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-camping.jpg"
+            alt="Camping at Lake Tahoe — tent under pine trees with starry sky"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
       <button class="act-plan-btn bp" onclick="SP('camp')">Check Campsite Availability →</button>
@@ -195,12 +206,18 @@
             <a href="https://tahoeoutdoorstv.com/hiking/experience-the-majesty-of-eagle-falls-trail/" target="_blank" class="act-article-link">📄 Eagle Falls Trail Guide</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/SvHHPmMBUuE" title="Hiking Lake Tahoe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-hiking.jpg"
+            alt="Hiking trail in Lake Tahoe with mountain views"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
-      <button class="act-plan-btn bp" onclick="SP('plan');document.getElementById('asel').value='🥾 Hiking'">Plan a Hike →</button>
+      <button class="act-plan-btn bp" onclick="SP('plan')">Plan a Hike →</button>
     </div>
 
     <!-- ── MTB ── -->
@@ -234,12 +251,18 @@
             <a href="https://tahoeoutdoorstv.com/mountain-biking/mountain-biking-the-tahoe-rim-trail/" target="_blank" class="act-article-link">📄 Rim Trail MTB</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/4bDK5fFJwNk" title="Mountain Biking Flume Trail Lake Tahoe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-mtb.jpg"
+            alt="Mountain biking singletrack trail in the Sierra Nevada"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
-      <button class="act-plan-btn bp" onclick="SP('plan');document.getElementById('asel').value='🚵 Mountain Biking'">Plan a Ride →</button>
+      <button class="act-plan-btn bp" onclick="SP('plan')">Plan a Ride →</button>
     </div>
 
     <!-- ── KAYAKING ── -->
@@ -273,12 +296,18 @@
             <a href="https://laketahoewatertrail.org/" target="_blank" class="act-article-link">🗺️ Lake Tahoe Water Trail</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/tX9FKH0CPNI" title="Kayaking Lake Tahoe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-kayaking.jpg"
+            alt="Kayaking on Lake Tahoe with crystal-clear turquoise water"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
-      <button class="act-plan-btn bp" onclick="SP('plan');document.getElementById('asel').value='🛶 Kayaking'">Plan a Paddle →</button>
+      <button class="act-plan-btn bp" onclick="SP('plan')">Plan a Paddle →</button>
     </div>
 
     <!-- ── SKIING / RIDING ── -->
@@ -312,12 +341,18 @@
             <a href="https://www.northstarcalifornia.com/" target="_blank" class="act-article-link">🎿 Northstar California</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/WlMfMHe2gAA" title="Skiing Lake Tahoe Palisades" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-skiing.jpg"
+            alt="Skiing powder at Lake Tahoe with mountain views"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
-      <button class="act-plan-btn bp" onclick="SP('plan');document.getElementById('asel').value='⛷️ Skiing / Riding'">Plan a Ski Trip →</button>
+      <button class="act-plan-btn bp" onclick="SP('plan')">Plan a Ski Trip →</button>
     </div>
 
     <!-- ── BOATING ── -->
@@ -351,12 +386,18 @@
             <a href="https://laketahoewatertrail.org/" target="_blank" class="act-article-link">🗺️ Water Trail Map</a>
           </div>
         </div>
-        <div class="act-video-wrap">
-          <div class="act-video-label">Featured Video</div>
-          <iframe src="https://www.youtube.com/embed/s5jGeAtSmhk" title="Boating Lake Tahoe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="act-video"></iframe>
+        <div class="act-img-wrap">
+          <img
+            src="assets/activity-boating.jpg"
+            alt="Boating on Lake Tahoe in summer sunshine"
+            class="act-img"
+            loading="lazy"
+            onerror="this.closest('.act-img-wrap').classList.add('act-img-fallback')"
+          />
+          <div class="act-img-overlay"></div>
         </div>
       </div>
-      <button class="act-plan-btn bp" onclick="SP('plan');document.getElementById('asel').value='🏊 Swimming'">Plan Water Day →</button>
+      <button class="act-plan-btn bp" onclick="SP('plan')">Plan Water Day →</button>
     </div>
 
     </div><!-- /home-activities -->
@@ -407,92 +448,87 @@
 <!-- PLAN -->
 <div id="page-plan" class="page">
   <div class="sw">
-    <div class="eye">Trip Planner</div>
-    <h2 class="stitle">Build Your Itinerary</h2>
-    <p class="ssub">Add and organize all your Tahoe adventures in one dashboard.</p>
-    <div class="pl">
-      <div class="pform">
-        <div class="fg"><label class="fl">Activity Type</label>
-          <select class="fc" id="asel"><option value="">Choose…</option>
-            <option>⛺ Camping</option><option>🥾 Hiking</option><option>🛶 Kayaking</option>
-            <option>🚵 Mountain Biking</option><option>⛷️ Skiing / Riding</option>
-            <option>🏔️ Snowshoeing</option><option>🎣 Fishing</option><option>🏄 Paddleboarding</option>
-            <option>🧗 Rock Climbing</option><option>🌲 Backpacking</option>
-            <option>🏊 Swimming</option><option>🦅 Wildlife Watching</option></select></div>
-        <div class="fg"><label class="fl">Location / Trailhead</label><input class="fc" id="locin" placeholder="e.g. Emerald Bay, D.L. Bliss, Sand Harbor…"></div>
-        <div class="fr">
-          <div class="fg"><label class="fl">Start Date</label><input class="fc" type="date" id="tstart"></div>
-          <div class="fg"><label class="fl">End Date</label><input class="fc" type="date" id="tend"></div>
+
+    <!-- ── AUTH GATE ── shown until user is authenticated -->
+    <div id="plan-auth-gate">
+      <div class="eye">Plan Your Trip</div>
+      <h2 class="stitle">Let's get started</h2>
+      <p class="ssub" style="max-width:520px;margin-bottom:2rem">Sign in to save your trip, access live campsite availability, and get personalized recommendations. Free — no card needed.</p>
+      <div class="plan-auth-card">
+        <div class="plan-auth-methods">
+          <button class="auth-btn-large auth-btn-google" onclick="planAuthWith('google')">
+            <svg class="auth-btn-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Continue with Google
+          </button>
         </div>
-        <div class="fr">
-          <div class="fg"><label class="fl">Group Size</label><select class="fc" id="gsz"><option>Solo</option><option>2 people</option><option>3–5</option><option>6–10</option><option>10+</option></select></div>
-          <div class="fg"><label class="fl">Skill Level</label><select class="fc" id="skill"><option>Beginner</option><option>Intermediate</option><option>Advanced</option><option>Expert</option></select></div>
+        <div class="plan-auth-or">or use your email</div>
+        <div class="plan-email-form">
+          <input class="fc" type="email" id="plan-email" placeholder="your@email.com" autocomplete="email">
+          <button class="bp" onclick="planAuthEmail()" style="margin-top:.65rem;width:100%">Continue with Email →</button>
         </div>
-        <div class="fg"><label class="fl">Notes / Gear / Preferences</label><textarea class="fc" rows="3" id="notes" placeholder="Permits needed, gear list, campsite preference…"></textarea></div>
-        <button class="bp" style="width:100%" onclick="addTrip()">Add to Itinerary →</button>
+        <p style="font-size:.74rem;color:var(--granite);margin-top:1rem;text-align:center">
+          Already have an account? <span style="color:var(--glacial);cursor:pointer;text-decoration:underline" onclick="openLogin()">Sign in</span>
+        </p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:.9rem">
-        <div class="scrd">
-          <div style="font-size:.83rem;font-weight:600;margin-bottom:.85rem">My Saved Trips</div>
-          <ul class="tlist" id="tlist">
-            <li class="ti"><span class="tic">⛺</span><div class="tin"><div class="tn">D.L. Bliss Camping</div><div class="td">Aug 2 – Aug 5</div></div><button class="rmv" onclick="remTrip(this)">✕</button></li>
-            <li class="ti"><span class="tic">🥾</span><div class="tin"><div class="tn">Tahoe Rim Trail South</div><div class="td">Aug 3</div></div><button class="rmv" onclick="remTrip(this)">✕</button></li>
-          </ul>
-        </div>
-        <div class="scrd">
-          <div style="font-size:.83rem;font-weight:600;margin-bottom:.85rem">Campsite Availability</div>
-          <div id="savail"></div>
-        </div>
-        <div class="scrd">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem">
-            <div style="font-size:.83rem;font-weight:600">Advanced Planning</div>
-            <span class="ctag co">Oyster</span>
-          </div>
-          <div style="font-size:.76rem;color:var(--granite);line-height:1.6;margin-bottom:.75rem">Unlock route optimizer, permit auto-filing, gear checklists, and offline maps.</div>
-          <button class="bg" style="width:100%" onclick="SP('price')">Upgrade to Unlock</button>
+    </div>
+
+    <!-- ── PLAN YOUR TRIP WIZARD ── shown after auth -->
+    <div id="plan-wizard" style="display:none">
+      <div class="eye">Plan Your Trip</div>
+      <h2 class="stitle">Plan Your <span style="color:var(--glacial)">Tahoe</span> Adventure</h2>
+      <p class="ssub">Answer a few questions and we'll build your personalized itinerary with live campsite data.</p>
+
+      <!-- Step progress bar -->
+      <div class="plan-steps" id="plan-steps"></div>
+
+      <!-- Step panels -->
+      <div id="plan-step-area"></div>
+
+      <!-- Saved itinerary -->
+      <div id="plan-itinerary-section" style="display:none;margin-top:2rem">
+        <div class="eye" style="margin-bottom:.75rem">Your Itinerary</div>
+        <ul class="tlist" id="tlist">
+          <li class="ti ti-empty" style="color:var(--granite);font-size:.82rem;padding:.75rem 0">No activities added yet — answer the questions above to get started.</li>
+        </ul>
+        <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
+          <button class="bp" onclick="saveItinerary()" id="save-itin-btn">Save Itinerary →</button>
+          <button class="bs" onclick="clearItinerary()">Start Over</button>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
 <!-- ACTIVITIES -->
 <div id="page-act" class="page">
   <div class="sw">
-    <div class="eye">What To Do</div>
+    <div class="eye">Activities · Lake Tahoe Basin</div>
     <h2 class="stitle">Activities in the Basin</h2>
-    <p class="ssub">Four seasons of adventure — summer paddles to winter powder runs.</p>
+    <p class="ssub">Everything the lake has to offer. Tap any activity to start planning.</p>
     <div class="cg" id="agrid"></div>
   </div>
 </div>
 
-<!-- MAP / AMENITIES -->
+<!-- MAP -->
 <div id="page-map" class="page">
   <div class="sw">
-    <div class="eye">Local Amenities</div>
+    <div class="eye">Amenities Map · Lake Tahoe Basin</div>
     <h2 class="stitle">Around the Lake</h2>
-    <p class="ssub">Bike shops, sporting goods, camping gear, groceries, and convenience stops.</p>
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem" id="amfilters">
+    <p class="ssub">Bike shops, gear stores, grocery, gas, and rental locations mapped around the basin.</p>
+    <div class="mfbg" id="amfilters">
       <button class="mfb act" onclick="filterAM(this,'all')">All</button>
-      <button class="mfb" onclick="filterAM(this,'bike')">🚵 Bike</button>
-      <button class="mfb" onclick="filterAM(this,'sport')">🏪 Sport</button>
+      <button class="mfb" onclick="filterAM(this,'bike')">🚵 Bike Shops</button>
+      <button class="mfb" onclick="filterAM(this,'sport')">🏪 Outfitters</button>
       <button class="mfb" onclick="filterAM(this,'camp')">⛺ Camp Gear</button>
       <button class="mfb" onclick="filterAM(this,'grocery')">🛒 Grocery</button>
-      <button class="mfb" onclick="filterAM(this,'gas')">⛽ Gas / Convenience</button>
+      <button class="mfb" onclick="filterAM(this,'gas')">⛽ Gas</button>
       <button class="mfb" onclick="filterAM(this,'rental')">🛶 Rentals</button>
     </div>
-    <div id="amap" style="height:370px;border-radius:12px;border:1px solid var(--cborder)"></div>
-    <div class="amgrid" id="amcards"></div>
-  </div>
-</div>
-
-<!-- QUIZ -->
-<div id="page-quiz" class="page">
-  <div class="sw">
-    <div class="eye">Personalized Planning</div>
-    <h2 class="stitle">Walk Me Through</h2>
-    <p class="ssub">Answer five quick questions — we'll recommend the perfect Tahoe adventure, free.</p>
-    <div id="qarea"></div>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:1rem;margin-top:1rem">
+      <div id="amap" style="height:460px;border-radius:10px;border:1px solid var(--cborder)"></div>
+      <div id="amcards" style="display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;max-height:460px"></div>
+    </div>
   </div>
 </div>
 
@@ -501,206 +537,140 @@
   <div class="sw">
     <div class="eye">Membership Plans · TrailsTV Lake Tahoe Planner</div>
     <h2 class="stitle">Choose Your Tahoe</h2>
-    <p class="ssub" style="max-width:640px">Three tiers built around how deep you want to go. Start free, upgrade when the mountains call louder.</p>
+    <p class="ssub" style="max-width:640px">Two simple plans. Start free, upgrade when the mountains call louder.</p>
 
-    <!-- TIER TOGGLE: Monthly / Annual -->
+    <!-- Monthly / Annual toggle -->
     <div class="bill-toggle-wrap">
       <span class="bill-toggle-label" id="bill-label-mo" style="color:var(--snow)">Monthly</span>
       <div class="bill-toggle" onclick="toggleBilling()" id="bill-toggle"><div class="bill-thumb"></div></div>
       <span class="bill-toggle-label" id="bill-label-yr" style="color:var(--granite)">Annual <span class="bill-save-badge">Save 20%</span></span>
     </div>
 
-    <!-- PRICING CARDS -->
-    <div class="pgrid3">
+    <!-- 2-column grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:780px;margin:0 auto 2.5rem;" id="pgrid2">
 
-      <!-- ── FREE ── -->
+      <!-- FREE -->
       <div class="pcrd2">
         <div class="pcrd2-top">
           <div class="ptier2">Free</div>
           <div class="pamt2" style="color:var(--granite)" id="price-free">$0</div>
           <div class="pper2">forever · no card needed</div>
-          <div class="pdesc2">A bird's-eye view of Tahoe's best. Perfect for first-timers or casual visitors who want a taste before diving in.</div>
+          <div class="pdesc2">A bird's-eye view of Tahoe's best. Perfect for first-timers who want to explore before diving in.</div>
         </div>
-
         <div class="pfeat-section">
           <div class="pfeat-head">What's included</div>
           <div class="pfeat-group">
             <div class="pfeat-group-label">🗺️ Explore</div>
             <div class="pfeat-item"><span class="pck py">✓</span>Overview of all 6 core activities</div>
             <div class="pfeat-item"><span class="pck py">✓</span>5-day weather forecast</div>
-            <div class="pfeat-item"><span class="pck py">✓</span>Basic amenities map (bike shops, grocery, gas)</div>
-            <div class="pfeat-item"><span class="pck py">✓</span>Walk Me Through trip advisor</div>
+            <div class="pfeat-item"><span class="pck py">✓</span>Basic amenities map</div>
+            <div class="pfeat-item"><span class="pck py">✓</span>Plan Your Trip advisor</div>
           </div>
           <div class="pfeat-group">
             <div class="pfeat-group-label">🏕️ Camping</div>
             <div class="pfeat-item"><span class="pck py">✓</span>Campground overview &amp; locations</div>
             <div class="pfeat-item"><span class="pck py">✓</span>Park descriptions &amp; booking links</div>
             <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Live site availability</span></div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Fee breakdowns &amp; permit info</span></div>
-          </div>
-          <div class="pfeat-group">
-            <div class="pfeat-group-label">🥾 Hiking &amp; Trails</div>
-            <div class="pfeat-item"><span class="pck py">✓</span>Top trail names &amp; overview</div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Trail difficulty ratings &amp; maps</span></div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Permit &amp; trailhead details</span></div>
+            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Fee &amp; permit details</span></div>
           </div>
           <div class="pfeat-group">
             <div class="pfeat-group-label">📋 Planning</div>
             <div class="pfeat-item"><span class="pck py">✓</span>Save up to 2 trips</div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Rental location details</span></div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Campsite map &amp; live availability</span></div>
+            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Rental directories</span></div>
+            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Live campsite map</span></div>
           </div>
         </div>
-
-        <button class="btier btf" onclick="selTier('free")">Get Started Free →</button>
+        <button class="btier btf" onclick="selTier('free')">Get Started Free →</button>
       </div>
 
-      <!-- ── BASIC ── -->
-      <div class="pcrd2">
+      <!-- BASIC -->
+      <div class="pcrd2 feat2">
+        <div class="fbdg2">Everything Included</div>
         <div class="pcrd2-top">
           <div class="ptier2" style="color:var(--glacial)">Basic</div>
           <div class="pamt2" style="color:var(--glacial)" id="price-basic">$3.99<span class="pamt2-sub">/mo</span></div>
           <div class="pper2" id="pper-basic">billed monthly</div>
-          <div class="pdesc2">For the weekend warrior. Unlock kayak and bike rental directories around the lake, plus live campsite data so you always know what's open.</div>
+          <div class="pdesc2">Full access to everything the Lake Tahoe basin has to offer — all activities, live data, deep guides, and unlimited planning tools.</div>
         </div>
-
         <div class="pfeat-section">
           <div class="pfeat-head">Everything in Free, plus:</div>
           <div class="pfeat-group">
-            <div class="pfeat-group-label">🛶 Kayaking</div>
+            <div class="pfeat-group-label">🛶 Water Activities</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>Full kayak rental directory — 8+ locations</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Guided tour listings &amp; pricing</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>SUP rental locations mapped</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>Top 10 paddling spots with launch info</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Clear kayak &amp; SUP rental options</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Water conditions &amp; safety tips</div>
           </div>
           <div class="pfeat-group">
             <div class="pfeat-group-label">🚵 Bike Rentals</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>Bike shop directory with hours &amp; pricing</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>E-bike &amp; MTB rental locations mapped</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Trail-to-rental shop pairing guide</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Shuttle service listings for MTB shuttles</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Trail-to-shop pairing guide</div>
           </div>
           <div class="pfeat-group">
-            <div class="pfeat-group-label">🏕️ Camping Upgrade</div>
+            <div class="pfeat-group-label">🏕️ Camping — Full Access</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>Live campsite availability map</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Real-time site counts from Recreation.gov</div>
             <div class="pfeat-item"><span class="pck pb">✓</span>14-day availability calendar per campground</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Per-campground fee &amp; permit breakdowns</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Bear canister requirements by zone</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Fire restriction alerts by zone</div>
           </div>
           <div class="pfeat-group">
-            <div class="pfeat-group-label">📋 Planning</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Save up to 15 trips</div>
-            <div class="pfeat-item"><span class="pck pb">✓</span>Trail condition reports</div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">In-depth boating &amp; marina guides</span></div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Camping fee &amp; permit deep-dives</span></div>
-            <div class="pfeat-item"><span class="pck pn">—</span><span class="poff">Offline maps &amp; gear checklists</span></div>
+            <div class="pfeat-group-label">⛵ Boating</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Full marina directory with launch fees</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Boat rental guide: pontoon, ski boat, jet ski</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Lake conditions &amp; wind advisories</div>
           </div>
-        </div>
-
-        <button class="btier btb" onclick="selTier("basic')">Start Basic →</button>
-      </div>
-
-      <!-- ── ALL TAHOE ── -->
-      <div class="pcrd2 feat2">
-        <div class="fbdg2">Most Popular</div>
-        <div class="pcrd2-top">
-          <div class="ptier2" style="color:var(--gold)">All Tahoe</div>
-          <div class="pamt2" style="color:var(--gold)" id="price-alltahoe">$10.99<span class="pamt2-sub">/mo</span></div>
-          <div class="pper2" id="pper-alltahoe">billed monthly</div>
-          <div class="pdesc2">The complete Tahoe experience. In-depth guides for boating, camping fees, permits, ski conditions, and everything else the basin has to offer.</div>
-        </div>
-
-        <div class="pfeat-section">
-          <div class="pfeat-head">Everything in Basic, plus:</div>
-
-          <div class="pfeat-group">
-            <div class="pfeat-group-label">⛵ Boating — Deep Dive</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Full marina directory — hours, pricing, launch fees</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Boat rental guide: pontoon, ski boat, jet ski</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>MS Dixie II &amp; lake cruise booking info</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Lake conditions &amp; wind advisories</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Aquatic invasive species inspection locations</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Private boat launch locations &amp; fees</div>
-          </div>
-
-          <div class="pfeat-group">
-            <div class="pfeat-group-label">🏕️ Camping — In-Depth</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Per-campground fee breakdowns (site types, beach premium)</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Desolation Wilderness permit guide</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Tahoe Rim Trail overnight permit info</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Bear canister requirements by zone</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Group site &amp; equestrian camp listings</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Fire restriction alerts by zone</div>
-          </div>
-
           <div class="pfeat-group">
             <div class="pfeat-group-label">⛷️ Skiing &amp; Winter</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Live snow depth &amp; base conditions — all 14 resorts</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Lift ticket price tracker &amp; discount windows</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Lesson &amp; rental package comparisons</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Backcountry avalanche &amp; access info</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Live snow depth — all 14 resorts</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Lift ticket price tracker</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Backcountry &amp; avalanche info</div>
           </div>
-
           <div class="pfeat-group">
             <div class="pfeat-group-label">📋 Advanced Planning</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Unlimited saved trips</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Offline downloadable maps</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Multi-day route optimizer</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Gear checklist generator by activity</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Permit filing assistance</div>
-            <div class="pfeat-item"><span class="pck pg">✓</span>Priority TrailsTV support</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Unlimited saved trips</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Offline downloadable maps</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Multi-day route optimizer</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Gear checklist generator</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Permit filing assistance</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Trail condition reports</div>
+            <div class="pfeat-item"><span class="pck pb">✓</span>Priority TrailsTV support</div>
           </div>
         </div>
-
-        <button class="btier btat" onclick="selTier('alltahoe')">Go All Tahoe →</button>
+        <button class="btier btb" onclick="selTier('basic')">Start Basic →</button>
       </div>
 
-    </div><!-- /pgrid3 -->
+    </div>
 
-    <!-- COMPARE ROW -->
-    <div class="compare-wrap">
+    <!-- Compare row -->
+    <div class="compare-wrap" style="max-width:780px;margin:0 auto 2rem;">
       <div class="compare-head">Quick Comparison</div>
-      <div class="compare-table">
+      <div class="compare-table" style="grid-template-columns:1fr repeat(2,120px);">
         <div class="cth"></div>
         <div class="cth" style="color:var(--granite)">Free</div>
         <div class="cth" style="color:var(--glacial)">Basic</div>
-        <div class="cth" style="color:var(--gold)">All Tahoe</div>
-        <!-- rows -->
-        <div class="ctd-label">Activity overviews</div><div class="ctd cy">✓</div><div class="ctd cy">✓</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Weather forecast</div><div class="ctd cy">5-day</div><div class="ctd cy">7-day</div><div class="ctd cg">14-day</div>
-        <div class="ctd-label">Amenities map</div><div class="ctd cy">Basic</div><div class="ctd cy">Full</div><div class="ctd cg">Full + marina</div>
-        <div class="ctd-label">Kayak rental guide</div><div class="ctd cn">—</div><div class="ctd cy">✓</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Bike rental guide</div><div class="ctd cn">—</div><div class="ctd cy">✓</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Live campsite availability</div><div class="ctd cn">—</div><div class="ctd cy">✓</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Camping fees &amp; permits</div><div class="ctd cn">—</div><div class="ctd cn">—</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Boating &amp; marina guide</div><div class="ctd cn">—</div><div class="ctd cn">—</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Live ski conditions</div><div class="ctd cn">—</div><div class="ctd cn">—</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Offline maps</div><div class="ctd cn">—</div><div class="ctd cn">—</div><div class="ctd cg">✓</div>
-        <div class="ctd-label">Saved trips</div><div class="ctd cy">2</div><div class="ctd cy">15</div><div class="ctd cg">Unlimited</div>
-        <div class="ctd-label">Permit filing help</div><div class="ctd cn">—</div><div class="ctd cn">—</div><div class="ctd cg">✓</div>
+        <div class="ctd-label">Activity overviews</div><div class="ctd cy">✓</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Weather forecast</div><div class="ctd cy">5-day</div><div class="ctd cy">14-day</div>
+        <div class="ctd-label">Amenities map</div><div class="ctd cy">Basic</div><div class="ctd cy">Full + marina</div>
+        <div class="ctd-label">Kayak &amp; bike rental guide</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Live campsite availability</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Camping fees &amp; permits</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Boating &amp; marina guide</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Live ski conditions</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Offline maps</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
+        <div class="ctd-label">Saved trips</div><div class="ctd cy">2</div><div class="ctd cy">Unlimited</div>
+        <div class="ctd-label">Permit filing help</div><div class="ctd cn">—</div><div class="ctd cy">✓</div>
       </div>
     </div>
 
     <!-- FAQ -->
-    <div class="faq-wrap">
+    <div class="faq-wrap" style="max-width:780px;margin:0 auto;">
       <div class="compare-head" style="margin-bottom:1rem">Common Questions</div>
       <div class="faq-grid">
-        <div class="faq-item">
-          <div class="faq-q">Can I switch plans anytime?</div>
-          <div class="faq-a">Yes — upgrade or downgrade at any time. Changes take effect immediately and you"re prorated for the remainder of your billing cycle.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Is my data saved if I downgrade?</div>
-          <div class="faq-a">Your saved trips are preserved, but access to features above your plan level is restricted until you upgrade again.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">What does "live campsite availability" mean?</div>
-          <div class="faq-a">Basic and All Tahoe pull real-time data from the Recreation.gov API and ReserveCalifornia so you see actual open sites before you make the drive.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Does All Tahoe include lift tickets?</div>
-          <div class="faq-a">It includes live condition reports, pricing info, and discount windows — but actual ticket purchases are completed on each resort's own website.</div>
-        </div>
+        <div class="faq-item"><div class="faq-q">Can I switch plans anytime?</div><div class="faq-a">Yes — upgrade or downgrade at any time. Changes take effect immediately and you're prorated for the remainder of your billing cycle.</div></div>
+        <div class="faq-item"><div class="faq-q">What does "live campsite availability" mean?</div><div class="faq-a">Basic pulls real-time data from the Recreation.gov API and ReserveCalifornia so you see actual open sites before you make the drive.</div></div>
+        <div class="faq-item"><div class="faq-q">Will there be more tiers later?</div><div class="faq-a">Possibly — but for now Basic includes absolutely everything. No upsells, no locked features above Basic.</div></div>
+        <div class="faq-item"><div class="faq-q">Does Basic include lift tickets?</div><div class="faq-a">It includes live conditions, pricing info, and discount windows — actual ticket purchases are completed on each resort's own website.</div></div>
       </div>
     </div>
 
@@ -712,7 +682,7 @@
 <!-- CAMP DETAIL MODAL -->
 <div class="overlay" id="cdoverlay">
   <div class="modal cdmodal">
-    <button class="mclose" onclick="document.getElementById("cdoverlay').classList.remove('open')">✕</button>
+    <button class="mclose" onclick="document.getElementById('cdoverlay').classList.remove('open')">✕</button>
     <div id="cdbody"></div>
   </div>
 </div>
@@ -734,7 +704,6 @@
       <div class="tr-rows">
         <div class="tr-row sel" onclick="selR(this,'free')"><div><div class="tr-name">Free</div><div class="tr-price">Always free</div></div><span class="tbadge tf">Free</span></div>
         <div class="tr-row" onclick="selR(this,'basic')"><div><div class="tr-name">Basic</div><div class="tr-price">$3.99/mo</div></div><span class="tbadge tb">Basic</span></div>
-        <div class="tr-row" onclick="selR(this,'oyster')"><div><div class="tr-name">Tahoe Oyster</div><div class="tr-price">$10.99/mo</div></div><span class="tbadge to">Oyster</span></div>
       </div>
     </div>
     <button class="bp" style="width:100%;margin-top:.4rem" onclick="doLogin()">Sign In</button>
@@ -784,13 +753,13 @@
     <div>
       <div class="footer-col-title">Explore</div>
       <ul class="footer-links">
-        <li><a href="#" onclick="SP('camp');return false">⛺ Find Campsites</a></li>
-        <li><a href="#" onclick="SP('act');return false">🥾 Hiking Trails</a></li>
-        <li><a href="#" onclick="SP('act');return false">🚵 Mountain Biking</a></li>
-        <li><a href="#" onclick="SP('act');return false">🛶 Kayaking <span class="fl-badge fl-new">New</span></a></li>
-        <li><a href="#" onclick="SP('act');return false">⛷️ Skiing & Riding</a></li>
-        <li><a href="#" onclick="SP('act');return false">⛵ Boating</a></li>
-        <li><a href="#" onclick="SP('act');return false">🏔️ Snowshoeing</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('camp')">⛺ Find Campsites</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">🥾 Hiking Trails</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">🚵 Mountain Biking</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">🛶 Kayaking <span class="fl-badge fl-new">New</span></a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">⛷️ Skiing &amp; Riding</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">⛵ Boating</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('act')">🏔️ Snowshoeing</a></li>
       </ul>
     </div>
 
@@ -798,11 +767,10 @@
     <div>
       <div class="footer-col-title">Plan</div>
       <ul class="footer-links">
-        <li><a href="#" onclick="SP('plan');return false">📋 Trip Planner</a></li>
-        <li><a href="#" onclick="SP('quiz');return false">🧭 Walk Me Through</a></li>
-        <li><a href="#" onclick="SP('map');return false">🗺️ Amenities Map</a></li>
-        <li><a href="#" onclick="SP('price');return false">💳 Plans & Pricing</a></li>
-        <li><a href="tahoe-onboarding.html" target="_blank">🚀 Get Started <span class="fl-badge fl-hot">Free</span></a></li>
+        <li><a href="javascript:void(0)" onclick="SP('plan')">🗺️ Plan Your Trip</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('map')">📍 Amenities Map</a></li>
+        <li><a href="javascript:void(0)" onclick="SP('price')">💳 Plans &amp; Pricing</a></li>
+        <li><a href="tahoe-onboarding.html">🚀 Get Started <span class="fl-badge fl-hot">Free</span></a></li>
         <li><a href="https://www.recreation.gov" target="_blank">🏕️ Recreation.gov ↗</a></li>
         <li><a href="https://www.reservecalifornia.com" target="_blank">🏕️ ReserveCalifornia ↗</a></li>
       </ul>
@@ -845,14 +813,14 @@
   <!-- Bottom Bar -->
   <div style="border-top:1px solid rgba(74,173,188,.1);padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
     <div class="footer-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Cookie Policy</a>
-      <a href="#">Accessibility</a>
-      <a href="mailto:hello@trailstv.com">Contact Us</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms of Service</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="contact.html">Contact Us</a>
     </div>
     <div style="font-size:.7rem;color:rgba(139,158,168,.5)">
-      © <span id="footer-year">2025</span> <a href="https://trailstv.com" target="_blank" style="color:var(--glacial);text-decoration:none;font-weight:600">TrailsTV.com</a> · Lake Tahoe Planner · Built for basin explorers
+      © <span id="footer-year">2026</span> <a href="https://trailstv.com" target="_blank" style="color:var(--glacial);text-decoration:none;font-weight:600">TrailsTV.com</a> · Lake Tahoe Planner · Built for basin explorers
     </div>
   </div>
 

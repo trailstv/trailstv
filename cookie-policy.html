@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Policy — Lake Tahoe Planner · TrailsTV</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
+  <meta name="theme-color" content="#0D1B2A">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+.legal-wrap{max-width:780px;margin:0 auto;padding:5rem 2rem 4rem;}
+.contact-wrap{max-width:900px;margin:0 auto;padding:5rem 2rem 4rem;}
+.legal-header{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--cborder);}
+.legal-header .eye,.eye{font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--glacial);margin-bottom:.75rem;}
+.legal-header h1{font-family:var(--fd);font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:.5rem;}
+.legal-header .meta{font-size:.8rem;color:var(--granite);}
+.legal-section{margin-bottom:2.5rem;}
+.legal-section h2{font-family:var(--fd);font-size:1.25rem;font-weight:700;margin-bottom:.75rem;color:var(--snow);}
+.legal-section h3{font-size:.9rem;font-weight:600;margin-bottom:.5rem;color:var(--glacial);}
+.legal-section p{font-size:.88rem;color:rgba(242,245,247,.8);line-height:1.78;margin-bottom:.85rem;}
+.legal-section ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:.85rem;padding-left:0;}
+.legal-section ul li{font-size:.88rem;color:rgba(242,245,247,.8);line-height:1.65;padding-left:1.25rem;position:relative;}
+.legal-section ul li::before{content:'→';position:absolute;left:0;color:var(--glacial);font-size:.75rem;top:.05rem;}
+.legal-divider{height:1px;background:var(--cborder);margin:2.5rem 0;}
+.legal-contact-box{background:rgba(22,35,51,.9);border:1px solid var(--cborder);border-radius:12px;padding:1.5rem;margin-top:2rem;}
+.legal-contact-box p{margin-bottom:.35rem;font-size:.86rem;color:rgba(242,245,247,.8);}
+.legal-back{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--glacial);text-decoration:none;margin-bottom:2rem;transition:color .2s;}
+.legal-back:hover{color:#5BBFCE;}
+.warning-box{background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.25);border-radius:10px;padding:1rem 1.25rem;margin:1rem 0;}
+.warning-box p{color:var(--gold);font-size:.83rem;margin:0;}
+.access-status{display:inline-flex;align-items:center;gap:8px;background:rgba(74,173,188,.1);border:1px solid rgba(74,173,188,.3);border-radius:8px;padding:8px 16px;font-size:.8rem;color:var(--glacial);font-weight:600;margin-bottom:1.5rem;}
+.known-issue{background:rgba(212,168,83,.07);border:1px solid rgba(212,168,83,.2);border-radius:8px;padding:.85rem 1rem;margin:.5rem 0;}
+.known-issue p{font-size:.82rem;color:rgba(242,245,247,.75);margin:0;}
+.known-issue strong{color:var(--gold);}
+.cookie-table{width:100%;border-collapse:collapse;margin:1rem 0 1.5rem;}
+.cookie-table th{text-align:left;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--glacial);padding:.6rem .75rem;border-bottom:2px solid var(--cborder);}
+.cookie-table td{font-size:.8rem;color:rgba(242,245,247,.8);padding:.65rem .75rem;border-bottom:1px solid rgba(74,173,188,.07);vertical-align:top;line-height:1.55;}
+.cookie-table tr:last-child td{border:none;}
+.cookie-table td:first-child{font-weight:600;color:var(--snow);white-space:nowrap;}
+.contact-header{margin-bottom:3rem;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:3rem;}
+@media(max-width:680px){.contact-grid{grid-template-columns:1fr;}}
+.contact-card{background:var(--cbg);border:1px solid var(--cborder);border-radius:12px;padding:1.75rem;transition:border-color .2s;}
+.contact-card:hover{border-color:var(--glacial);}
+.cc-icon{font-size:1.75rem;margin-bottom:.75rem;}
+.cc-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
+.cc-desc{font-size:.82rem;color:var(--granite);line-height:1.65;margin-bottom:1rem;}
+.cc-link{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--glacial);text-decoration:none;transition:color .2s;}
+.cc-link:hover{color:#5BBFCE;}
+.contact-form-section{background:var(--cbg);border:1px solid var(--cborder);border-radius:14px;padding:2rem;margin-bottom:2rem;}
+.form-title{font-family:var(--fd);font-size:1.25rem;font-weight:700;margin-bottom:.4rem;}
+.form-sub{font-size:.83rem;color:var(--granite);margin-bottom:1.5rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:580px){.form-grid{grid-template-columns:1fr;}}
+.fgrp{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;}
+.fgrp.full{grid-column:1/-1;}
+.flabel{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--granite);}
+.finput,.fselect,.ftextarea{background:rgba(13,27,42,.7);border:1px solid var(--cborder);border-radius:8px;padding:10px 14px;font-family:var(--fb);font-size:.86rem;color:var(--snow);transition:border-color .2s;width:100%;}
+.finput:focus,.fselect:focus,.ftextarea:focus{outline:none;border-color:var(--glacial);}
+.finput::placeholder,.ftextarea::placeholder{color:rgba(139,158,168,.42);}
+.fselect{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238B9EA8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.fselect option{background:var(--midnight-2);}
+.ftextarea{resize:vertical;min-height:120px;}
+.submit-btn{background:var(--glacial);color:var(--midnight);border:none;font-family:var(--fb);font-size:.9rem;font-weight:700;padding:12px 32px;border-radius:8px;cursor:pointer;transition:all .2s;margin-top:.5rem;}
+.submit-btn:hover{background:#5BBFCE;transform:translateY(-1px);}
+.form-note{font-size:.74rem;color:var(--granite);margin-top:.75rem;}
+.response-times{background:rgba(22,35,51,.6);border:1px solid var(--cborder);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:2rem;}
+.rt-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--glacial);margin-bottom:.75rem;}
+.rt-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(74,173,188,.08);font-size:.8rem;}
+.rt-row:last-child{border:none;}
+.rt-label{color:var(--granite);}
+.rt-val{font-weight:600;color:var(--snow);}
+.success-msg{display:none;background:rgba(74,188,110,.1);border:1px solid rgba(74,188,110,.3);border-radius:9px;padding:1rem 1.25rem;font-size:.86rem;color:#6ABE3A;margin-top:1rem;}
+/* nav link style for legal pages (plain <a> instead of <button>) */
+nav .nl{color:var(--granite);text-decoration:none;font-size:.79rem;font-weight:500;padding:.38rem .7rem;border-radius:6px;transition:all .2s;display:inline-block;}
+nav .nl:hover{color:var(--snow);background:var(--midnight-3);}
+nav .logo{cursor:pointer;text-decoration:none;}
+.btn-login{text-decoration:none;display:inline-block;}
+</style>
+  
+</head>
+<body>
+<div class="topo-bg"><svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#4AADBC" stroke-width="1"><ellipse cx="720" cy="450" rx="680" ry="340"/><ellipse cx="720" cy="450" rx="555" ry="262"/><ellipse cx="720" cy="450" rx="432" ry="196"/><ellipse cx="720" cy="450" rx="312" ry="134"/><ellipse cx="720" cy="450" rx="196" ry="82"/><ellipse cx="720" cy="450" rx="92" ry="38"/><ellipse cx="230" cy="155" rx="305" ry="172"/><ellipse cx="230" cy="155" rx="195" ry="108"/><ellipse cx="230" cy="155" rx="96" ry="53"/><ellipse cx="1195" cy="695" rx="365" ry="192"/><ellipse cx="1195" cy="695" rx="235" ry="122"/><ellipse cx="1195" cy="695" rx="118" ry="60"/></g></svg></div>
+<nav>
+  <div class="logo" onclick="window.location='index.html'">
+    <svg width="25" height="25" viewBox="0 0 26 26" fill="none"><path d="M3 17c2-4 4-6.5 6.5-6.5s3.5 4.5 6.5 4.5 3.5-2.8 5.5-2.8" stroke="#4AADBC" stroke-width="2" stroke-linecap="round"/><path d="M3 21c2-3 4-5 6.5-5s3.5 3.5 6.5 3.5 3.5-2.2 5.5-2.2" stroke="#D4A853" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="8" r="2.8" fill="rgba(74,173,188,.65)"/></svg>
+    <div><div class="logo-tag">TrailsTV</div>Lake Tahoe Planner</div>
+  </div>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Explore</a>
+    <a class="nl" href="index.html#camp">⛺ Campsites</a>
+    <a class="nl" href="index.html#plan">Plan a Trip</a>
+    <a class="nl" href="index.html#act">Activities</a>
+    <a class="nl" href="index.html#map">Map</a>
+    <a class="nl" href="index.html#quiz">Walk Me Through</a>
+    <a class="nl" href="index.html#price">Plans</a>
+  </div>
+  <div class="nav-right">
+    <span class="tbadge tf" id="tbadge">Free</span>
+    <a class="btn-login" href="tahoe-onboarding.html">Sign In</a>
+  </div>
+</nav>
+<main style="position:relative;z-index:1;">
+<div class="legal-wrap">
+  <a href="index.html" class="legal-back">← Back to Lake Tahoe Planner</a>
+  <div class="legal-header">
+    <div class="eye">TrailsTV · Lake Tahoe Planner</div>
+    <h1>Cookie Policy</h1>
+    <div class="meta">Effective Date: June 1, 2025 · Last Updated: June 27, 2026</div>
+  </div>
+  <div class="legal-section"><p>This Cookie Policy explains how TrailsTV, LLC uses cookies and similar tracking technologies on the Lake Tahoe Planner at trailstv.com. It should be read alongside our <a href="privacy-policy.html" style="color:var(--glacial)">Privacy Policy</a>.</p></div>
+  <div class="legal-section"><h2>1. What Are Cookies?</h2><p>Cookies are small text files placed on your device by a website when you visit. They allow the site to remember your actions and preferences over time. Cookies can be "session cookies" (deleted when you close your browser) or "persistent cookies" (remain on your device for a set period). Similar technologies include local storage and session storage — we use these for the same purposes described in this policy.</p></div>
+  <div class="legal-section"><h2>2. Cookies We Use</h2>
+    <table class="cookie-table"><thead><tr><th>Cookie / Storage</th><th>Type</th><th>Purpose</th><th>Duration</th></tr></thead><tbody>
+      <tr><td>auth_session</td><td>Essential</td><td>Keeps you signed in to your account</td><td>Session / 30 days</td></tr>
+      <tr><td>tier_preference</td><td>Essential</td><td>Remembers your membership tier</td><td>30 days</td></tr>
+      <tr><td>tahoe_user (sessionStorage)</td><td>Functional</td><td>Stores onboarding preferences for the current session</td><td>Session</td></tr>
+      <tr><td>trip_data (localStorage)</td><td>Functional</td><td>Saves your trip itinerary locally if not signed in</td><td>Until cleared</td></tr>
+      <tr><td>map_prefs</td><td>Functional</td><td>Remembers your last map filter and sort selections</td><td>7 days</td></tr>
+      <tr><td>_ga, _gid</td><td>Analytics</td><td>Google Analytics — anonymized usage measurement</td><td>2 years / 24 hrs</td></tr>
+      <tr><td>billing_cycle</td><td>Functional</td><td>Remembers monthly or annual billing selection</td><td>30 days</td></tr>
+    </tbody></table>
+  </div>
+  <div class="legal-section"><h2>3. Essential Cookies</h2><p>Essential cookies are strictly necessary for the Service to function. They enable core features like account sign-in and membership tier access. You cannot opt out of essential cookies while using the site.</p></div>
+  <div class="legal-section"><h2>4. Functional Cookies</h2><p>Functional cookies remember your preferences to improve your experience. You may disable them in your browser settings, though some features may not work as expected.</p></div>
+  <div class="legal-section"><h2>5. Analytics Cookies</h2><p>We use Google Analytics to understand how visitors use the Lake Tahoe Planner. Data is aggregated and anonymized with IP anonymization enabled. You may opt out via the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" style="color:var(--glacial)">Google Analytics Opt-out Browser Add-on</a>.</p></div>
+  <div class="legal-section"><h2>6. Third-Party Cookies</h2><p>OAuth sign-in providers (Google, Apple, Facebook) may set their own cookies. Embedded YouTube videos on activity pages may set cookies from youtube.com if you interact with them.</p></div>
+  <div class="legal-section"><h2>7. Managing Cookies</h2><p>You can control cookies through your browser settings:</p><ul><li><a href="https://support.google.com/chrome/answer/95647" target="_blank" style="color:var(--glacial)">Google Chrome</a></li><li><a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer" target="_blank" style="color:var(--glacial)">Mozilla Firefox</a></li><li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac" target="_blank" style="color:var(--glacial)">Apple Safari</a></li><li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406" target="_blank" style="color:var(--glacial)">Microsoft Edge</a></li></ul><p>Note that disabling cookies may prevent some features from working, including staying signed in and saving trip preferences.</p></div>
+  <div class="legal-section"><h2>8. Do Not Track</h2><p>We honor DNT signals by not loading analytics cookies when DNT is enabled. Essential and functional cookies necessary for the Service to operate are unaffected.</p></div>
+  <div class="legal-divider"></div>
+  <div class="legal-contact-box">
+    <h2 style="font-family:var(--fd);font-size:1.1rem;margin-bottom:.75rem;">Cookie Questions</h2>
+    <p>TrailsTV, LLC &nbsp;·&nbsp; <a href="mailto:hello@trailstv.com" style="color:var(--glacial)">hello@trailstv.com</a></p>
+  </div>
+</div>
+</main>
+<footer id="site-footer">
+  <div class="footer-alert-bar hidden" id="footer-alert">
+    <span class="footer-alert-icon">🔥</span>
+    <span id="footer-alert-text">Stage 1 Fire Restrictions in effect for Lake Tahoe Basin. No campfires outside designated rings.</span>
+    <a href="https://www.fs.usda.gov/ltbmu/" target="_blank" style="color:#E24B4A;font-weight:700;margin-left:auto;white-space:nowrap;text-decoration:underline">Details →</a>
+  </div>
+  <div class="footer-ticker">
+    <div class="ticker-label"><div class="ticker-dot"></div>LIVE</div>
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
+  <div class="footer-body">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 19c2-4.5 4-7 7-7s4 5.5 7 5.5 4-3.2 6-3.2" stroke="#4AADBC" stroke-width="2" stroke-linecap="round"/><path d="M3 23c2-3.2 4-5 7-5s4 4 7 4 4-2.5 6-2.5" stroke="#D4A853" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="10" r="3.2" fill="rgba(74,173,188,.68)"/></svg>
+        <div><div class="footer-brand-tag">TrailsTV</div><div class="footer-brand-name">Lake Tahoe Planner</div></div>
+      </div>
+      <p class="footer-brand-desc">The complete outdoor adventure planner for the Lake Tahoe basin. Camping, hiking, kayaking, skiing, boating — all four seasons, powered by live data.</p>
+      <div class="footer-social">
+        <a class="footer-social-btn" href="https://instagram.com/trailstv" target="_blank" title="Instagram">📸</a>
+        <a class="footer-social-btn" href="https://youtube.com/@trailstv" target="_blank" title="YouTube">▶</a>
+        <a class="footer-social-btn" href="https://facebook.com/trailstv" target="_blank" title="Facebook">f</a>
+        <a class="footer-social-btn" href="https://twitter.com/trailstv" target="_blank" title="X / Twitter">𝕏</a>
+        <a class="footer-social-btn" href="https://tiktok.com/@trailstv" target="_blank" title="TikTok">♪</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="index.html">⛺ Find Campsites</a></li>
+        <li><a href="index.html">🥾 Hiking Trails</a></li>
+        <li><a href="index.html">🚵 Mountain Biking</a></li>
+        <li><a href="index.html">🛶 Kayaking <span class="fl-badge fl-new">New</span></a></li>
+        <li><a href="index.html">⛷️ Skiing &amp; Riding</a></li>
+        <li><a href="index.html">⛵ Boating</a></li>
+        <li><a href="index.html">🏔️ Snowshoeing</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Plan</div>
+      <ul class="footer-links">
+        <li><a href="index.html">📋 Trip Planner</a></li>
+        <li><a href="index.html">🧭 Walk Me Through</a></li>
+        <li><a href="index.html">🗺️ Amenities Map</a></li>
+        <li><a href="index.html">💳 Plans &amp; Pricing</a></li>
+        <li><a href="tahoe-onboarding.html">🚀 Get Started <span class="fl-badge fl-hot">Free</span></a></li>
+        <li><a href="https://www.recreation.gov" target="_blank">🏕️ Recreation.gov ↗</a></li>
+        <li><a href="https://www.reservecalifornia.com" target="_blank">🏕️ ReserveCalifornia ↗</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Resources</div>
+      <ul class="footer-links">
+        <li><a href="https://tahoeoutdoorstv.com" target="_blank">📰 TahoeOutdoorsTV ↗</a></li>
+        <li><a href="https://www.fs.usda.gov/ltbmu/" target="_blank">🌲 USFS Lake Tahoe ↗</a></li>
+        <li><a href="https://laketahoewatertrail.org" target="_blank">🛶 Water Trail Map ↗</a></li>
+        <li><a href="https://parks.nv.gov" target="_blank">🌿 NV State Parks ↗</a></li>
+        <li><a href="https://visitlaketahoe.com" target="_blank">📍 Visit Lake Tahoe ↗</a></li>
+        <li><a href="https://tahoebonanza.com" target="_blank">📰 Tahoe Bonanza ↗</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Live Conditions</div>
+      <div class="footer-live" id="footer-live">
+        <div class="footer-live-row"><span class="flr-label">Water Temp</span><span class="flr-val flr-good" id="fl-water">65°F</span></div>
+        <div class="footer-live-row"><span class="flr-label">Today's High</span><span class="flr-val" id="fl-high">72°F</span></div>
+        <div class="footer-live-row"><span class="flr-label">Sites Available</span><span class="flr-val flr-good" id="fl-sites">—</span></div>
+        <div class="footer-live-row"><span class="flr-label">Trail Status</span><span class="flr-val flr-good" id="fl-trails">Open</span></div>
+        <div class="footer-live-row"><span class="flr-label">Snow Base</span><span class="flr-val" id="fl-snow">Off-season</span></div>
+        <div class="footer-live-row"><span class="flr-label">Fire Restrictions</span><span class="flr-val" id="fl-fire">Stage 1</span></div>
+        <div class="footer-live-row"><span class="flr-label">Lake Level</span><span class="flr-val" id="fl-lake">6,222.4 ft</span></div>
+      </div>
+      <button class="footer-refresh-btn" id="footer-refresh-btn" onclick="refreshLegalData()">
+        <span class="refresh-icon" id="refresh-icon">↻</span> Refresh Data
+      </button>
+      <div class="footer-last-updated" id="footer-last-updated">Last updated: just now</div>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(74,173,188,.1);padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+    <div class="footer-legal">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms of Service</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div style="font-size:.7rem;color:rgba(139,158,168,.5)">
+      © <span id="footer-year">2025</span> <a href="https://trailstv.com" target="_blank" style="color:var(--glacial);text-decoration:none;font-weight:600">TrailsTV.com</a> · Lake Tahoe Planner
+    </div>
+  </div>
+</footer>
+<script>
+// Lightweight data loader for legal pages — populates live footer conditions
+(async function() {
+  try {
+    const d = await fetch('./data/site-data.json').then(r => r.json());
+    const set = (id, val, cls) => {
+      const el = document.getElementById(id); if (!el) return;
+      el.textContent = val;
+      if (cls) el.className = 'flr-val ' + cls;
+    };
+    set('fl-water',  (d.weather?.waterTempF || 65) + '°F', 'flr-good');
+    set('fl-high',   (d.weather?.current?.tempF || 72) + '°F', '');
+    set('fl-trails', d.trails?.statusLabel || 'Open', 'flr-good');
+    set('fl-snow',   d.ski?.season === 'active' ? d.ski.baseDepthIn + '"' : 'Off-season', '');
+    set('fl-fire',   d.fire?.restrictionLabel || 'Stage 1',
+        d.fire?.restrictionLevel === 0 ? 'flr-good' : d.fire?.restrictionLevel === 1 ? 'flr-warn' : 'flr-alert');
+    set('fl-lake',   (d.lake?.levelFt || '6,222.4') + ' ft', '');
+
+    // Fire alert banner
+    if (d.fire?.alertActive && d.fire?.restrictionLevel > 0) {
+      const bar = document.getElementById('footer-alert');
+      const txt = document.getElementById('footer-alert-text');
+      if (bar && txt) { bar.classList.remove('hidden'); txt.textContent = d.fire.alertText; }
+    }
+
+    // Ticker
+    const track = document.getElementById('ticker-track');
+    if (track) {
+      const items = [
+        { label: 'Water Temp',   val: (d.weather?.waterTempF || 65) + '°F' },
+        { label: 'Today High',   val: (d.weather?.current?.tempF || 72) + '°F' },
+        { label: 'Trail Status', val: d.trails?.statusLabel || 'Open' },
+        { label: 'Fire Level',   val: d.fire?.restrictionLabel || 'Stage 1' },
+        { label: 'Snow Base',    val: d.ski?.season === 'active' ? d.ski.baseDepthIn + ' in' : 'Off-season' },
+        { label: 'Lake Level',   val: (d.lake?.levelFt || '6,222.4') + ' ft' },
+        { label: 'Elevation',    val: '6,225 ft above sea level' },
+        { label: 'Trail Miles',  val: '165+ miles in basin' },
+        { label: 'Ski Resorts',  val: '14 within 60 miles' },
+      ];
+      track.innerHTML = [...items, ...items]
+        .map(i => `<div class="ticker-item"><span class="ti-label">${i.label}</span><span class="ti-val">${i.val}</span></div>`)
+        .join('');
+    }
+
+    const lu = document.getElementById('footer-last-updated');
+    if (lu) lu.textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  } catch(e) { console.warn('Legal page: could not load site-data.json', e); }
+})();
+
+function refreshLegalData() {
+  const btn = document.getElementById('footer-refresh-btn');
+  if (btn) { btn.classList.add('spinning'); setTimeout(() => btn.classList.remove('spinning'), 900); }
+  location.reload();
+}
+
+// Footer year
+const fy = document.getElementById('footer-year');
+if (fy) fy.textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
