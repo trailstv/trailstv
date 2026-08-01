@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "lastUpdated": null,
+    "source": "mock",
+    "refreshIntervalMs": 900000,
+    "note": "Replace fetchSiteData() in app.js with a real API call to go live"
+  },
+  "weather": {
+    "current": { "tempF": 72, "feelsLike": 69, "humidity": 38, "windMph": 8, "condition": "Sunny", "icon": "☀️" },
+    "waterTempF": 65,
+    "forecast": [
+      { "day": "Today",    "icon": "☀️",  "hi": 72, "lo": 48, "cond": "Sunny",         "precip": 0  },
+      { "day": "Tomorrow", "icon": "⛅",  "hi": 68, "lo": 45, "cond": "Partly Cloudy", "precip": 10 },
+      { "day": "Thu",      "icon": "🌤", "hi": 74, "lo": 50, "cond": "Mostly Clear",  "precip": 5  },
+      { "day": "Fri",      "icon": "⛈",  "hi": 61, "lo": 44, "cond": "PM Storms",     "precip": 75 },
+      { "day": "Sat",      "icon": "☀️",  "hi": 76, "lo": 49, "cond": "Sunny",         "precip": 0  },
+      { "day": "Sun",      "icon": "🌤", "hi": 73, "lo": 47, "cond": "Mostly Clear",  "precip": 5  },
+      { "day": "Mon",      "icon": "⛅",  "hi": 69, "lo": 46, "cond": "Partly Cloudy", "precip": 15 }
+    ]
+  },
+  "lake": { "levelFt": 6222.4, "levelStatus": "normal", "clarityFt": 71, "visibility": "exceptional" },
+  "trails": { "status": "open", "statusLabel": "All Open", "snowFreeBelow": 7200, "mudConditions": "dry", "alerts": [] },
+  "fire": { "restrictionLevel": 1, "restrictionLabel": "Stage 1", "activeIncidents": 0, "alertText": "Stage 1 Fire Restrictions in effect. No campfires outside designated fire rings or stoves.", "alertActive": true },
+  "camping": { "totalAvailable": 0, "hotCampgrounds": [], "nextOpenDate": null },
+  "ski": { "season": "off", "baseDepthIn": 0, "newSnow48hrIn": 0, "resortCount": 14, "openResorts": 0, "nextExpectedSnow": "November 2025", "resorts": [
+    { "name": "Palisades Tahoe", "open": false, "base": 0, "new48": 0 },
+    { "name": "Heavenly", "open": false, "base": 0, "new48": 0 },
+    { "name": "Northstar", "open": false, "base": 0, "new48": 0 },
+    { "name": "Sierra-at-Tahoe", "open": false, "base": 0, "new48": 0 }
+  ]}
+}

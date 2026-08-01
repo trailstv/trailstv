@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Tahoe Sports Ltd",
+    "type": "bike",
+    "lat": 39.1682,
+    "lng": -120.1513,
+    "loc": "Tahoe City",
+    "note": "Rentals & repair"
+  },
+  {
+    "name": "Shoreline MTB Shop",
+    "type": "bike",
+    "lat": 38.938,
+    "lng": -119.982,
+    "loc": "South Lake Tahoe",
+    "note": "MTB specialists"
+  },
+  {
+    "name": "REI — South Lake Tahoe",
+    "type": "sport",
+    "lat": 38.931,
+    "lng": -119.978,
+    "loc": "South Lake Tahoe",
+    "note": "Full outfitter"
+  },
+  {
+    "name": "Tahoe Outdoor Center",
+    "type": "sport",
+    "lat": 39.169,
+    "lng": -120.149,
+    "loc": "Tahoe City",
+    "note": "Gear & advice"
+  },
+  {
+    "name": "Basin Gear & Supply",
+    "type": "camp",
+    "lat": 39.235,
+    "lng": -120.02,
+    "loc": "Kings Beach",
+    "note": "Camping specialist"
+  },
+  {
+    "name": "High Sierra Outdoors",
+    "type": "camp",
+    "lat": 38.968,
+    "lng": -119.942,
+    "loc": "Stateline",
+    "note": "Backpacking & camping"
+  },
+  {
+    "name": "Safeway — Lake Tahoe Blvd",
+    "type": "grocery",
+    "lat": 38.927,
+    "lng": -119.982,
+    "loc": "South Lake Tahoe",
+    "note": "Open 6am–11pm"
+  },
+  {
+    "name": "New Moon Natural Foods",
+    "type": "grocery",
+    "lat": 39.1695,
+    "lng": -120.15,
+    "loc": "Tahoe City",
+    "note": "Organic & local"
+  },
+  {
+    "name": "Shell — Stateline Ave",
+    "type": "gas",
+    "lat": 38.967,
+    "lng": -119.943,
+    "loc": "Stateline",
+    "note": "24hr · Convenience"
+  },
+  {
+    "name": "Chevron — Kings Beach",
+    "type": "gas",
+    "lat": 39.237,
+    "lng": -120.022,
+    "loc": "Kings Beach",
+    "note": "Firewood available"
+  },
+  {
+    "name": "Tahoe Paddle & Oar",
+    "type": "rental",
+    "lat": 39.236,
+    "lng": -120.023,
+    "loc": "Kings Beach",
+    "note": "Kayak, SUP, pontoon"
+  },
+  {
+    "name": "Emerald Bay Water Sports",
+    "type": "rental",
+    "lat": 38.954,
+    "lng": -120.106,
+    "loc": "South Lake Tahoe",
+    "note": "Guided kayak tours"
+  }
+]
