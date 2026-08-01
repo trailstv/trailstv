@@ -33,16 +33,19 @@ export default function HomePage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────── */}
-      <section className="hero-unified hero-photo-fallback">
-        <picture>
-          <source media="(min-width:1200px)" srcSet="/assets/hero-tahoe.jpg"/>
-          <img
-            src="/assets/hero-tahoe.jpg"
-            alt="Lake Tahoe East Shore looking north"
-            className="hero-bg-photo"
-            loading="eager"
-          />
-        </picture>
+      <section className="hero-unified">
+        {/* Next.js Image — optimized, lazy-decoded, served via /api/image */}
+        <img
+          src="/assets/hero-tahoe.jpg"
+          alt="Lake Tahoe East Shore looking north — aerial view"
+          className="hero-bg-photo"
+          fetchPriority="high"
+          decoding="async"
+          onError={(e) => {
+            // If image missing, hide it so CSS gradient fallback shows
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
         <div className="hero-unified-overlay"/>
         <div className="hero-unified-content">
           <div style={{ display:'flex', alignItems:'center', gap:'.6rem', marginBottom:'1rem' }}>
@@ -100,9 +103,18 @@ export default function HomePage() {
           {activityBlocks.map(a => (
             <Link key={a.title} href="/activities" style={{ textDecoration:'none' }}>
               <div className="card" style={{ overflow:'hidden', padding:0 }}>
-                <div style={{ height:180, background:'rgba(13,27,42,.8)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'3rem' }}>
-                  {/* Real image goes in /public/assets/ */}
-                  {a.icon}
+                <div style={{ height:180, position:'relative', background:'rgba(13,27,42,.8)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'3rem', overflow:'hidden' }}>
+                  {/* Real activity images from /public/assets/ */}
+                  <img
+                    src={`/assets/${a.img}`}
+                    alt={`${a.title} at Lake Tahoe`}
+                    style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center', transition:'transform .4s ease' }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    onMouseOver={(e) => { (e.target as HTMLImageElement).style.transform = 'scale(1.04)'; }}
+                    onMouseOut={(e)  => { (e.target as HTMLImageElement).style.transform = 'scale(1)'; }}
+                  />
+                  {/* Emoji fallback shown if image missing */}
+                  <span style={{ position:'relative', zIndex:1, textShadow:'0 2px 8px rgba(0,0,0,.5)' }}>{a.icon}</span>
                 </div>
                 <div style={{ padding:'1.25rem' }}>
                   <div style={{ fontFamily:'var(--fd)', fontSize:'1.1rem', fontWeight:700, marginBottom:'.35rem' }}>{a.title}</div>
