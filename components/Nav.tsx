@@ -7,7 +7,8 @@ const links = [
   { href: '/',            label: 'Explore'       },
   { href: '/plan',        label: 'Plan Your Trip' },
   { href: '/activities',  label: 'Activities'     },
-  { href: '/map',         label: 'Map'            },
+  { href: '/trails',      label: 'Trail Map'      },
+  { href: '/map',         label: 'Amenities'      },
   { href: '/pricing',     label: 'Plans'          },
 ];
 

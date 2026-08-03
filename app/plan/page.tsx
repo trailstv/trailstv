@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { buildNarrativeParagraphs } from '@/lib/narrative';
 
 type Step = { q: string; hint: string; key: string; multi: boolean; opts: { e: string; l: string }[] };
 
@@ -121,6 +122,16 @@ export default function PlanPage() {
   const isDone   = step >= STEPS.length;
   const curStep  = STEPS[step];
 
+  // Build narrative from template engine — instant, no API call
+  const narrative = isDone ? buildNarrativeParagraphs({
+    name:       user?.name,
+    activities: ((answers[3] as number[]) || []).map(i => STEPS[3].opts[i]?.l).filter(Boolean) as string[],
+    shores:     [],           // plan page doesn't collect shore — defaults to west
+    season,
+    group:      STEPS[1].opts[answers[1] as number]?.l,
+    length:     STEPS[2].opts[answers[2] as number]?.l,
+  }) : [];
+
   return (
     <div className="sw">
       <div className="eye">Plan Your Trip</div>
@@ -228,11 +239,23 @@ export default function PlanPage() {
             ))}
           </div>
 
-          <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap' }}>
+          <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap', marginBottom: narrative.length ? '2rem' : 0 }}>
             <button className="bp" onClick={saveTrip} disabled={saved}>{saved ? 'Saved ✓' : 'Save My Trip →'}</button>
             <button className="bs" onClick={() => { setStep(0); setAnswers({}); setMulti({}); setSaved(false); }}>Start Over</button>
             <Link href="/campsites" className="bs">Browse Campsites →</Link>
           </div>
+
+          {/* Personalized narrative — template-generated, instant */}
+          {narrative.length > 0 && (
+            <div style={{ background:'rgba(13,27,42,.7)', border:'1px solid var(--cborder)', borderRadius:12, padding:'1.5rem', maxWidth:640 }}>
+              <div className="eye" style={{ marginBottom:'.75rem' }}>Your Tahoe Brief</div>
+              {narrative.map((p, i) => (
+                <p key={i} style={{ fontSize:'.84rem', color:'rgba(242,245,247,.78)', lineHeight:1.8, marginBottom: i < narrative.length-1 ? '.9rem' : 0 }}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          )}
         </>
       )}
 
