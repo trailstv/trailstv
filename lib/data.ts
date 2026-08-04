@@ -76,6 +76,14 @@ export const CAMPS_FALLBACK: Camp[] = [
   { id:'10300216', name:'Zephyr Cove RV & Campground', lat:38.9945, lng:-119.9390, shore:'east', sites:149, available:22, limited:false, full:false, fee:45, hookups:true, pets:true, res:true, amenities:['92 Full-Hookup RV Sites','47 Walk-In Tent Sites','Marina','Restaurant'], desc:"Southeast shore resort. Steps from the MS Dixie II and marina.", phone:'775-589-4906', url:'https://www.recreation.gov/camping/campgrounds/10300216', bookSystem:'Recreation.gov', img:'⚓', region:'Zephyr Cove Resort · East Shore' },
   { id:'10305470', name:"Camp Richardson — RV Village", lat:38.9345, lng:-120.0485, shore:'south', sites:98, available:15, limited:false, full:false, fee:55, hookups:true, pets:false, res:true, amenities:['Full Hookup RV Sites','Bar & Grill','General Store','Full Marina'], desc:"Historic Camp Richardson on the south shore. RV-only with full hookups.", phone:'530-494-2228', url:'https://www.recreation.gov/camping/campgrounds/10305470', bookSystem:'Recreation.gov', img:'🏕️', region:'Camp Richardson · South Shore' },
   { id:'spooner', name:'Spooner Backcountry Campgrounds', lat:39.1020, lng:-119.9080, shore:'east', sites:15, available:6, limited:false, full:false, fee:15, hookups:false, pets:false, res:false, amenities:['Vault Toilets','Bear Boxes','Walk-In Only','Flume Trail Access'], desc:"Three primitive hike-in campgrounds. First-come, first-served.", phone:'775-831-0494', url:'https://parks.nv.gov/parks/spooner-lake', bookSystem:'Nevada State Parks · First-Come', img:'🚵', region:'NV State Parks · East Shore' },
+
+  // ── NORTH SHORE ──────────────────────────────────────────────────────────────
+  { id:'tahoe-sra', name:'Tahoe State Recreation Area', lat:39.1720, lng:-120.1465, shore:'north', sites:23, available:8, limited:false, full:false, fee:35, hookups:false, pets:true, res:true, amenities:['Flush Toilets','Hot Showers','Bear Boxes','Bike Path','Lake Access'], desc:"The only lakeside campground on the north shore — 23 sites steps from Lake Tahoe in the heart of Tahoe City. Bike path to town. Open May–September.", phone:'(530) 583-3074', url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/104', bookSystem:'ReserveCalifornia', img:'🏕️', region:'CA State Parks · North Shore' },
+  { id:'lake-forest', name:'Lake Forest Campground', lat:39.1778, lng:-120.1342, shore:'north', sites:20, available:12, limited:false, full:false, fee:25, hookups:false, pets:true, res:false, amenities:['Flush Toilets','Boat Ramp','Swimming','First-Come First-Served'], desc:"First-come, first-served campground 1 mile east of Tahoe City. One of the few no-reservation options at Tahoe. Boat ramp on-site. Arrive early on summer mornings.", phone:'(530) 583-3796', url:'https://www.recreation.gov/camping/campgrounds/233116', bookSystem:'First-Come (TCPUD)', img:'🌲', region:'TCPUD · North Shore' },
+  { id:'kaspian', name:'Kaspian Campground', lat:39.1138, lng:-120.1548, shore:'north', sites:10, available:5, limited:false, full:false, fee:27, hookups:false, pets:true, res:true, amenities:['Flush Toilets','Drinking Water','Fire Rings','Lake Views'], desc:"Small tent-only USFS campground 4 miles south of Tahoe City. Sites nestled in tall ponderosa pines across the road from Lake Tahoe.", phone:'(530) 544-5994', url:'https://www.recreation.gov/camping/campgrounds/232490', bookSystem:'Recreation.gov', img:'🌲', region:'USFS · North Shore' },
+
+  // ── SOUTH SHORE (additional) ─────────────────────────────────────────────────
+  { id:'campground-by-the-lake', name:'Campground by the Lake', lat:38.9422, lng:-119.9738, shore:'south', sites:170, available:35, limited:false, full:false, fee:39, hookups:true, pets:true, res:true, amenities:['Flush Toilets','Showers','RV Hookups','Bike Trail Access','Near Beach'], desc:"City-run campground in the heart of South Lake Tahoe. 170 sites including RV hookups. One block from Safeway, across from El Dorado Beach. Opens May 1, 2026.", phone:'(530) 542-6096', url:'https://www.recreation.gov/camping/campgrounds/232488', bookSystem:'Recreation.gov', img:'🏕️', region:'City of SLT · South Shore' },
 ];
 
 export const ACTS_FALLBACK: Activity[] = [
@@ -94,17 +102,57 @@ export const ACTS_FALLBACK: Activity[] = [
 ];
 
 export const AMENITIES_FALLBACK: Amenity[] = [
-  { name:'Tahoe Sports Ltd',           type:'bike',    lat:39.1682, lng:-120.1513, loc:'Tahoe City',       note:'Rentals & repair' },
-  { name:'Shoreline MTB Shop',         type:'bike',    lat:38.9380, lng:-119.9820, loc:'South Lake Tahoe', note:'MTB specialists' },
-  { name:'REI — South Lake Tahoe',     type:'sport',   lat:38.9310, lng:-119.9780, loc:'South Lake Tahoe', note:'Full outfitter' },
-  { name:'Tahoe Outdoor Center',       type:'sport',   lat:39.1690, lng:-120.1490, loc:'Tahoe City',       note:'Gear & advice' },
-  { name:'Basin Gear & Supply',        type:'camp',    lat:39.2350, lng:-120.0200, loc:'Kings Beach',      note:'Camping specialist' },
-  { name:'Safeway — Lake Tahoe Blvd', type:'grocery', lat:38.9270, lng:-119.9820, loc:'South Lake Tahoe', note:'Open 6am–11pm' },
-  { name:'New Moon Natural Foods',     type:'grocery', lat:39.1695, lng:-120.1500, loc:'Tahoe City',       note:'Organic & local' },
-  { name:'Shell — Stateline Ave',      type:'gas',     lat:38.9670, lng:-119.9430, loc:'Stateline',        note:'24hr · Convenience' },
-  { name:'Chevron — Kings Beach',      type:'gas',     lat:39.2370, lng:-120.0220, loc:'Kings Beach',      note:'Firewood available' },
-  { name:'Tahoe Paddle & Oar',         type:'rental',  lat:39.2360, lng:-120.0230, loc:'Kings Beach',      note:'Kayak, SUP, pontoon' },
-  { name:'Emerald Bay Water Sports',   type:'rental',  lat:38.9540, lng:-120.1060, loc:'South Lake Tahoe', note:'Guided kayak tours' },
+
+  // ── GROCERY ──────────────────────────────────────────────────────────────────
+  // South Lake Tahoe
+  { name:'Safeway — Johnson Lane',         type:'grocery', lat:38.9188, lng:-119.9765, loc:'South Lake Tahoe, CA', note:'Open 24 hrs · Pharmacy · Deli · 1020 Johnson Ln' },
+  { name:"Raley's — Emerald Bay Rd",       type:'grocery', lat:38.9295, lng:-120.0042, loc:'South Lake Tahoe, CA', note:'6am–11pm · Full service · Deli & hot bar · 1040 Emerald Bay Rd' },
+  { name:'Whole Foods Market',             type:'grocery', lat:38.9380, lng:-119.9762, loc:'South Lake Tahoe, CA', note:'8am–10pm · Organic · Hot bar · 3600 Lake Tahoe Blvd' },
+  { name:'Grocery Outlet — SLT',          type:'grocery', lat:38.9345, lng:-119.9718, loc:'South Lake Tahoe, CA', note:'Discount grocery · Name brands 40–70% off' },
+  // Zephyr Cove / Stateline
+  { name:'Safeway — Zephyr Cove',         type:'grocery', lat:38.9935, lng:-119.9525, loc:'Zephyr Cove, NV',       note:'Pharmacy · Deli · 212 Elks Point Rd' },
+  // North / Kings Beach
+  { name:'Safeway — Kings Beach',         type:'grocery', lat:39.2378, lng:-120.0268, loc:'Kings Beach, CA',       note:'Open 24 hrs · Pharmacy · Deli · 7815 N Lake Blvd' },
+  { name:'Tahoe Central Market',          type:'grocery', lat:39.2362, lng:-120.0198, loc:'Kings Beach, CA',       note:'Fresh local & organic · Deli · 8487 N Tahoe Blvd' },
+  // Tahoe City
+  { name:'Safeway — Tahoe City',          type:'grocery', lat:39.1682, lng:-120.1468, loc:'Tahoe City, CA',        note:'6am–10pm · Pharmacy · Deli · 100 W River Rd' },
+  { name:'New Moon Natural Foods',        type:'grocery', lat:39.1695, lng:-120.1500, loc:'Tahoe City, CA',        note:'Organic & natural · Supplements · 505 W Lake Blvd' },
+  { name:'West Shore Market',             type:'grocery', lat:39.0732, lng:-120.1288, loc:'Tahoma, CA',            note:'Local market · West shore staples' },
+  // Incline Village
+  { name:"Raley's — Incline Village",     type:'grocery', lat:39.2532, lng:-119.9638, loc:'Incline Village, NV',   note:'(775) 831-3400 · Full service · 930 Tahoe Blvd' },
+  { name:'Grocery Outlet — Incline Village', type:'grocery', lat:39.2518, lng:-119.9612, loc:'Incline Village, NV', note:'Discount grocery · 770 Mays Blvd' },
+
+  // ── BIKE SHOPS ────────────────────────────────────────────────────────────────
+  { name:'Tahoe Sports Ltd',              type:'bike',    lat:39.1682, lng:-120.1513, loc:'Tahoe City, CA',        note:'Rentals, repair & sales · Full service' },
+  { name:'Shoreline MTB Shop',           type:'bike',    lat:38.9380, lng:-119.9820, loc:'South Lake Tahoe, CA',  note:'MTB specialists · Trek & Specialized' },
+  { name:'Olympic Bike Shop',            type:'bike',    lat:39.1690, lng:-120.1505, loc:'Tahoe City, CA',        note:'Rentals & guided rides · Family bikes' },
+  { name:'Flume Trail Bikes',            type:'bike',    lat:39.2540, lng:-119.9382, loc:'Incline Village, NV',   note:'Flume Trail shuttle service & MTB rentals' },
+  { name:'Anderson\'s Bike Rental',      type:'bike',    lat:39.2370, lng:-120.0225, loc:'Kings Beach, CA',       note:'Casual & beach cruiser rentals' },
+
+  // ── OUTFITTERS / SPORT ───────────────────────────────────────────────────────
+  { name:'REI — South Lake Tahoe',       type:'sport',   lat:38.9310, lng:-119.9780, loc:'South Lake Tahoe, CA',  note:'Full outfitter · Rentals · Expert staff' },
+  { name:'Tahoe Outdoor Center',         type:'sport',   lat:39.1690, lng:-120.1490, loc:'Tahoe City, CA',        note:'Gear, advice & guided adventures' },
+  { name:'Alpenglow Sports',             type:'sport',   lat:39.3275, lng:-120.1837, loc:'Truckee, CA',           note:'Backcountry & ski · Climbing gear · Truckee hub' },
+  { name:'Dave\'s Ski & Board',          type:'sport',   lat:38.9345, lng:-119.9782, loc:'South Lake Tahoe, CA',  note:'Ski & snowboard rentals & tuning' },
+
+  // ── CAMP GEAR ────────────────────────────────────────────────────────────────
+  { name:'Basin Gear & Supply',          type:'camp',    lat:39.2350, lng:-120.0200, loc:'Kings Beach, CA',       note:'Camping specialist · Stoves, packs & bear canisters' },
+  { name:'Tahoe City Hardware & Supply', type:'camp',    lat:39.1700, lng:-120.1490, loc:'Tahoe City, CA',        note:'Camp supplies · Propane · Firewood' },
+
+  // ── GAS ──────────────────────────────────────────────────────────────────────
+  { name:'Chevron — Kings Beach',        type:'gas',     lat:39.2370, lng:-120.0220, loc:'Kings Beach, CA',       note:'24hr · Firewood available' },
+  { name:'Shell — Stateline Ave',        type:'gas',     lat:38.9670, lng:-119.9430, loc:'Stateline, NV',         note:'24hr · Convenience store' },
+  { name:'Chevron — South Lake Tahoe',   type:'gas',     lat:38.9402, lng:-119.9765, loc:'South Lake Tahoe, CA',  note:'Near Heavenly · Convenience' },
+  { name:'76 — Tahoe City',             type:'gas',     lat:39.1685, lng:-120.1480, loc:'Tahoe City, CA',        note:'Near lake · Convenience' },
+  { name:'Mobil — Incline Village',      type:'gas',     lat:39.2510, lng:-119.9648, loc:'Incline Village, NV',   note:'24hr · Close to Sand Harbor' },
+
+  // ── RENTALS ──────────────────────────────────────────────────────────────────
+  { name:'Tahoe Paddle & Oar',           type:'rental',  lat:39.2360, lng:-120.0230, loc:'Kings Beach, CA',       note:'Kayak, SUP, pontoon & pedal boat' },
+  { name:'Emerald Bay Water Sports',     type:'rental',  lat:38.9540, lng:-120.1060, loc:'South Lake Tahoe, CA',  note:'Guided kayak tours · Emerald Bay access' },
+  { name:'Zephyr Cove Boat Rentals',     type:'rental',  lat:38.9940, lng:-119.9385, loc:'Zephyr Cove, NV',       note:'Powerboats, pontoons, jet ski, parasailing' },
+  { name:'Tahoe City Kayak',             type:'rental',  lat:39.1695, lng:-120.1470, loc:'Tahoe City, CA',        note:'Kayak & SUP rentals · Lake access' },
+  { name:'Sand Harbor Clear Kayak Tours',type:'rental',  lat:39.1989, lng:-119.9316, loc:'Sand Harbor, NV',       note:'Clear kayak tours · Stunning east shore water' },
+  { name:'Camp Richardson Watersports',  type:'rental',  lat:38.9345, lng:-120.0485, loc:'South Lake Tahoe, CA',  note:'Kayak, SUP, paddleboats · South shore' },
 ];
 
 export const SITE_DATA_FALLBACK: SiteData = {

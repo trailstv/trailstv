@@ -24,7 +24,7 @@ export default function MapPage() {
     <div className="sw">
       <div className="eye">Amenities Map · Lake Tahoe Basin</div>
       <h2 className="stitle">Around the Lake</h2>
-      <p className="ssub">Bike shops, gear stores, grocery, gas, and rental locations mapped around the basin.</p>
+      <p className="ssub">Grocery stores, bike shops, outfitters, camp gear, gas, and water sport rentals — all four shores of the basin.</p>
 
       {/* Filters */}
       <div style={{ display:'flex', flexWrap:'wrap', gap:'.4rem', marginBottom:'1rem' }}>
