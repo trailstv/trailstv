@@ -153,18 +153,6 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 .card:hover { border-color: rgba(74,173,188,.35); transform: translateY(-2px); }
 
-/* ── Badges ─────────────────────────────────────────────── */
-.tbadge {
-  display:      inline-block;
-  padding:      3px 10px;
-  border-radius: 10px;
-  font-size:    .68rem;
-  font-weight:  700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.tf { background: rgba(139,158,168,.15); color: var(--granite); }
-.tb { background: rgba(74,173,188,.15);  color: var(--glacial); }
 
 /* ── Activity grid ──────────────────────────────────────── */
 .act-grid {
@@ -187,11 +175,6 @@ button { font-family: var(--fb); cursor: pointer; }
 .act-icon  { font-size: 1.8rem; margin-bottom: .6rem; }
 .act-name  { font-weight: 700; margin-bottom: .35rem; font-size: .9rem; }
 .act-desc  { font-size: .76rem; color: var(--granite); line-height: 1.55; }
-.act-lock  {
-  position: absolute; top: .75rem; right: .75rem;
-  background: rgba(212,168,83,.12); color: var(--gold);
-  border-radius: 6px; padding: 2px 7px; font-size: .62rem; font-weight: 700;
-}
 
 /* ── Campsite cards ─────────────────────────────────────── */
 .cresults { display: flex; flex-direction: column; gap: .75rem; margin-top: 1rem; }
@@ -409,33 +392,6 @@ footer {
 .plan-auth-or::after { content:''; flex:1; height:1px; background: var(--cborder); }
 .plan-email-form { display: flex; flex-direction: column; }
 
-/* ── Pricing cards ──────────────────────────────────────── */
-.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 700px; margin-bottom: 2.5rem; }
-@media (max-width: 600px) { .price-grid { grid-template-columns: 1fr; } }
-
-.pcrd {
-  background:   var(--cbg);
-  border:       1px solid var(--cborder);
-  border-radius: 16px;
-  padding:      2rem;
-  position:     relative;
-}
-.pcrd.featured { border-color: var(--glacial); }
-.pcrd-badge {
-  position:   absolute;
-  top:        -11px; left: 50%;
-  transform:  translateX(-50%);
-  background: var(--glacial);
-  color:      var(--midnight);
-  font-size:  .62rem; font-weight: 800;
-  letter-spacing: .12em; text-transform: uppercase;
-  padding:    3px 14px; border-radius: 10px;
-}
-.pcrd-tier  { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--glacial); margin-bottom: .5rem; }
-.pcrd-price { font-family: var(--fd); font-size: 2.5rem; font-weight: 900; margin-bottom: .25rem; }
-.pcrd-sub   { font-size: .76rem; color: var(--granite); margin-bottom: 1.25rem; }
-.pcrd-feats { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.5rem; font-size: .82rem; }
-.pcrd-feats li::before { content: '✓ '; color: var(--glacial); font-weight: 700; }
 
 /* ── Nav ────────────────────────────────────────────────── */
 nav {

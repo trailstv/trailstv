@@ -140,7 +140,7 @@ export default function PlanPage() {
       {!user && (
         <>
           <h2 className="stitle">Let&apos;s get started</h2>
-          <p className="ssub">Sign in to save your trip and get personalized recommendations. Free — no card needed.</p>
+          <p className="ssub">Sign in to save your trip and get personalized recommendations.</p>
           <div className="plan-auth-card">
             <div className="plan-auth-methods">
               <button className="auth-btn-large" onClick={googleAuth}>

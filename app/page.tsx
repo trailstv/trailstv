@@ -414,7 +414,6 @@ export default function HomePage() {
           </p>
           <div style={{ display:'flex', gap:'.75rem', justifyContent:'center', flexWrap:'wrap' }}>
             <Link href="/plan"    className="bp">Plan Your Trip →</Link>
-            <Link href="/pricing" className="bs">See Plans</Link>
           </div>
         </div>
       </section>

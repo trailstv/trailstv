@@ -106,7 +106,6 @@ export default function Footer() {
           <ul className="footer-links">
             <li><Link href="/plan">🗺️ Plan Your Trip</Link></li>
             <li><Link href="/map">📍 Amenities Map</Link></li>
-            <li><Link href="/pricing">💳 Plans &amp; Pricing</Link></li>
             <li><a href="/onboarding">🚀 Get Started <span className="fl-badge fl-hot">Free</span></a></li>
             <li><a href="https://www.recreation.gov" target="_blank" rel="noopener">🏕️ Recreation.gov ↗</a></li>
           </ul>

@@ -9,7 +9,6 @@ const links = [
   { href: '/activities',  label: 'Activities'     },
   { href: '/trails',      label: 'Trail Map'      },
   { href: '/map',         label: 'Amenities'      },
-  { href: '/pricing',     label: 'Plans'          },
 ];
 
 export default function Nav() {
@@ -47,7 +46,6 @@ export default function Nav() {
 
       {/* Right side */}
       <div className="nav-right">
-        <span className="tbadge tf">Free</span>
         <Link href="/plan" className="btn-login" style={{ textDecoration: 'none' }}>
           Sign In
         </Link>
