@@ -1,12 +1,5 @@
-// app/api/migrate/route.ts
-//
-// GET /api/migrate?secret=YOUR_MIGRATE_SECRET
-// Creates all database tables if they don't exist.
-// Run once after connecting Vercel Postgres.
-// Protect with MIGRATE_SECRET env var — don't leave this open.
-
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { getSql } from '@/lib/db';
 
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret');
@@ -15,9 +8,9 @@ export async function GET(req: NextRequest) {
   }
 
   const results: { table: string; status: string }[] = [];
+  const sql = getSql();
 
   try {
-    // ── users ───────────────────────────────────────────────────────────────
     await sql`
       CREATE TABLE IF NOT EXISTS users (
         id            SERIAL PRIMARY KEY,
@@ -32,10 +25,9 @@ export async function GET(req: NextRequest) {
     `;
     await sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_users_tier  ON users(tier)`;
-    const uCount = await sql`SELECT COUNT(*) FROM users`;
-    results.push({ table: 'users', status: `OK — ${uCount.rows[0].count} rows` });
+    const uCount = await sql`SELECT COUNT(*)::int AS count FROM users`;
+    results.push({ table: 'users', status: `OK — ${uCount[0].count} rows` });
 
-    // ── trips ────────────────────────────────────────────────────────────────
     await sql`
       CREATE TABLE IF NOT EXISTS trips (
         id           SERIAL PRIMARY KEY,
@@ -53,10 +45,9 @@ export async function GET(req: NextRequest) {
     `;
     await sql`CREATE INDEX IF NOT EXISTS idx_trips_email      ON trips(email)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_trips_created_at ON trips(created_at DESC)`;
-    const tCount = await sql`SELECT COUNT(*) FROM trips`;
-    results.push({ table: 'trips', status: `OK — ${tCount.rows[0].count} rows` });
+    const tCount = await sql`SELECT COUNT(*)::int AS count FROM trips`;
+    results.push({ table: 'trips', status: `OK — ${tCount[0].count} rows` });
 
-    // ── onboarding ───────────────────────────────────────────────────────────
     await sql`
       CREATE TABLE IF NOT EXISTS onboarding (
         id            SERIAL PRIMARY KEY,
@@ -76,21 +67,13 @@ export async function GET(req: NextRequest) {
       )
     `;
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_email ON onboarding(email)`;
-    const oCount = await sql`SELECT COUNT(*) FROM onboarding`;
-    results.push({ table: 'onboarding', status: `OK — ${oCount.rows[0].count} rows` });
+    const oCount = await sql`SELECT COUNT(*)::int AS count FROM onboarding`;
+    results.push({ table: 'onboarding', status: `OK — ${oCount[0].count} rows` });
 
-    return NextResponse.json({
-      success: true,
-      message: 'All tables ready ✓',
-      tables:  results,
-    });
+    return NextResponse.json({ success: true, message: 'All tables ready ✓', tables: results });
 
   } catch (err: any) {
     console.error('Migration error:', err);
-    return NextResponse.json({
-      success: false,
-      error:   err.message,
-      tables:  results,
-    }, { status: 500 });
+    return NextResponse.json({ success: false, error: err.message, tables: results }, { status: 500 });
   }
 }

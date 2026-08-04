@@ -1,47 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql, upsertUser, corsHeaders } from '@/lib/db';
+import { getSql, upsertUser, corsHeaders } from '@/lib/db';
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: corsHeaders() });
 }
 
-// GET /api/onboarding?email=user@example.com
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get('email');
   if (!email) return NextResponse.json({ error: 'email param required' }, { status: 400 });
 
   try {
+    const sql    = getSql();
     const result = await sql`
       SELECT * FROM onboarding
-      WHERE email = ${email}
-      ORDER BY created_at DESC
-      LIMIT 1
+      WHERE  email = ${email}
+      ORDER  BY created_at DESC
+      LIMIT  1
     `;
-    if (!result.rows.length) {
-      return NextResponse.json({ error: 'No onboarding profile found' }, { status: 404 });
-    }
-    return NextResponse.json({ profile: result.rows[0] });
+    if (!result.length) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json({ profile: result[0] });
   } catch (err: any) {
     console.error('GET /api/onboarding:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-// POST /api/onboarding
 export async function POST(req: NextRequest) {
   let body: any;
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
 
   const p = body.plannerInit || body;
-  const {
-    email, name, tier, auth_provider,
-    activities, season, stay_type, group,
-    trip_length, campShores, campFeatures,
-  } = p;
+  const { email, name, tier, auth_provider, activities, season,
+          stay_type, group, trip_length, campShores, campFeatures } = p;
   if (!email) return NextResponse.json({ error: 'email required' }, { status: 400 });
 
   try {
+    const sql    = getSql();
     const dbUser = await upsertUser(email, name, auth_provider, tier);
 
     const result = await sql`
@@ -58,16 +53,14 @@ export async function POST(req: NextRequest) {
       RETURNING id
     `;
 
-    // Upgrade tier if needed
     if (tier && tier !== 'free') {
       await sql`UPDATE users SET tier = ${tier} WHERE email = ${email}`;
     }
 
     return NextResponse.json({
       success:       true,
-      onboarding_id: result.rows[0].id,
+      onboarding_id: result[0].id,
       user_id:       dbUser.id,
-      message:       'Onboarding profile saved',
     }, { status: 201 });
 
   } catch (err: any) {

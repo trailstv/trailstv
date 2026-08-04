@@ -1,35 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql, upsertUser, corsHeaders } from '@/lib/db';
+import { getSql, upsertUser, corsHeaders } from '@/lib/db';
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: corsHeaders() });
 }
 
-// GET /api/trips?email=user@example.com
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get('email');
   if (!email) return NextResponse.json({ error: 'email param required' }, { status: 400 });
 
   try {
+    const sql    = getSql();
     const result = await sql`
-      SELECT
-        t.id, t.season, t.group_type, t.trip_length,
-        t.activities, t.level, t.shores, t.notes, t.created_at
-      FROM trips t
-      JOIN users u ON t.user_id = u.id
-      WHERE u.email = ${email}
-      ORDER BY t.created_at DESC
-      LIMIT 50
+      SELECT t.id, t.season, t.group_type, t.trip_length,
+             t.activities, t.level, t.shores, t.notes, t.created_at
+      FROM   trips t
+      JOIN   users u ON t.user_id = u.id
+      WHERE  u.email = ${email}
+      ORDER  BY t.created_at DESC
+      LIMIT  50
     `;
-    // JSONB columns come back as JS objects already — no JSON.parse needed
-    return NextResponse.json({ trips: result.rows });
+    return NextResponse.json({ trips: result });
   } catch (err: any) {
     console.error('GET /api/trips:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-// POST /api/trips
 export async function POST(req: NextRequest) {
   let body: any;
   try { body = await req.json(); }
@@ -39,6 +36,7 @@ export async function POST(req: NextRequest) {
   if (!user?.email) return NextResponse.json({ error: 'user.email required' }, { status: 400 });
 
   try {
+    const sql    = getSql();
     const dbUser = await upsertUser(user.email, user.name, user.provider, user.tier);
 
     const result = await sql`
@@ -56,9 +54,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      trip_id: result.rows[0].id,
+      trip_id: result[0].id,
       user_id: dbUser.id,
-      message: 'Trip saved',
     }, { status: 201 });
 
   } catch (err: any) {

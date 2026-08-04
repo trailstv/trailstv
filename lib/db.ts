@@ -1,17 +1,35 @@
-// lib/db.ts — Vercel Postgres client
+// lib/db.ts — Neon serverless Postgres client
 //
-// Uses @vercel/postgres which reads POSTGRES_URL (or POSTGRES_URL_NON_POOLING)
-// automatically from environment. On Vercel this is injected when you link a
-// Postgres database in the dashboard. For local dev, add POSTGRES_URL to .env.local
+// @neondatabase/serverless replaces the deprecated @vercel/postgres.
+// Uses HTTP transport (no persistent TCP connections) — correct for serverless.
 //
-// SQL dialect: PostgreSQL
-//   - Placeholders: $1, $2, $3  (NOT ?)
-//   - Auto-increment: SERIAL or GENERATED ALWAYS AS IDENTITY
-//   - JSON columns: JSONB
-//   - Returning inserted id: RETURNING id
+// Environment variable: DATABASE_URL
+// When you connect a Neon database in the Vercel dashboard, this is
+// injected automatically. For local dev, copy it from:
+// Vercel Dashboard → Storage → your database → .env.local tab
+//
+// Postgres SQL dialect:
+//   Placeholders : ${value} in tagged template literals
+//   Auto-increment: SERIAL
+//   JSON columns : JSONB
+//   Returning id : RETURNING id
 
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 
+// Create a sql function bound to the connection string.
+// Called once per module load — neon() itself is lightweight.
+function getSQL() {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error('DATABASE_URL environment variable is not set');
+  return neon(url);
+}
+
+// Re-usable sql tag — import this in API routes
+export function getSql() {
+  return getSQL();
+}
+
+// ── User type ─────────────────────────────────────────────────────────────────
 export interface DbUser {
   id:            number;
   email:         string;
@@ -21,7 +39,54 @@ export interface DbUser {
   created_at:    string;
 }
 
-// ── Schema (run once via /api/migrate or Vercel dashboard SQL editor) ────────
+// ── Find or create a user by email ────────────────────────────────────────────
+export async function upsertUser(
+  email:         string,
+  name?:         string | null,
+  authProvider?: string | null,
+  tier?:         string | null,
+): Promise<DbUser> {
+  const sql = getSQL();
+
+  const existing = await sql`
+    SELECT * FROM users WHERE email = ${email} LIMIT 1
+  `;
+
+  if (existing.length > 0) {
+    if (name || tier) {
+      await sql`
+        UPDATE users
+        SET
+          name       = COALESCE(${name ?? null}, name),
+          tier       = COALESCE(${tier ?? null}, tier),
+          updated_at = NOW()
+        WHERE email  = ${email}
+      `;
+    }
+    return existing[0] as DbUser;
+  }
+
+  const created = await sql`
+    INSERT INTO users (email, name, auth_provider, tier)
+    VALUES (${email}, ${name ?? ''}, ${authProvider ?? 'email'}, ${tier ?? 'free'})
+    RETURNING *
+  `;
+  return created[0] as DbUser;
+}
+
+// ── CORS headers ──────────────────────────────────────────────────────────────
+export function corsHeaders(methods = 'GET, POST, OPTIONS') {
+  return {
+    'Content-Type':                 'application/json',
+    'Access-Control-Allow-Origin':  process.env.ALLOWED_ORIGIN ?? '*',
+    'Access-Control-Allow-Methods': methods,
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+// ── Schema ─────────────────────────────────────────────────────────────────────
+//
+// Run via GET /api/migrate?secret=YOUR_MIGRATE_SECRET
 //
 // CREATE TABLE IF NOT EXISTS users (
 //   id            SERIAL PRIMARY KEY,
@@ -64,54 +129,3 @@ export interface DbUser {
 //   raw           JSONB,
 //   created_at    TIMESTAMPTZ DEFAULT NOW()
 // );
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Find or create a user by email. Returns the user row. */
-export async function upsertUser(
-  email:        string,
-  name?:        string | null,
-  authProvider?: string | null,
-  tier?:        string | null,
-): Promise<DbUser> {
-  // Try to find existing user
-  const existing = await sql<DbUser>`
-    SELECT * FROM users WHERE email = ${email} LIMIT 1
-  `;
-
-  if (existing.rows.length > 0) {
-    // Update name / tier if new values provided
-    if (name || tier) {
-      await sql`
-        UPDATE users
-        SET
-          name       = COALESCE(${name ?? null}, name),
-          tier       = COALESCE(${tier ?? null}, tier),
-          updated_at = NOW()
-        WHERE email = ${email}
-      `;
-    }
-    return existing.rows[0];
-  }
-
-  // Create new user
-  const result = await sql<DbUser>`
-    INSERT INTO users (email, name, auth_provider, tier)
-    VALUES (${email}, ${name ?? ''}, ${authProvider ?? 'email'}, ${tier ?? 'free'})
-    RETURNING *
-  `;
-  return result.rows[0];
-}
-
-/** Standard CORS response headers */
-export function corsHeaders(methods = 'GET, POST, OPTIONS') {
-  return {
-    'Content-Type':                 'application/json',
-    'Access-Control-Allow-Origin':  process.env.ALLOWED_ORIGIN ?? '*',
-    'Access-Control-Allow-Methods': methods,
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
-
-// Re-export sql so API routes can use it directly
-export { sql };

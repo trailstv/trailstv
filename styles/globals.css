@@ -617,3 +617,11 @@ nav {
   .footer-body { padding: 2rem 1rem; }
   .footer-ticker, .footer-alert-bar { padding-left: 1rem; padding-right: 1rem; }
 }
+
+/* ── Activity section responsive ───────────────────────── */
+@media (max-width: 768px) {
+  .activity-grid-section > div {
+    grid-template-columns: 1fr !important;
+    direction: ltr !important;
+  }
+}
