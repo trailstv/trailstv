@@ -36,42 +36,11 @@ export default function TrailheadMap({ trailheads, selected, onSelect }: Props) 
         zoomControl: true,
       });
 
-      // Primary: OpenTopoMap — shows elevation contours, trail lines
-      const topoLayer = L.tileLayer(
-        'https://tile.opentopomap.org/{z}/{x}/{y}.png',
-        {
-          attribution: '© <a href="https://opentopomap.org">OpenTopoMap</a> · © <a href="https://openstreetmap.org">OpenStreetMap</a>',
-          maxZoom: 16,
-          // Fallback handled by error event below
-        }
-      );
-
-      // Fallback: standard OSM — always available
-      const osmLayer = L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-          maxZoom: 19,
-        }
-      );
-
-      // Try topo first — if tiles fail, swap to OSM
-      topoLayer.addTo(map);
-      let topoFailed = 0;
-      topoLayer.on('tileerror', () => {
-        topoFailed++;
-        // After 3 tile errors, switch to OSM
-        if (topoFailed === 3) {
-          map.removeLayer(topoLayer);
-          osmLayer.addTo(map);
-        }
-      });
-
-      // Layer control so user can switch manually
-      L.control.layers(
-        { 'Topo (OpenTopoMap)': topoLayer, 'Street (OpenStreetMap)': osmLayer },
-        {}
-      ).addTo(map);
+      // Standard OpenStreetMap tiles — consistent with all other maps
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+      }).addTo(map);
 
       mapRef.current = map;
 

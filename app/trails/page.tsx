@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import {
-  TRAILHEADS, byShore, type Trailhead,
+  ALL_TRAILHEADS, byShore, type Trailhead,
   type Difficulty, type Shore,
   DIFFICULTY_COLOR, DIFFICULTY_LABEL,
 } from '@/lib/trailheads';
@@ -47,7 +47,7 @@ export default function TrailsPage() {
   const [showList,   setShowList]   = useState(true);
 
   const filtered = useMemo(() => {
-    return TRAILHEADS
+    return ALL_TRAILHEADS
       .filter(t => shore      === 'all' || t.shore === shore)
       .filter(t => difficulty === 'all' || t.difficulty === difficulty)
       .filter(t => use        === 'all' || t.use.includes(use as any))
@@ -61,7 +61,7 @@ export default function TrailsPage() {
       <div className="eye">Hiking Trailheads · Lake Tahoe Basin</div>
       <h1 className="stitle">Trailhead Map</h1>
       <p className="ssub">
-        {TRAILHEADS.length} verified trailheads around the basin — from lakeside strolls
+        {ALL_TRAILHEADS.length} verified trailheads around the basin — from lakeside strolls
         to summit ascents. Topo map powered by OpenStreetMap.
       </p>
 
@@ -273,7 +273,7 @@ export default function TrailsPage() {
       {/* Stats ribbon */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'1rem', marginTop:'1rem' }}>
         {[
-          ['20',   'Verified Trailheads'],
+          [String(20 + 13), 'Verified Trailheads'],
           ['165',  'Tahoe Rim Trail Miles'],
           ['63K',  'Desolation Wilderness Acres'],
           ['4',    'Shores Covered'],

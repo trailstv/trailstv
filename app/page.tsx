@@ -32,7 +32,7 @@ export default function HomePage() {
         { label: '🏕️ CA State Parks',   href: 'https://www.reservecalifornia.com' },
         { label: '🏕️ NV State Parks',   href: 'https://parks.nv.gov/parks/spooner-lake' },
       ],
-      cta: 'Check Campsite Availability →', ctaHref: '/campsites',
+      cta: 'Find Campsites →', ctaHref: '/campsites',
     },
     {
       id: 'hiking', icon: '🥾', title: 'Hiking',
@@ -50,7 +50,7 @@ export default function HomePage() {
         { label: '📄 Top 10 Tahoe Hikes',      href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/the-top-10-lake-tahoe-hikes/' },
         { label: '📄 Eagle Falls Trail Guide', href: 'https://tahoeoutdoorstv.com/hiking/experience-the-majesty-of-eagle-falls-trail/' },
       ],
-      cta: 'Plan a Hike →', ctaHref: '/trails',
+      cta: 'View Trail Map →', ctaHref: '/trails',
     },
     {
       id: 'mtb', icon: '🚵', title: 'Mountain Biking',
@@ -68,7 +68,7 @@ export default function HomePage() {
         { label: '📄 Top 10 MTB Trails', href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/top-10-mountain-biking-trails-in-lake-tahoe/' },
         { label: '📄 Rim Trail MTB',     href: 'https://tahoeoutdoorstv.com/mountain-biking/mountain-biking-the-tahoe-rim-trail/' },
       ],
-      cta: 'Plan a Ride →', ctaHref: '/plan',
+      cta: 'View MTB Trails →', ctaHref: '/trails',
     },
     {
       id: 'kayaking', icon: '🛶', title: 'Kayaking',
@@ -86,7 +86,7 @@ export default function HomePage() {
         { label: '📄 Top 10 Kayak Rentals',  href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/top-10-kayak-rentals-lake-tahoe/' },
         { label: '🗺️ Lake Tahoe Water Trail', href: 'https://laketahoewatertrail.org/' },
       ],
-      cta: 'Plan a Paddle →', ctaHref: '/plan',
+      cta: 'Find Launch Spots →', ctaHref: '/map',
     },
     {
       id: 'skiing', icon: '⛷️', title: 'Skiing & Riding',
@@ -104,7 +104,7 @@ export default function HomePage() {
         { label: '🎿 Heavenly Mountain',    href: 'https://www.skiheavenly.com/' },
         { label: '🎿 Northstar California', href: 'https://www.northstarcalifornia.com/' },
       ],
-      cta: 'Plan a Ski Trip →', ctaHref: '/plan',
+      cta: 'View Ski Guide →', ctaHref: '/activities',
     },
     {
       id: 'boating', icon: '⛵', title: 'Boating',
@@ -122,7 +122,7 @@ export default function HomePage() {
         { label: '⚓ Zephyr Cove Resort', href: 'https://zephyrcove.com/' },
         { label: '🗺️ Water Trail Map',   href: 'https://laketahoewatertrail.org/' },
       ],
-      cta: 'Plan Water Day →', ctaHref: '/plan',
+      cta: 'Find Marinas →', ctaHref: '/map',
     },
   ];
 
@@ -168,7 +168,7 @@ export default function HomePage() {
           </div>
           <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap' }}>
             <Link href="/campsites"  className="bp">Find a Campsite →</Link>
-            <Link href="/plan"       className="bs">Plan Your Trip</Link>
+            {/* Plan Your Trip button — temporarily hidden */}
             <Link href="/activities" className="bs">Explore Activities ↓</Link>
           </div>
         </div>
@@ -413,7 +413,7 @@ export default function HomePage() {
             Sign up free. Save trips, get live campsite alerts, and unlock personalized guides.
           </p>
           <div style={{ display:'flex', gap:'.75rem', justifyContent:'center', flexWrap:'wrap' }}>
-            <Link href="/plan"    className="bp">Plan Your Trip →</Link>
+            {/* Plan Your Trip button — temporarily hidden */}
           </div>
         </div>
       </section>

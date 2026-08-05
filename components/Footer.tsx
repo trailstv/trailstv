@@ -67,20 +67,6 @@ export default function Footer() {
             The complete outdoor adventure planner for the Lake Tahoe basin.
             Camping, hiking, kayaking, skiing, boating — all four seasons, powered by live data.
           </p>
-          <div className="footer-social">
-            {[
-              ['https://instagram.com/trailstv',  '📸', 'Instagram'],
-              ['https://youtube.com/@trailstv',   '▶',  'YouTube'],
-              ['https://facebook.com/trailstv',   'f',  'Facebook'],
-              ['https://twitter.com/trailstv',    '𝕏',  'X / Twitter'],
-              ['https://tiktok.com/@trailstv',    '♪',  'TikTok'],
-            ].map(([href, icon, title]) => (
-              <a key={title as string} href={href as string} target="_blank" rel="noopener"
-                 className="footer-social-btn" title={title as string}>
-                {icon}
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Explore */}
@@ -104,7 +90,7 @@ export default function Footer() {
         <div>
           <div className="footer-col-title">Plan</div>
           <ul className="footer-links">
-            <li><Link href="/plan">🗺️ Plan Your Trip</Link></li>
+            {/* <li><Link href="/plan">🗺️ Plan Your Trip</Link></li> */}
             <li><Link href="/map">📍 Amenities Map</Link></li>
             <li><a href="/onboarding">🚀 Get Started <span className="fl-badge fl-hot">Free</span></a></li>
             <li><a href="https://www.recreation.gov" target="_blank" rel="noopener">🏕️ Recreation.gov ↗</a></li>

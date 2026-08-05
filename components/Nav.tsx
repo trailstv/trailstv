@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const links = [
   { href: '/',            label: 'Explore'       },
-  { href: '/plan',        label: 'Plan Your Trip' },
+  // { href: '/plan', label: 'Plan Your Trip' }, // temporarily hidden
   { href: '/activities',  label: 'Activities'     },
   { href: '/trails',      label: 'Trail Map'      },
   { href: '/map',         label: 'Amenities'      },
@@ -46,9 +46,7 @@ export default function Nav() {
 
       {/* Right side */}
       <div className="nav-right">
-        <Link href="/plan" className="btn-login" style={{ textDecoration: 'none' }}>
-          Sign In
-        </Link>
+{/* Sign In button — temporarily hidden */}
       </div>
     </nav>
   );
