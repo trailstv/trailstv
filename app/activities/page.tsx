@@ -8,6 +8,7 @@ const ACT_SLUG: Record<string, string> = {
   'Hiking':            'hiking',
   'Swimming':          'swimming',
   'Kayaking':          'kayaking',
+  'Boating':           'boating',
   'Mountain Biking':   'mtb',
   'Skiing & Riding':   'skiing',
   'Snowshoeing':       'snowshoeing',

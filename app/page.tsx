@@ -50,7 +50,7 @@ export default function HomePage() {
         { label: '📄 Top 10 Tahoe Hikes',      href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/the-top-10-lake-tahoe-hikes/' },
         { label: '📄 Eagle Falls Trail Guide', href: 'https://tahoeoutdoorstv.com/hiking/experience-the-majesty-of-eagle-falls-trail/' },
       ],
-      cta: 'View Trail Map →', ctaHref: '/trails',
+      cta: 'View Hiking Map →', ctaHref: '/activities/hiking',
     },
     {
       id: 'mtb', icon: '🚵', title: 'Mountain Biking',
@@ -68,7 +68,7 @@ export default function HomePage() {
         { label: '📄 Top 10 MTB Trails', href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/top-10-mountain-biking-trails-in-lake-tahoe/' },
         { label: '📄 Rim Trail MTB',     href: 'https://tahoeoutdoorstv.com/mountain-biking/mountain-biking-the-tahoe-rim-trail/' },
       ],
-      cta: 'View MTB Trails →', ctaHref: '/trails',
+      cta: 'View MTB Map →', ctaHref: '/activities/mtb',
     },
     {
       id: 'kayaking', icon: '🛶', title: 'Kayaking',
