@@ -143,11 +143,11 @@ export default function Footer() {
           <div className="footer-col-title">Explore</div>
           <ul className="footer-links">
             <li><Link href="/campsites">⛺ Find Campsites</Link></li>
-            <li><Link href="/activities">🥾 Hiking Trails</Link></li>
-            <li><Link href="/activities">🚵 Mountain Biking</Link></li>
-            <li><Link href="/activities">🛶 Kayaking</Link></li>
-            <li><Link href="/activities">⛷️ Skiing &amp; Riding</Link></li>
-            <li><Link href="/activities">🏔️ Snowshoeing</Link></li>
+            <li><Link href="/activities/hiking">🥾 Hiking Trails</Link></li>
+            <li><Link href="/activities/mtb">🚵 Mountain Biking</Link></li>
+            <li><Link href="/activities/kayaking">🛶 Kayaking</Link></li>
+            <li><Link href="/activities/skiing">⛷️ Skiing &amp; Riding</Link></li>
+            <li><Link href="/activities/snowshoeing">🏔️ Snowshoeing</Link></li>
           </ul>
         </div>
 
@@ -217,6 +217,7 @@ export default function Footer() {
       <div style={{ borderTop:'1px solid rgba(74,173,188,.1)', padding:'1.1rem 3rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'.75rem' }}>
         <div className="footer-legal">
           {[
+            ['/about','About'],
             ['/privacy-policy','Privacy Policy'],
             ['/terms','Terms of Service'],
             ['/cookies','Cookie Policy'],
