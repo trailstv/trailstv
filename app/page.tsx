@@ -86,25 +86,28 @@ export default function HomePage() {
         { label: '📄 Top 10 Kayak Rentals',  href: 'https://tahoeoutdoorstv.com/lake-tahoe-top-10s/top-10-kayak-rentals-lake-tahoe/' },
         { label: '🗺️ Lake Tahoe Water Trail', href: 'https://laketahoewatertrail.org/' },
       ],
-      cta: 'Find Launch Spots →', ctaHref: '/map',
+      cta: 'Find Launch Spots →', ctaHref: '/activities/kayaking',
     },
     {
       id: 'skiing', icon: '⛷️', title: 'Skiing & Riding',
-      sub: '14 resorts · World-class powder · Dec – Apr',
-      desc: "With 14 ski resorts within 60 miles, Lake Tahoe is one of the premier ski destinations in North America. Palisades Tahoe alone spans 6,000+ acres. Heavenly delivers 3,500 acres of terrain with lake views from every run.",
+      sub: '16 resorts · World-class powder · Dec – Apr',
+      desc: "With 16 ski resorts within 60 miles, Lake Tahoe is the premier ski destination in North America. From 6,000-acre Palisades Tahoe to the oldest non-profit ski area in America at Sky Tavern — every ability level and budget is covered.",
       trails: [
-        { name: 'Palisades Tahoe',      detail: '6,000+ acres · Expert terrain' },
-        { name: 'Heavenly Mountain',    detail: '3,500 acres · Lake views' },
-        { name: 'Northstar California', detail: 'Family-friendly · Village base' },
-        { name: 'Sierra-at-Tahoe',      detail: 'South shore · Beginner–Expert' },
-        { name: 'Homewood',             detail: 'West shore · Best lake views' },
+        { name: 'Palisades Tahoe',    detail: '6,000+ acres · Expert · Ikon Pass' },
+        { name: 'Heavenly Mountain',  detail: '3,500 acres · Lake views · Epic Pass' },
+        { name: 'Kirkwood',          detail: 'Deepest snowpack · Expert · Epic Pass' },
+        { name: 'Sugar Bowl',        detail: '1,650 acres · Est. 1939 · Indy Pass' },
+        { name: 'Mt. Rose',          detail: 'Highest base 8,260ft · Indy Pass' },
+        { name: 'Northstar',         detail: 'Best grooming · Epic Pass' },
+        { name: 'Boreal / Donner / Soda Springs', detail: 'Budget-friendly · I-80 corridor' },
+        { name: 'Sky Tavern',        detail: 'Non-profit · $40 tickets · Est. 1948' },
       ],
       links: [
         { label: '🎿 Palisades Tahoe',      href: 'https://www.palisadestahoe.com/' },
         { label: '🎿 Heavenly Mountain',    href: 'https://www.skiheavenly.com/' },
         { label: '🎿 Northstar California', href: 'https://www.northstarcalifornia.com/' },
       ],
-      cta: 'View Ski Guide →', ctaHref: '/activities',
+      cta: 'View All 16 Resorts →', ctaHref: '/activities/skiing',
     },
     {
       id: 'boating', icon: '⛵', title: 'Boating',
@@ -122,7 +125,7 @@ export default function HomePage() {
         { label: '⚓ Zephyr Cove Resort', href: 'https://zephyrcove.com/' },
         { label: '🗺️ Water Trail Map',   href: 'https://laketahoewatertrail.org/' },
       ],
-      cta: 'Find Marinas →', ctaHref: '/map',
+      cta: 'Find Marinas & Ramps →', ctaHref: '/activities/boating',
     },
   ];
 
@@ -185,7 +188,7 @@ export default function HomePage() {
             { val:`${d.weather.current.tempF}°F ☀️`,    label:"Today's High"   },
             { val:`${total > 0 ? total : '—'} ⛺`,      label:"Campsites Open" },
             { val:`165+ 🥾`,                             label:"Trail Miles"    },
-            { val:`${d.ski.resortCount} ⛷️`,            label:"Ski Resorts"    },
+            { val:`${d.ski.resortCount} ⛷️`,             label:"Ski Resorts"    },
             { val:`6,225 ft`,                            label:"Elevation"      },
           ].map(s => (
             <div key={s.label} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'.15rem' }}>

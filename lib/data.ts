@@ -175,7 +175,7 @@ export const SITE_DATA_FALLBACK: SiteData = {
   fire:   { restrictionLevel:1, restrictionLabel:'Stage 1', activeIncidents:0, alertText:'Stage 1 Fire Restrictions in effect. No campfires outside designated fire rings.', alertActive:true },
   camping:{ totalAvailable: 135 },
   ski: {
-    season:'off', baseDepthIn:0, newSnow48hrIn:0, resortCount:14, openResorts:0,
+    season:'off', baseDepthIn:0, newSnow48hrIn:0, resortCount:16, openResorts:0,
     resorts:[
       { name:'Palisades Tahoe',  open:false, base:0, new48:0 },
       { name:'Heavenly',         open:false, base:0, new48:0 },

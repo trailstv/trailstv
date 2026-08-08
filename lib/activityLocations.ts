@@ -158,16 +158,26 @@ export const ACTIVITY_MAPS: Record<string, ActivityMeta> = {
     center: [39.10, -120.18], zoom: 10,
     desc: '14 resorts within 60 miles — the premier ski destination in North America.',
     pins: [
-      { id:'palisades',  name:'Palisades Tahoe',      lat:39.1952, lng:-120.2350, type:'resort', shore:'north', desc:'6,000+ acres · Expert terrain · Olympic history', url:'https://www.palisadestahoe.com' },
-      { id:'alpine',     name:'Alpine Meadows',        lat:39.1670, lng:-120.2320, type:'resort', shore:'north', desc:'Linked to Palisades · Tree skiing · Bowls', url:'https://www.palisadestahoe.com' },
-      { id:'northstar',  name:'Northstar California',  lat:39.2760, lng:-120.1210, type:'resort', shore:'north', desc:'Family-friendly · Village base · Terrain parks', url:'https://www.northstarcalifornia.com' },
-      { id:'homewood',   name:'Homewood Mountain',     lat:39.0812, lng:-120.1612, type:'resort', shore:'west',  desc:'Best lake views · Small & local · No crowds', url:'https://www.skihomewood.com' },
-      { id:'tahoe-donner',name:'Tahoe Donner',         lat:39.3505, lng:-120.2290, type:'resort', shore:'north', desc:'Family · Beginner terrain · Nordic center', url:'https://www.tahoedonner.com' },
-      { id:'heavenly',   name:'Heavenly Mountain',     lat:38.9350, lng:-119.9395, type:'resort', shore:'south', desc:'3,500 acres · NV & CA terrain · Gondola from Stateline', url:'https://www.skiheavenly.com' },
-      { id:'sierra',     name:'Sierra-at-Tahoe',       lat:38.7983, lng:-120.0805, type:'resort', shore:'south', desc:'South shore · All levels · Family-friendly', url:'https://www.sierraattahoe.com' },
-      { id:'kirkwood',   name:'Kirkwood Mountain',     lat:38.6847, lng:-120.0650, type:'resort', shore:'south', desc:'Deepest snowpack · 500+ inch seasons · Expert terrain', url:'https://www.kirkwood.com' },
-      { id:'mt-rose',    name:'Mt. Rose Ski Tahoe',    lat:39.3292, lng:-119.8858, type:'resort', shore:'east',  desc:'Highest base in Tahoe · 8,260ft · Reliable snow', url:'https://skirose.com' },
-      { id:'diamond-peak',name:'Diamond Peak',         lat:39.2455, lng:-119.9312, type:'resort', shore:'east',  desc:'Overlooking Lake Tahoe · Family · No crowds', url:'https://www.diamondpeak.com' },
+      // ── Major Resorts ─────────────────────────────────────────────────────
+      { id:'palisades',   name:'Palisades Tahoe',      lat:39.1952, lng:-120.2350, type:'resort', shore:'north', desc:'6,000+ acres · Expert terrain · Olympic history · Ikon Pass · Half-pipe & terrain parks', url:'https://www.palisadestahoe.com' },
+      { id:'alpine',      name:'Alpine Meadows',        lat:39.1670, lng:-120.2320, type:'resort', shore:'north', desc:'Linked to Palisades · Tree skiing · Steep bowls · Ikon Pass · Separate character from Palisades', url:'https://www.palisadestahoe.com' },
+      { id:'heavenly',    name:'Heavenly Mountain',     lat:38.9350, lng:-119.9395, type:'resort', shore:'south', desc:'3,500 acres · Spans CA & NV · Gondola from Stateline · Lake views on every run · Epic Pass', url:'https://www.skiheavenly.com' },
+      { id:'northstar',   name:'Northstar California',  lat:39.2760, lng:-120.1210, type:'resort', shore:'north', desc:'3,170 acres · Epic Pass · Village base area · Best grooming in Tahoe · Terrain parks · Beginner-friendly', url:'https://www.northstarcalifornia.com' },
+      { id:'kirkwood',    name:'Kirkwood Mountain',     lat:38.6847, lng:-120.0650, type:'resort', shore:'south', desc:'2,300 acres · Deepest snowpack in basin · 500"+ seasons · Expert terrain · Epic Pass · Uncrowded', url:'https://www.kirkwood.com' },
+      { id:'sierra',      name:'Sierra-at-Tahoe',       lat:38.7983, lng:-120.0805, type:'resort', shore:'south', desc:'2,000 acres · South shore · Deep tree skiing · 5 terrain parks · Huckleberry Canyon backcountry · Ikon Pass', url:'https://www.sierraattahoe.com' },
+      // ── North Shore / Donner Summit ──────────────────────────────────────
+      { id:'sugar-bowl',  name:'Sugar Bowl Resort',     lat:39.3028, lng:-120.3530, type:'resort', shore:'north', desc:'1,650 acres · 105 trails · Est. 1939 · Highest annual snowfall in basin · Gondola access · Indy Pass', url:'https://www.sugarbowl.com' },
+      { id:'boreal',      name:'Boreal Mountain Resort',lat:39.3312, lng:-120.3498, type:'resort', shore:'north', desc:'380 acres · 41 trails · Night skiing · Snowboarding focus · Terrain parks · Budget-friendly · I-80 access', url:'https://www.rideboreal.com' },
+      { id:'donner-ranch',name:'Donner Ski Ranch',      lat:39.3178, lng:-120.3282, type:'resort', shore:'north', desc:'505 acres · 8 lifts · 52 trails · Locals\' favorite · No crowds · Affordable · Classic Tahoe atmosphere · Est. 1937', url:'https://www.donnerskiranch.com' },
+      { id:'soda-springs',name:'Soda Springs',          lat:39.3225, lng:-120.3680, type:'resort', shore:'north', desc:'200 acres · Oldest resort in California (1931) · 2 lifts · Beginner-focused · Tubing hill · Family-perfect · Budget', url:'https://www.skisodasprings.com' },
+      { id:'tahoe-donner',name:'Tahoe Donner Downhill', lat:39.3505, lng:-120.2290, type:'resort', shore:'north', desc:'120 acres · 14 runs · Dedicated learn-to-ski mountain · No crowds · Best beginner resort in Tahoe · Nordic center', url:'https://www.tahoedonner.com' },
+      // ── West Shore ────────────────────────────────────────────────────────
+      { id:'homewood',    name:'Homewood Mountain',     lat:39.0812, lng:-120.1612, type:'resort', shore:'west',  desc:'1,260 acres · 8 lifts · Best lake views of any resort · Small & local feel · No crowds · Underrated gem', url:'https://www.skihomewood.com' },
+      { id:'granlibakken',name:'Granlibakken Tahoe',   lat:39.1620, lng:-120.1432, type:'resort', shore:'north', desc:'10 acres · 1 lift · 1 trail · Smallest resort in Tahoe · Resort hotel · Tubing hill · Perfect for young beginners', url:'https://www.granlibakken.com' },
+      // ── East Shore / Nevada ───────────────────────────────────────────────
+      { id:'mt-rose',     name:'Mt. Rose Ski Tahoe',    lat:39.3292, lng:-119.8858, type:'resort', shore:'east',  desc:'1,200 acres · 70+ trails · Highest base elevation (8,260ft) · Most reliable early/late season snow · 350" avg · Indy Pass', url:'https://skirose.com' },
+      { id:'diamond-peak',name:'Diamond Peak',          lat:39.2455, lng:-119.9312, type:'resort', shore:'east',  desc:'655 acres · 30 trails · Overlooking Lake Tahoe · Family-focused · No crowds · Lift tickets cheaper than mega-resorts', url:'https://www.diamondpeak.com' },
+      { id:'sky-tavern',  name:'Sky Tavern',            lat:39.3218, lng:-119.9018, type:'resort', shore:'east',  desc:'200 acres · 14 trails · America\'s oldest non-profit ski area (est. 1948) · Community-driven · $40 lift tickets · Beginner/youth focus', url:'https://www.skytavern.org' },
     ],
   },
 
