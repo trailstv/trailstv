@@ -165,14 +165,21 @@ export default function HomePage() {
             One basin. Endless adventures — all four seasons.
           </p>
           <div className="chips">
-            {['⛺ Camping','🥾 Hiking','🚵 MTB','🛶 Kayaking','⛷️ Skiing','⛵ Boating'].map(c => (
-              <Link key={c} href="/activities" className="chip">{c}</Link>
+            {[
+              { label:'⛺ Camping',  href:'/campsites'           },
+              { label:'🥾 Hiking',   href:'/activities/hiking'   },
+              { label:'🚵 MTB',      href:'/activities/mtb'      },
+              { label:'🛶 Kayaking', href:'/activities/kayaking' },
+              { label:'⛷️ Skiing',  href:'/activities/skiing'   },
+              { label:'⛵ Boating',  href:'/activities/boating'  },
+            ].map(c => (
+              <Link key={c.label} href={c.href} className="chip">{c.label}</Link>
             ))}
           </div>
           <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap' }}>
             <Link href="/campsites"  className="bp">Find a Campsite →</Link>
             {/* Plan Your Trip button — temporarily hidden */}
-            <Link href="/activities" className="bs">Explore Activities ↓</Link>
+            <Link href="/activities" className="bs">All Activities ↓</Link>
           </div>
         </div>
       </section>
