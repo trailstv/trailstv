@@ -151,11 +151,18 @@ Set these in Vercel → Settings → Environment Variables.
 
 | Variable | Where to get it | Required |
 |---|---|---|
-| `DATABASE_URL` | Auto-injected when you connect Neon via Vercel Marketplace | Yes |
-| `RECGOV_KEY` | ridb.recreation.gov — free, instant | Yes (for live campsite data) |
-| `MIGRATE_SECRET` | Any string you choose | Yes (to run `/api/migrate`) |
+| `DATABASE_URL` | Auto-injected when you connect Neon via Vercel dashboard | Yes |
+| `RECGOV_KEY` | ridb.recreation.gov — free, instant | Yes — live campsite data |
+| `MIGRATE_SECRET` | Any string you choose | Yes — run `/api/migrate` once |
+| `OPENWEATHER_API_KEY` | openweathermap.org — free, no card | Yes — live weather |
+| `AIRNOW_API_KEY` | docs.airnowapi.org — free, instant | Optional — air quality |
 | `GOOGLE_CLIENT_ID` | console.cloud.google.com | When Google OAuth is connected |
 | `GOOGLE_CLIENT_SECRET` | console.cloud.google.com | When Google OAuth is connected |
+
+**No key needed** — these three use free public federal data APIs:
+- `/api/fire` — USFS LTBMU public alerts feed (fire restrictions)
+- `/api/lake` — USGS gauge 10337000 at Tahoe City (lake level, 6-hr cache)
+- `/api/snow` — NRCS SNOTEL network (snow depth, 6-hr cache)
 
 ---
 
