@@ -1,15 +1,14 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { CAMPS_FALLBACK, type Camp, avSt } from '@/lib/data';
 
-// Leaflet must be dynamically imported — it uses window
 const CampsiteMap = dynamic(() => import('@/components/CampsiteMap'), {
   ssr: false,
   loading: () => <div className="map-container" style={{ display:'flex', alignItems:'center', justifyContent:'center' }}><div className="spin-wrap"><div className="spinner"/>Loading map…</div></div>,
 });
 
-type Shore = 'all' | 'north' | 'south' | 'east' | 'west' | 'avail';
+type Shore   = 'all' | 'north' | 'south' | 'east' | 'west' | 'avail';
 type SortKey = 'name' | 'avail';
 
 export default function CampsitesPage() {
@@ -18,6 +17,28 @@ export default function CampsitesPage() {
   const [search,   setSearch]   = useState('');
   const [sortKey,  setSortKey]  = useState<SortKey>('avail');
   const [selected, setSelected] = useState<Camp | null>(null);
+  const [source,   setSource]   = useState<'fallback' | 'live'>('fallback');
+  const [loading,  setLoading]  = useState(true);
+  const [fetchedAt,setFetchedAt]= useState<string | null>(null);
+
+  const fetchLive = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res  = await fetch('/api/campsites');
+      const data = await res.json();
+      if (data.camps && Array.isArray(data.camps)) {
+        setCamps(data.camps);
+        setSource(data.source === 'recreation.gov' ? 'live' : 'fallback');
+        setFetchedAt(data.fetchedAt ?? null);
+      }
+    } catch (err) {
+      console.warn('Campsite API unavailable, using static data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchLive(); }, [fetchLive]);
 
   const filtered = camps
     .filter(c => {
@@ -42,8 +63,26 @@ export default function CampsitesPage() {
 
   return (
     <div className="sw">
-      <div className="eye">Recreation.gov · Live Availability</div>
-      <h2 className="stitle">Find Your Campsite</h2>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:'.5rem' }}>
+        <div>
+          <div className="eye">Recreation.gov · {source === 'live' ? 'Live Availability' : 'Static Data — Set RECGOV_KEY for live counts'}</div>
+          <h2 className="stitle">Find Your Campsite</h2>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:'.75rem', paddingTop:'.5rem' }}>
+          <span style={{ fontSize:'.72rem', color: source === 'live' ? '#4ABC78' : '#E0B85C' }}>
+            {source === 'live' ? '🟢 Live data' : '🟡 Static data'}
+            {fetchedAt && ` · ${new Date(fetchedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`}
+          </span>
+          <button
+            className="mfb"
+            onClick={fetchLive}
+            disabled={loading}
+            style={{ fontSize:'.72rem' }}
+          >
+            {loading ? '⟳ Loading…' : '↻ Refresh'}
+          </button>
+        </div>
+      </div>
       <p className="ssub">
         10 verified campgrounds around Lake Tahoe. Click any card to book direct.
       </p>

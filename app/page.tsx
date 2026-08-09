@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { CAMPS_FALLBACK, SITE_DATA_FALLBACK, avSt } from '@/lib/data';
+import { CAMPS_FALLBACK, SITE_DATA_FALLBACK, avSt, type Camp } from '@/lib/data';
 
 // Image map — filenames exactly as on trailstv.com/assets/
 const ACTIVITY_IMAGES: Record<string, { src: string; alt: string }> = {
@@ -12,9 +12,21 @@ const ACTIVITY_IMAGES: Record<string, { src: string; alt: string }> = {
   boating:  { src: '/assets/activity-boating.jpg',  alt: 'Boating on Lake Tahoe in summer sunshine' },
 };
 
-export default function HomePage() {
+async function getLiveCamps(): Promise<Camp[]> {
+  try {
+    const base = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+    const res  = await fetch(`${base}/api/campsites`, { next: { revalidate: 900 } });
+    const data = await res.json();
+    if (data.camps?.length) return data.camps;
+  } catch { /* API unavailable */ }
+  return CAMPS_FALLBACK;
+}
+
+export default async function HomePage() {
   const d     = SITE_DATA_FALLBACK;
-  const camps = CAMPS_FALLBACK;
+  const camps = await getLiveCamps();
   const total = camps.reduce((n, c) => n + (avSt(c) !== 'full' ? c.available : 0), 0);
 
   const topCamps = [...camps]
