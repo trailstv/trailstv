@@ -152,7 +152,7 @@ export default function HomePage() {
               <circle cx="19" cy="12" r="4" fill="rgba(74,173,188,.7)"/>
             </svg>
             <span style={{ fontSize:'.58rem', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'var(--glacial)' }}>
-              TrailsTV · Lake Tahoe Planner
+              TrailsTV
             </span>
           </div>
           <h1 className="htitle">

@@ -1,4 +1,4 @@
-export const metadata = { title: 'Terms of Service — TrailsTV Lake Tahoe Planner' };
+export const metadata = { title: 'Terms of Service — TrailsTV' };
 
 const EFFECTIVE = 'January 1, 2026';
 
@@ -15,11 +15,11 @@ export default function TermsPage() {
         {[
           {
             title: '1. Acceptance',
-            body: `By accessing or using the TrailsTV Lake Tahoe Planner ("the Service"), you agree to these Terms of Service. If you do not agree, do not use the Service.`,
+            body: `By accessing or using TrailsTV ("the Service"), you agree to these Terms of Service. If you do not agree, do not use the Service.`,
           },
           {
             title: '2. What the Service Is',
-            body: `The TrailsTV Lake Tahoe Planner is an outdoor adventure planning tool that aggregates publicly available data about campgrounds, trails, weather, fire restrictions, and other conditions in the Lake Tahoe basin. It is provided for informational and planning purposes only.`,
+            body: `TrailsTV is an outdoor adventure planning tool that aggregates publicly available data about campgrounds, trails, weather, fire restrictions, and other conditions in the Lake Tahoe basin. It is provided for informational and planning purposes only.`,
           },
           {
             title: '3. Accuracy of Information',
@@ -43,7 +43,7 @@ Outdoor activities involve inherent risks. Always verify conditions directly wit
           },
           {
             title: '6. Intellectual Property',
-            body: `The TrailsTV Lake Tahoe Planner — including its design, code, and curated data — is owned by TrailsTV. Publicly-sourced federal data (Recreation.gov, USGS, USFS, NRCS) remains the property of the respective government agencies and is used under open data licenses.`,
+            body: `TrailsTV — including its design, code, and curated data — is owned by TrailsTV. Publicly-sourced federal data (Recreation.gov, USGS, USFS, NRCS) remains the property of the respective government agencies and is used under open data licenses.`,
           },
           {
             title: '7. Disclaimer of Warranties',

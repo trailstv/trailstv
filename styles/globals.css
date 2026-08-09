@@ -405,7 +405,7 @@ nav {
 .logo-tag  { font-size: .55rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--glacial); }
 .logo-name { font-family: var(--fd); font-size: .92rem; font-weight: 700; }
 
-.nav-links { display: flex; gap: .25rem; flex: 1; }
+.nav-links { display: flex; align-items: center; gap: .25rem; flex: 1; }
 .nl {
   background:   none;
   border:       none;

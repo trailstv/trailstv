@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const metadata = { title: 'Accessibility — TrailsTV Lake Tahoe Planner' };
+export const metadata = { title: 'Accessibility — TrailsTV' };
 
 export default function AccessibilityPage() {
   return (
@@ -13,7 +13,7 @@ export default function AccessibilityPage() {
 
       <div style={{ fontSize: '.88rem', lineHeight: 1.85, color: 'rgba(242,245,247,.78)' }}>
         <p style={{ marginBottom: '1.5rem' }}>
-          TrailsTV is committed to making the Lake Tahoe Planner accessible to everyone, including people with disabilities. We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA.
+          TrailsTV is committed to making TrailsTV accessible to everyone, including people with disabilities. We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA.
         </p>
 
         {[

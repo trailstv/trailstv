@@ -129,7 +129,7 @@ export default function Footer() {
             </svg>
             <div>
               <div className="footer-brand-tag">TrailsTV</div>
-              <div className="footer-brand-name">Lake Tahoe Planner</div>
+              <div className="footer-brand-name">Lake Tahoe</div>
             </div>
           </div>
           <p className="footer-brand-desc">
@@ -228,7 +228,7 @@ export default function Footer() {
           ))}
         </div>
         <div style={{ fontSize:'.7rem', color:'rgba(139,158,168,.5)' }}>
-          © {year} <a href="https://trailstv.com" style={{ color:'var(--glacial)', textDecoration:'none', fontWeight:600 }}>TrailsTV.com</a> · Lake Tahoe Planner
+          © {year} <a href="https://trailstv.com" style={{ color:'var(--glacial)', textDecoration:'none', fontWeight:600 }}>TrailsTV.com</a>
         </div>
       </div>
     </footer>

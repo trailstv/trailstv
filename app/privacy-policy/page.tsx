@@ -1,4 +1,4 @@
-export const metadata = { title: 'Privacy Policy — TrailsTV Lake Tahoe Planner' };
+export const metadata = { title: 'Privacy Policy — TrailsTV' };
 
 const EFFECTIVE = 'January 1, 2026';
 
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         {[
           {
             title: '1. What We Collect',
-            body: `When you use the TrailsTV Lake Tahoe Planner, we may collect:
+            body: `When you use TrailsTV, we may collect:
 
 • Account information — name and email address when you create an account.
 • Trip data — the trip preferences and itineraries you save voluntarily.
@@ -28,7 +28,7 @@ We do not collect precise location data, payment information, or any data from m
             title: '2. How We Use Your Data',
             body: `We use collected data to:
 
-• Provide and improve the Lake Tahoe Planner service.
+• Provide and improve TrailsTV.
 • Save and display your trip itineraries.
 • Send you account-related communications (never marketing without consent).
 • Monitor for errors, abuse, and security threats.
@@ -74,7 +74,7 @@ To exercise any of these rights, contact us at the address below.`,
           },
           {
             title: '8. Children',
-            body: `The TrailsTV Lake Tahoe Planner is not directed at children under 13. We do not knowingly collect personal data from children. If you believe we have collected data from a child, please contact us immediately.`,
+            body: `TrailsTV is not directed at children under 13. We do not knowingly collect personal data from children. If you believe we have collected data from a child, please contact us immediately.`,
           },
           {
             title: '9. Changes to This Policy',

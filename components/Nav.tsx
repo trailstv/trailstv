@@ -57,7 +57,7 @@ export default function Nav() {
           </svg>
           <div>
             <div className="logo-tag">TrailsTV</div>
-            <div className="logo-name">Lake Tahoe Planner</div>
+            <div className="logo-name">Lake Tahoe</div>
           </div>
         </Link>
 
@@ -80,9 +80,12 @@ export default function Nav() {
               onClick={() => setDropOpen(o => !o)}
               className={`nl${isMoreActive ? ' active' : ''}`}
               style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 4,
-                padding: '4px 0', fontFamily: 'inherit',
+                display:     'flex',
+                alignItems:  'center',
+                gap:         4,
+                cursor:      'pointer',
+                fontFamily:  'inherit',
+                fontSize:    'inherit',
               }}
               aria-haspopup="true"
               aria-expanded={dropOpen}

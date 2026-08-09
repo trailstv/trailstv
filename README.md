@@ -100,6 +100,17 @@ Per-activity map pins for all 13 activity pages. Each activity has a color, cent
 | Snowshoeing | 7 | trailhead |
 | Rock Climbing | 12 | trailhead, spot, rental |
 
+### `db.ts`
+Neon Postgres client using `@neondatabase/serverless`.
+- `getSql()` — returns a `neon(DATABASE_URL)` tagged template function
+- `upsertUser()` — find-or-create user by email
+- `corsHeaders()` — standard CORS response headers
+
+### `narrative.ts`
+Template engine for personalized trip briefs. Zero API calls, loads instantly.
+Assembles a 4-paragraph narrative from user answers: name + shore + activities + season + group type + trip length. Uses lookup tables — 10 activities × 4 shores = 40 unique activity tip variants.
+
+---
 
 ## Campground Data
 
@@ -146,6 +157,56 @@ Pass affiliations: Ikon (Palisades, Alpine, Sierra), Epic (Heavenly, Northstar, 
 
 ---
 
+## Database Schema
+
+Three tables created by `GET /api/migrate?secret=YOUR_SECRET`.
+
+```sql
+users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(100),
+  auth_provider VARCHAR(50) DEFAULT 'email',
+  tier VARCHAR(20) DEFAULT 'free',
+  google_id VARCHAR(100),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+)
+
+trips (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  email VARCHAR(255),
+  season VARCHAR(50),
+  group_type VARCHAR(50),
+  trip_length VARCHAR(50),
+  activities JSONB,
+  level VARCHAR(50),
+  shores JSONB,
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+)
+
+onboarding (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255),
+  name VARCHAR(100),
+  tier VARCHAR(20) DEFAULT 'free',
+  auth_provider VARCHAR(50),
+  season VARCHAR(50),
+  stay_type VARCHAR(50),
+  group_type VARCHAR(50),
+  trip_length VARCHAR(50),
+  activities JSONB,
+  shores JSONB,
+  camp_features JSONB,
+  raw JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+)
+```
+
+---
+
 ## Live Data Sources
 
 The Footer fetches all five APIs on mount and refreshes every 30 minutes using `Promise.allSettled` — any single failure doesn't affect the others. Each API returns a `source` field: `'openweathermap'`, `'usgs-10337000'`, etc. or `'fallback'` with a yellow indicator dot when serving static data.
@@ -159,6 +220,27 @@ The Footer fetches all five APIs on mount and refreshes every 30 minutes using `
 | Campsite availability | Recreation.gov RIDB API | `RECGOV_KEY` | 15 min |
 | Trailheads (live) | OSM Overpass API — bbox `38.75,-120.25,39.40,-119.85` | None | 24 hr |
 | Trailheads (fallback) | `lib/trailheads.ts` — curated static data | None | Static |
+
+---
+
+## Environment Variables
+
+Add these in **Vercel → Settings → Environment Variables**.
+
+| Variable | Source | Required |
+|---|---|---|
+| `DATABASE_URL` | Auto-injected when you connect Neon via Vercel dashboard → Storage | Yes |
+| `MIGRATE_SECRET` | Any string you choose — used once to run `/api/migrate` | Yes |
+| `OPENWEATHER_API_KEY` | openweathermap.org → free tier, no card required | Yes — live weather |
+| `RECGOV_KEY` | ridb.recreation.gov → free, instant approval | Yes — live campsites |
+| `GOOGLE_CLIENT_ID` | console.cloud.google.com | When Google OAuth is enabled |
+| `GOOGLE_CLIENT_SECRET` | console.cloud.google.com | When Google OAuth is enabled |
+
+No key needed for fire (`/api/fire`), lake level (`/api/lake`), snow (`/api/snow`), or trailheads (`/api/trailheads`) — all use free public federal data.
+
+For local development, copy connection strings from Vercel dashboard → Storage → your database → `.env.local` tab into your local `.env.local`.
+
+---
 
 ## Images
 
@@ -190,3 +272,43 @@ The `/plan` (Plan Your Trip) page is preserved but hidden from all navigation pe
 
 ---
 
+## Deployment
+
+```bash
+# 1. Push to GitHub
+git init && git add . && git commit -m "init"
+git remote add origin https://github.com/YOUR_USERNAME/trailstv.git
+git push -u origin main
+
+# 2. Connect on Vercel
+# vercel.com → New Project → Import → Framework: Next.js → Deploy
+
+# 3. Connect Neon Postgres
+# Vercel dashboard → Storage → Create → Postgres (Neon) → Connect to project
+# DATABASE_URL is injected automatically
+
+# 4. Add environment variables in Vercel dashboard
+
+# 5. Create database tables — visit once:
+# https://your-project.vercel.app/api/migrate?secret=YOUR_MIGRATE_SECRET
+
+# 6. Add images to public/assets/ (copy from your TrailsTV server)
+```
+
+**Node version:** 24.x (set in `package.json` engines and Vercel project settings — must match)
+
+**Build command:** `next build` (default — no custom config needed)
+
+**Framework:** Next.js 16 App Router, React 19, TypeScript 5
+
+---
+
+## What's Not Yet Active
+
+| Feature | Status | What's needed |
+|---|---|---|
+| Google OAuth | UI present, simulated | `GOOGLE_CLIENT_ID/SECRET` + `/api/auth/google/callback` route |
+| Plan Your Trip | Page exists at `/plan`, hidden from nav | Uncomment nav link when ready |
+| Email / magic link auth | Not built | `/api/auth/email` route + email service |
+| Water temperature (live) | Estimated from air temp | UC Davis Tahoe Research Group has no public API |
+| Kokanee salmon run dates | Static | USFS Taylor Creek visitor center — no public API |

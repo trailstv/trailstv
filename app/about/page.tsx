@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const metadata = { title: 'About — TrailsTV Lake Tahoe Planner' };
+export const metadata = { title: 'About — TrailsTV' };
 
 export default function AboutPage() {
   return (

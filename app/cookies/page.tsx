@@ -1,4 +1,4 @@
-export const metadata = { title: 'Cookie Policy — TrailsTV Lake Tahoe Planner' };
+export const metadata = { title: 'Cookie Policy — TrailsTV' };
 
 export default function CookiesPage() {
   return (
@@ -11,7 +11,7 @@ export default function CookiesPage() {
 
       <div style={{ fontSize: '.88rem', lineHeight: 1.85, color: 'rgba(242,245,247,.78)' }}>
         <p style={{ marginBottom: '1.5rem' }}>
-          This Cookie Policy explains what cookies are, which ones the TrailsTV Lake Tahoe Planner uses, and what your choices are. The short version: we use only essential cookies. No advertising cookies. No third-party tracking.
+          This Cookie Policy explains what cookies are, which ones TrailsTV uses, and what your choices are. The short version: we use only essential cookies. No advertising cookies. No third-party tracking.
         </p>
 
         {[

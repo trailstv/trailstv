@@ -20,7 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Lake Tahoe Planner — TrailsTV',
+  title: 'TrailsTV',
   description: 'Plan camping, hiking, kayaking, skiing, and boating in the Lake Tahoe basin. Live campsite availability via Recreation.gov.',
   themeColor: '#0D1B2A',
   icons: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     apple: '/assets/icon-180.png',
   },
   openGraph: {
-    title:       'Lake Tahoe Planner — TrailsTV',
+    title:       'TrailsTV',
     description: 'The complete outdoor adventure planner for the Lake Tahoe basin.',
     url:         'https://trailstv.com',
     siteName:    'TrailsTV',
