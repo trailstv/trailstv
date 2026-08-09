@@ -79,7 +79,7 @@ export default function CampsiteMap({ camps, selected, onSelect }: Props) {
         iconAnchor:  [7, 7],
       });
 
-      const avText  = st === 'open' ? `${c.available} open` : st === 'limited' ? `${c.available} left` : 'Full';
+      const avText  = st === 'open' ? 'Available' : st === 'limited' ? 'Limited' : 'Full';
       const popup   = L.popup({ className:'camp-popup', maxWidth:240 }).setContent(`
         <div style="font-family:Inter,sans-serif;padding:4px">
           <div style="font-weight:700;margin-bottom:4px;font-size:.85rem">${c.name}</div>

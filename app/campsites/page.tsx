@@ -56,8 +56,8 @@ export default function CampsitesPage() {
 
   const stLabel = (c: Camp) => {
     const st = avSt(c);
-    if (st === 'open')    return <span className="dot-g">● {c.available} open</span>;
-    if (st === 'limited') return <span className="dot-y">● {c.available} left</span>;
+    if (st === 'open')    return <span className="dot-g">● Available</span>;
+    if (st === 'limited') return <span className="dot-y">● Limited</span>;
     return <span className="dot-r">● Full</span>;
   };
 

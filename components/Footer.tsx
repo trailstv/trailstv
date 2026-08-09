@@ -74,7 +74,7 @@ export default function Footer() {
     `🔵 Lake ${d.lake.levelFt.toLocaleString()} ft`,
     `🌿 Clarity ${d.lake.clarityFt} ft`,
     `🥾 Trails ${SITE_DATA_FALLBACK.trails.statusLabel}`,
-    `⛺ ${d.camping.totalAvailable} sites available`,
+    `⛺ Campsite map`,
     `🔥 Fire ${d.fire.restrictionLabel}`,
     `⛷️ ${d.ski.openResorts}/${d.ski.resortCount} resorts open`,
   ];
@@ -181,7 +181,7 @@ export default function Footer() {
             {[
               ['Water Temp',        `${d.weather.waterTempF}°F`,                                    'flr-good'],
               ["Today's High",      `${d.weather.current.tempF}°F`,                                 ''],
-              ['Sites Available',   `${d.camping.totalAvailable}`,                                  'flr-good'],
+              ['Campsites',         'View map →',                                                   ''],
               ['Trail Status',      SITE_DATA_FALLBACK.trails.statusLabel,                          'flr-good'],
               ['Snow Base',         d.ski.baseDepthIn > 0 ? `${d.ski.baseDepthIn}"` : 'Off-season', ''],
               ['Fire Restrictions', d.fire.restrictionLabel,                                        ''],

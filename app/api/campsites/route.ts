@@ -1,109 +1,99 @@
 // app/api/campsites/route.ts
-// GET /api/campsites
-// Returns live availability for all 14 Tahoe campgrounds.
-//
-// Uses two Recreation.gov endpoints:
-//   RIDB facilities API  — general campground info (no key needed for basic data)
-//   Availability API     — requires RECGOV_KEY (free at ridb.recreation.gov)
-//
-// Falls back to CAMPS_FALLBACK static data if key is missing or API fails.
+// Returns live availability for Recreation.gov Tahoe campgrounds.
+// Uses the undocumented but widely-used availability endpoint.
+// Campgrounds on ReserveCalifornia, TCPUD, NV State Parks use fallback.
 // Cached 15 minutes at Vercel CDN edge.
+//
+// ENV: RECGOV_KEY — free at ridb.recreation.gov
 
 import { NextResponse } from 'next/server';
 import { CAMPS_FALLBACK } from '@/lib/data';
 
 export const revalidate = 900;
 
-// Recreation.gov facility IDs for all bookable campgrounds in our list.
-// First-come / non-RecGov campgrounds are excluded (Lake Forest / TCPUD, Spooner / NV State Parks).
-const RECGOV_CAMPGROUNDS: { id: string; facilityId: string | null }[] = [
-  { id: 'dlbliss',                facilityId: '637'      },
-  { id: 'eaglepoint',             facilityId: '641'      },
-  { id: 'sugarpine',              facilityId: '643'      },
-  { id: 'williamkent',            facilityId: '232874'   },
-  { id: 'meeksbay',               facilityId: '10220612' },
-  { id: 'fallenlf',               facilityId: '232769'   },
-  { id: 'camprich',               facilityId: '10305470' },
-  { id: 'campground-by-the-lake', facilityId: null       },  // City of SLT
-  { id: 'nvbeach',                facilityId: '232768'   },
-  { id: 'zephyr',                 facilityId: '10300216' },
-  { id: 'kaspian',                facilityId: '232875'   },
-  { id: 'tahoe-sra',              facilityId: null       },  // ReserveCalifornia
-  { id: 'lake-forest',            facilityId: null       },  // TCPUD first-come
-  { id: 'spooner',                facilityId: null       },  // NV State Parks
-];
-
-// Get today + 1 day window for availability check
-function getDateRange() {
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 1);
-  return {
-    startDate: start.toISOString().split('T')[0],
-    endDate:   end.toISOString().split('T')[0],
-  };
-}
+// Recreation.gov campground IDs only — excludes ReserveCalifornia & other systems
+const REC_GOV_IDS: Record<string, string> = {
+  'williamkent':  '232874',
+  'meeksbay':     '10220612',
+  'fallenlf':     '232769',
+  'camprich':     '10305470',
+  'nvbeach':      '232768',
+  'zephyr':       '10300216',
+  'kaspian':      '232875',
+};
 
 export async function GET() {
   const key = process.env.RECGOV_KEY;
 
-  // No key → return fallback with clear source label
   if (!key) {
     return NextResponse.json({
-      source: 'fallback',
+      source:  'fallback',
       message: 'Set RECGOV_KEY in Vercel Environment Variables for live availability',
-      camps: CAMPS_FALLBACK,
+      camps:   CAMPS_FALLBACK,
     }, { headers: { 'Cache-Control': 'public, s-maxage=900' } });
   }
 
-  const { startDate, endDate } = getDateRange();
+  // Use first of current month — required by the availability endpoint
+  const now   = new Date();
+  const start = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,'0')}-01T00:00:00.000Z`;
 
-  // Fetch availability for each Recreation.gov campground in parallel
-  const recgovCamps = RECGOV_CAMPGROUNDS.filter(c => c.facilityId && parseInt(c.facilityId) > 0);
+  // Today's date key as used in the availabilities object
+  const todayKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}T00:00:00Z`;
+
+  const entries = Object.entries(REC_GOV_IDS);
 
   const results = await Promise.allSettled(
-    recgovCamps.map(async ({ id, facilityId }) => {
-      const url = `https://www.recreation.gov/api/camps/availability/campground/${facilityId}/month?start_date=${startDate}T00:00:00.000Z`;
+    entries.map(async ([campId, facilityId]) => {
+      const url = `https://www.recreation.gov/api/camps/availability/campground/${facilityId}/month?start_date=${start}`;
       const res = await fetch(url, {
         headers: {
-          'Cookie': ``,  // RecGov availability doesn't need auth cookie with API key
-          'Accept': 'application/json',
+          'User-Agent': 'TrailsTV-Tahoe-Planner/1.0',
+          'Accept':     'application/json',
         },
         next: { revalidate: 900 },
       });
-      if (!res.ok) throw new Error(`${facilityId}: ${res.status}`);
-      const data = await res.json();
 
-      // Count available sites for tonight
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${facilityId}`);
+
+      const data = await res.json();
       const campsites = data.campsites ?? {};
+
       let available = 0;
-      let total = 0;
+      let total     = 0;
+
       for (const site of Object.values(campsites) as any[]) {
         total++;
         const avail = site.availabilities ?? {};
-        if (avail[startDate] === 'Available') available++;
+        // Check today's key — Recreation.gov uses full ISO datetime keys
+        if (avail[todayKey] === 'Available') available++;
       }
-      return { id, available, total };
+
+      return { campId, available, total };
     })
   );
 
-  // Merge live counts into fallback data
+  // Build live availability map
   const liveMap: Record<string, { available: number; total: number }> = {};
-  for (const result of results) {
-    if (result.status === 'fulfilled') {
-      const { id, available, total } = result.value;
-      liveMap[id] = { available, total };
+  const errors: string[] = [];
+
+  for (let i = 0; i < results.length; i++) {
+    const r = results[i];
+    if (r.status === 'fulfilled') {
+      const { campId, available, total } = r.value;
+      liveMap[campId] = { available, total };
+    } else {
+      errors.push(`${entries[i][0]}: ${r.reason?.message ?? 'unknown error'}`);
     }
   }
 
+  // Merge live counts into camp data
   const camps = CAMPS_FALLBACK.map(c => {
     const live = liveMap[c.id];
-    if (!live) return c; // first-come / non-RecGov — keep fallback
+    if (!live) return { ...c }; // not on RecGov — keep fallback as-is
     return {
       ...c,
       available: live.available,
-      sites:     live.total || c.sites,
+      sites:     live.total  || c.sites,
       full:      live.available === 0,
       limited:   live.available > 0 && live.available <= 5,
     };
@@ -116,5 +106,6 @@ export async function GET() {
     totalAvailable,
     camps,
     fetchedAt:      new Date().toISOString(),
+    ...(errors.length ? { errors } : {}),
   }, { headers: { 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=60' } });
 }

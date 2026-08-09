@@ -205,7 +205,7 @@ export default async function HomePage() {
           {[
             { val:`${d.weather.waterTempF}°F 🌊`,       label:"Water Temp"     },
             { val:`${d.weather.current.tempF}°F ☀️`,    label:"Today's High"   },
-            { val:`${total > 0 ? total : '—'} ⛺`,      label:"Campsites Open" },
+            { val:'⛺',                                    label:'Campsite Map'   },
             { val:`165+ 🥾`,                             label:"Trail Miles"    },
             { val:`${d.ski.resortCount} ⛷️`,             label:"Ski Resorts"    },
             { val:`6,225 ft`,                            label:"Elevation"      },
@@ -378,7 +378,7 @@ export default async function HomePage() {
               {topCamps.map(c => {
                 const st  = avSt(c);
                 const cls = st === 'open' ? 'dot-g' : st === 'limited' ? 'dot-y' : 'dot-r';
-                const txt = st === 'open' ? `${c.available} open` : st === 'limited' ? `${c.available} left` : 'Full';
+                const txt = st === 'open' ? 'Available' : st === 'limited' ? 'Limited' : 'Full';
                 return (
                   <Link
                     key={c.id}
