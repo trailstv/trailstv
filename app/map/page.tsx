@@ -36,9 +36,11 @@ export default function MapPage() {
       </div>
 
       {/* Map + cards */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:'1rem' }}>
-        <AmenitiesMap amenities={filtered} />
-        <div style={{ display:'flex', flexDirection:'column', gap:'.5rem', overflowY:'auto', maxHeight:460 }}>
+      <div className="map-split-layout">
+        <div className="map-pane">
+          <AmenitiesMap amenities={filtered} />
+        </div>
+        <div className="map-sidebar" style={{ display:'flex', flexDirection:'column', gap:'.5rem', overflowY:'auto' }}>
           {filtered.map(a => (
             <div key={a.name} style={{ background:'rgba(13,27,42,.7)', border:'1px solid var(--cborder)', borderRadius:9, padding:'.75rem 1rem', fontSize:'.78rem' }}>
               <div style={{ fontWeight:600, marginBottom:'.2rem' }}>{a.name}</div>

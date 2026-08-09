@@ -95,5 +95,5 @@ export default function CampsiteMap({ camps, selected, onSelect }: Props) {
     });
   }
 
-  return <div ref={containerRef} className="map-container" style={{ height:440 }}/>;
+  return <div ref={containerRef} className="map-container" style={{ height:'100%', minHeight:260 }}/>;
 }

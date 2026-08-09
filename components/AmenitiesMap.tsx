@@ -58,5 +58,5 @@ export default function AmenitiesMap({ amenities }: Props) {
     });
   }
 
-  return <div ref={containerRef} className="map-container" style={{ height:460 }}/>;
+  return <div ref={containerRef} className="map-container" style={{ height:'100%', minHeight:260 }}/>;
 }

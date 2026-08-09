@@ -137,7 +137,7 @@ export default function ActivityMap({ pins, color, center, zoom, selected, onSel
   return (
     <div
       ref={containerRef}
-      style={{ height: 520, width: '100%', borderRadius: 12, background: 'rgba(13,27,42,.6)' }}
+      style={{ height:'100%', minHeight:260, width:'100%', borderRadius:12, background:'rgba(13,27,42,.6)' }}
     />
   );
 }

@@ -139,10 +139,16 @@ export default function ActivityPage() {
       )}
 
       {/* ── Map + Sidebar ── */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:'1rem', marginBottom:'1.5rem' }}>
+      <div className="map-tab-bar">
+        {['Map','List'].map(tab => (
+          <button key={tab} className={`map-tab${(tab==='List'?selectedPin!=null:selectedPin==null)||true?' map-tab-active':''}`}
+            onClick={() => {}} style={{ display:'none' }}>{tab}</button>
+        ))}
+      </div>
+      <div className="map-split-layout" style={{ marginBottom:'1.5rem' }}>
 
         {/* Map */}
-        <div style={{ border:'1px solid var(--cborder)', borderRadius:12, overflow:'hidden', position:'relative' }}>
+        <div className="map-pane" style={{ border:'1px solid var(--cborder)', borderRadius:12, overflow:'hidden', position:'relative' }}>
           <ActivityMap
             pins={filteredPins}
             color={meta.color}
@@ -162,7 +168,7 @@ export default function ActivityPage() {
         </div>
 
         {/* Sidebar — grouped by type */}
-        <div style={{ height:520, overflowY:'auto', display:'flex', flexDirection:'column', gap:'1rem' }}>
+        <div className="map-sidebar" style={{ overflowY:'auto', display:'flex', flexDirection:'column', gap:'1rem' }}>
           {Object.keys(groupedPins).length === 0 && (
             <div style={{ padding:'2rem', color:'var(--granite)', fontSize:'.84rem', textAlign:'center' }}>
               No locations match your filters.

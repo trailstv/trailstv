@@ -157,12 +157,7 @@ export default function TrailheadMap({ trailheads, selected, onSelect }: Props) 
     // Explicit pixel height — never '100%' which reads as 0 before parent paints
     <div
       ref={containerRef}
-      style={{
-        height:       560,
-        width:        '100%',
-        borderRadius: 12,
-        background:   'rgba(13,27,42,.6)', // visible while tiles load
-      }}
+      style={{ height:'100%', minHeight:260, width:'100%', borderRadius:12, background:'rgba(13,27,42,.6)' }}
     />
   );
 }

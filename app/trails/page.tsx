@@ -109,29 +109,25 @@ export default function TrailsPage() {
         ))}
       </div>
 
-      {/* Map + list layout */}
-      <div style={{ display:'grid', gridTemplateColumns: showList ? '1fr 340px' : '1fr', gap:'1rem', marginBottom:'1.5rem' }}>
+      {/* Map + list layout — tab toggle on mobile, side-by-side on desktop */}
+      <div className="map-tab-bar">
+        {['Map','List'].map(tab => (
+          <button key={tab} className={`map-tab${showList===(tab==='List')?' map-tab-active':''}`}
+            onClick={() => setShowList(tab==='List')}>
+            {tab==='Map' ? '🗺 Map' : '☰ List'} {tab==='Map' ? `(${filtered.length})` : ''}
+          </button>
+        ))}
+      </div>
 
-        {/* Topo Map */}
-        <div style={{ height: 560, borderRadius:12, border:'1px solid var(--cborder)', overflow:'hidden', position:'relative' }}>
+      <div className="map-split-layout" style={{ marginBottom:'1.5rem' }}>
+
+        {/* Map */}
+        <div className={`map-pane${showList?' map-pane-hidden':''}`} style={{ position:'relative' }}>
           <TrailheadMap
             trailheads={filtered}
             selected={selected}
             onSelect={setSelected}
           />
-          {/* Toggle list button */}
-          <button
-            onClick={() => setShowList(s => !s)}
-            style={{
-              position:'absolute', top:10, right:10, zIndex:500,
-              background:'rgba(13,27,42,.9)', border:'1px solid var(--cborder)',
-              color:'var(--glacial)', borderRadius:7, padding:'5px 10px',
-              fontSize:'.72rem', fontWeight:600, cursor:'pointer',
-            }}
-          >
-            {showList ? '← Hide list' : 'Show list →'}
-          </button>
-          {/* Result count overlay */}
           <div style={{
             position:'absolute', bottom:10, left:10, zIndex:500,
             background:'rgba(13,27,42,.85)', border:'1px solid var(--cborder)',

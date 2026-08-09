@@ -70,7 +70,9 @@ export default function CampsitesPage() {
       </div>
 
       {/* Map */}
-      <CampsiteMap camps={filtered} onSelect={setSelected} selected={selected} />
+      <div className="map-pane" style={{ marginBottom:'1.5rem' }}>
+        <CampsiteMap camps={filtered} onSelect={setSelected} selected={selected} />
+      </div>
 
       {/* Sort + count */}
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', margin:'.85rem 0' }}>
