@@ -80,12 +80,13 @@ export default function Nav() {
               onClick={() => setDropOpen(o => !o)}
               className={`nl${isMoreActive ? ' active' : ''}`}
               style={{
-                display:     'flex',
-                alignItems:  'center',
-                gap:         4,
-                cursor:      'pointer',
-                fontFamily:  'inherit',
-                fontSize:    'inherit',
+                display:    'flex',
+                alignItems: 'center',
+                gap:        4,
+                cursor:     'pointer',
+                fontFamily: 'var(--fb)',
+                fontSize:   '.82rem',
+                fontWeight: 500,
               }}
               aria-haspopup="true"
               aria-expanded={dropOpen}
