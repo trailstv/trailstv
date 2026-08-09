@@ -16,21 +16,21 @@ export const revalidate = 900;
 
 // Recreation.gov facility IDs for all bookable campgrounds in our list.
 // First-come / non-RecGov campgrounds are excluded (Lake Forest / TCPUD, Spooner / NV State Parks).
-const RECGOV_CAMPGROUNDS: { id: string; facilityId: string }[] = [
-  { id: 'dlbliss',            facilityId: '637'    },  // D.L. Bliss (ReserveCalifornia — different system, skip)
-  { id: 'eaglepoint',         facilityId: '641'    },  // Eagle Point / Emerald Bay (ReserveCalifornia)
-  { id: 'sugarpine',          facilityId: '643'    },  // Sugar Pine Point (ReserveCalifornia)
-  { id: 'williamkent',        facilityId: '232874' },  // William Kent (Recreation.gov)
-  { id: 'meeksbay',           facilityId: '10220612' },// Meeks Bay (Recreation.gov)
-  { id: 'fallenlf',           facilityId: '232769' },  // Fallen Leaf Lake (Recreation.gov)
-  { id: 'camprich',           facilityId: '10305470' },// Camp Richardson (Recreation.gov)
-  { id: 'campground-by-the-lake', facilityId: null },  // City of SLT — not on RecGov
-  { id: 'nvbeach',            facilityId: '232768' },  // Nevada Beach (Recreation.gov)
-  { id: 'zephyr',             facilityId: '10300216' },// Zephyr Cove (Recreation.gov)
-  { id: 'kaspian',            facilityId: '232875' },  // Kaspian (Recreation.gov)
-  { id: 'tahoe-sra',          facilityId: null    },   // Tahoe SRA — ReserveCalifornia
-  { id: 'lake-forest',        facilityId: null    },   // Lake Forest — TCPUD first-come
-  { id: 'spooner',            facilityId: null    },   // Spooner — NV State Parks
+const RECGOV_CAMPGROUNDS: { id: string; facilityId: string | null }[] = [
+  { id: 'dlbliss',                facilityId: '637'      },
+  { id: 'eaglepoint',             facilityId: '641'      },
+  { id: 'sugarpine',              facilityId: '643'      },
+  { id: 'williamkent',            facilityId: '232874'   },
+  { id: 'meeksbay',               facilityId: '10220612' },
+  { id: 'fallenlf',               facilityId: '232769'   },
+  { id: 'camprich',               facilityId: '10305470' },
+  { id: 'campground-by-the-lake', facilityId: null       },  // City of SLT
+  { id: 'nvbeach',                facilityId: '232768'   },
+  { id: 'zephyr',                 facilityId: '10300216' },
+  { id: 'kaspian',                facilityId: '232875'   },
+  { id: 'tahoe-sra',              facilityId: null       },  // ReserveCalifornia
+  { id: 'lake-forest',            facilityId: null       },  // TCPUD first-come
+  { id: 'spooner',                facilityId: null       },  // NV State Parks
 ];
 
 // Get today + 1 day window for availability check
