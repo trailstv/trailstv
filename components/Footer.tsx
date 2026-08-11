@@ -76,7 +76,7 @@ export default function Footer() {
     `🥾 Trails ${SITE_DATA_FALLBACK.trails.statusLabel}`,
     `⛺ Campsite map`,
     `🔥 Fire ${d.fire.restrictionLabel}`,
-    `⛷️ ${d.ski.openResorts}/${d.ski.resortCount} resorts open`,
+    d.ski.season === 'open' ? `⛷️ ${d.ski.openResorts}/${d.ski.resortCount} resorts open` : `⛷️ Ski season ${d.ski.season === 'off' ? 'off-season' : d.ski.season}`,
   ];
   const tickerItems = [...ticker, ...ticker];
 
@@ -183,7 +183,7 @@ export default function Footer() {
               ["Today's High",      `${d.weather.current.tempF}°F`,                                 ''],
               ['Campsites',         'View map →',                                                   ''],
               ['Trail Status',      SITE_DATA_FALLBACK.trails.statusLabel,                          'flr-good'],
-              ['Snow Base',         d.ski.baseDepthIn > 0 ? `${d.ski.baseDepthIn}"` : 'Off-season', ''],
+              ['Snow / Ski',        d.ski.season === 'open' ? `${d.ski.openResorts}/${d.ski.resortCount} open` : 'Off-season', ''],
               ['Fire Restrictions', d.fire.restrictionLabel,                                        ''],
               ['Lake Level',        `${d.lake.levelFt.toLocaleString()} ft`,                        ''],
             ].map(([label, val, cls]) => (

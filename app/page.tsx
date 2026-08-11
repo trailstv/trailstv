@@ -27,6 +27,9 @@ async function getLiveCamps(): Promise<Camp[]> {
 export default async function HomePage() {
   const d     = SITE_DATA_FALLBACK;
   const camps = await getLiveCamps();
+
+  // Seasonal water temp estimate (no live API available)
+  const waterTempF = [38,38,40,45,52,60,66,70,68,58,48,40][new Date().getMonth()];
   const total = camps.reduce((n, c) => n + (avSt(c) !== 'full' ? c.available : 0), 0);
 
   const topCamps = [...camps]
@@ -203,7 +206,7 @@ export default async function HomePage() {
             Live conditions updated daily
           </span>
           {[
-            { val:`${d.weather.waterTempF}°F 🌊`,       label:"Water Temp"     },
+            { val:`${waterTempF}°F 🌊`,                   label:"Water Temp"     },
             { val:`${d.weather.current.tempF}°F ☀️`,    label:"Today's High"   },
             { val:'⛺',                                    label:'Campsite Map'   },
             { val:`165+ 🥾`,                             label:"Trail Miles"    },
