@@ -429,17 +429,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── CTA ───────────────────────────────────────────────────────── */}
+      {/* ── COMING SOON ───────────────────────────────────────────────── */}
       <section style={{ background:'linear-gradient(135deg, rgba(74,173,188,.07) 0%, rgba(9,20,32,0) 100%)', borderTop:'1px solid var(--cborder)' }}>
         <div className="sw" style={{ textAlign:'center', paddingTop:'4rem', paddingBottom:'4rem' }}>
-          <div className="eye">Get Started — It&apos;s Free</div>
-          <h2 className="stitle">Ready to plan your Tahoe adventure?</h2>
-          <p className="ssub" style={{ margin:'0 auto 2rem', textAlign:'center' }}>
-            Sign up free. Save trips, get live campsite alerts, and unlock personalized guides.
+          <div className="eye">Coming Soon</div>
+          <h2 className="stitle">Personalized trip planning is on the way</h2>
+          <p className="ssub" style={{ margin:'0 auto', textAlign:'center' }}>
+            Save trips, get live campsite alerts, and unlock personalized guides for every shore of the basin.
+            We&apos;re building it now.
           </p>
-          <div style={{ display:'flex', gap:'.75rem', justifyContent:'center', flexWrap:'wrap' }}>
-            {/* Plan Your Trip button — temporarily hidden */}
-          </div>
         </div>
       </section>
     </>
