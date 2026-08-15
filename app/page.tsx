@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import HeroSlideshowClient from '@/components/HeroSlideshowClient';
 import { CAMPS_FALLBACK, SITE_DATA_FALLBACK, avSt, type Camp } from '@/lib/data';
 
 // Image map — filenames exactly as on trailstv.com/assets/
@@ -147,7 +148,8 @@ export default async function HomePage() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────────────── */}
-      <section className="hero-unified">
+      <section className="hero-unified" style={{ position:'relative' }}>
+        <HeroSlideshowClient/>
         {/* Full-bleed hero — priority loads before anything else */}
         <Image
           src="/assets/hero-tahoe.jpg"
@@ -159,7 +161,7 @@ export default async function HomePage() {
           style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
         />
         <div className="hero-unified-overlay" />
-        <div className="hero-unified-content">
+        <div className="hero-unified-content" style={{ position:'relative', zIndex:5 }}>
           <div style={{ display:'flex', alignItems:'center', gap:'.6rem', marginBottom:'1rem' }}>
             <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
               <path d="M4 26c3-6 6-10 10-10s5 7 10 7 5-4 8-4" stroke="#4AADBC" strokeWidth="2.5" strokeLinecap="round"/>

@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 
 const NAV_LINKS = [
   { href: '/',           label: 'Explore'   },
+  { href: '/parks',      label: '🏔 Parks'   },
   { href: '/activities', label: 'Activities' },
   { href: '/trails',     label: 'Trail Map'  },
   { href: '/campsites',  label: 'Campsites'  },
