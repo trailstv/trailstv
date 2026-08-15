@@ -6,9 +6,11 @@ interface Props {
   trailheads: Trailhead[];
   selected:   Trailhead | null;
   onSelect:   (t: Trailhead | null) => void;
+  center?:    [number, number];
+  zoom?:      number;
 }
 
-export default function TrailheadMap({ trailheads, selected, onSelect }: Props) {
+export default function TrailheadMap({ trailheads, selected, onSelect, center = [39.05, -120.02], zoom = 10 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef       = useRef<any>(null);
   const markersRef   = useRef<Record<string, any>>({});
@@ -28,13 +30,7 @@ export default function TrailheadMap({ trailheads, selected, onSelect }: Props) 
         shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       });
 
-      const map = L.map(containerRef.current, {
-        center:      [39.05, -120.02],
-        zoom:        11,
-        minZoom:     10,
-        maxZoom:     16,
-        zoomControl: true,
-      });
+      const map = L.map(containerRef.current, { center, zoom });
 
       // Standard OpenStreetMap tiles — consistent with all other maps
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -15,9 +15,11 @@ interface Props {
   amenities: Amenity[];
   selected:  Amenity | null;
   onSelect:  (a: Amenity | null) => void;
+  center?:   [number, number];
+  zoom?:     number;
 }
 
-export default function AmenitiesMap({ amenities, selected, onSelect }: Props) {
+export default function AmenitiesMap({ amenities, selected, onSelect, center = [39.02, -120.04], zoom = 10 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef       = useRef<any>(null);
   const markersRef   = useRef<Record<string, any>>({});
@@ -33,7 +35,7 @@ export default function AmenitiesMap({ amenities, selected, onSelect }: Props) {
         iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
         shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       });
-      const map = L.map(containerRef.current, { center:[39.02, -120.04], zoom:10 });
+      const map = L.map(containerRef.current, { center, zoom });
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         maxZoom: 19,

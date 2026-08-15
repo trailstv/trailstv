@@ -7,9 +7,11 @@ interface Props {
   camps:    Camp[];
   selected: Camp | null;
   onSelect: (c: Camp) => void;
+  center?:  [number, number];
+  zoom?:    number;
 }
 
-export default function CampsiteMap({ camps, selected, onSelect }: Props) {
+export default function CampsiteMap({ camps, selected, onSelect, center = [39.05, -120.04], zoom = 10 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef       = useRef<any>(null);
   const markersRef   = useRef<Record<string, any>>({});
