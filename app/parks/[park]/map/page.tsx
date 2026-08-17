@@ -28,6 +28,28 @@ const TYPE_LABELS: Record<string, string> = {
   viewpoint:'🗺 Visitor Centers', spot:'🏨 Lodging', rental:'🧗 Gear & Rentals', marina:'⚓ Marinas',
 };
 
+
+function SelectedAmenityPanel({ amenity, heroColor, onClose }: { amenity: ParkAmenity; heroColor: string; onClose: () => void }) {
+  return (
+    <div style={{ background:'var(--cbg)', border:`1px solid ${heroColor}`, borderRadius:12,
+      padding:'1.25rem 1.5rem', marginBottom:'1.5rem', animation:'fadeUp .2s ease' }}>
+      <div style={{ display:'flex', justifyContent:'space-between' }}>
+        <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.1rem', fontWeight:700 }}>{amenity.name}</h2>
+        <button onClick={onClose}
+          style={{ background:'none', border:'none', color:'var(--granite)', fontSize:'1.2rem', cursor:'pointer' }}>✕</button>
+      </div>
+      <p style={{ fontSize:'.84rem', color:'rgba(242,245,247,.75)', lineHeight:1.75, marginBottom:'.75rem', marginTop:'.4rem' }}>
+        {amenity.desc}
+      </p>
+      {amenity.url && (
+        <a href={amenity.url} target="_blank" rel="noopener" className="bp" style={{ textDecoration:'none' }}>
+          More Info →
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function ParkMapPage() {
   const params = useParams();
   const slug   = typeof params.park === 'string' ? params.park : '';
@@ -98,17 +120,7 @@ export default function ParkMapPage() {
         </div>
       </div>
 
-      {selected && (() => { const sel = selected as ParkAmenity; return (
-        <div style={{ background:'var(--cbg)', border:`1px solid ${park.heroColor}`, borderRadius:12,
-          padding:'1.25rem 1.5rem', marginBottom:'1.5rem', animation:'fadeUp .2s ease' }}>
-          <div style={{ display:'flex', justifyContent:'space-between' }}>
-            <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.1rem', fontWeight:700 }}>{sel.name}</h2>
-            <button onClick={() => setSelected(null)} style={{ background:'none', border:'none', color:'var(--granite)', fontSize:'1.2rem', cursor:'pointer' }}>✕</button>
-          </div>
-          <p style={{ fontSize:'.84rem', color:'rgba(242,245,247,.75)', lineHeight:1.75, marginBottom:'.75rem', marginTop:'.4rem' }}>{sel.desc}</p>
-          {sel.url && <a href={sel.url} target="_blank" rel="noopener" className="bp" style={{ textDecoration:'none' }}>More Info →</a>}
-        </div>
-        );})()}
+      {selected && <SelectedAmenityPanel amenity={selected as ParkAmenity} heroColor={park.heroColor} onClose={() => setSelected(null)} />}
       <Link href={`/parks/${slug}`} style={{ fontSize:'.82rem', color:'var(--granite)', fontWeight:600 }}>← Back to {park.shortName}</Link>
     </div>
   );

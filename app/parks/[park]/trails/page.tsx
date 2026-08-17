@@ -30,6 +30,44 @@ const PARK_TRAILS: Record<string, ParkTrail[]> = {
   'great-smoky-mountains': GRSM_TRAILS,
 };
 
+
+function SelectedTrailPanel({ trail, onClose }: { trail: ParkTrail; onClose: () => void }) {
+  const color = DIFF_COLORS[trail.difficulty] || 'var(--cborder)';
+  return (
+    <div style={{ background:'var(--cbg)', border:`1px solid ${color}`,
+      borderRadius:12, padding:'1.25rem 1.5rem', marginBottom:'1.5rem', animation:'fadeUp .2s ease' }}>
+      <div style={{ display:'flex', justifyContent:'space-between' }}>
+        <div>
+          <div className="eye">
+            {trail.difficulty}
+            {trail.distanceMi ? ` · ${trail.distanceMi} mi RT` : ''}
+            {trail.elevGainFt ? ` · +${trail.elevGainFt.toLocaleString()} ft` : ''}
+          </div>
+          <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.2rem', fontWeight:700, marginBottom:'.4rem' }}>
+            {trail.name}
+          </h2>
+        </div>
+        <button onClick={onClose}
+          style={{ background:'none', border:'none', color:'var(--granite)', fontSize:'1.2rem', cursor:'pointer' }}>✕</button>
+      </div>
+      <p style={{ fontSize:'.84rem', color:'rgba(242,245,247,.75)', lineHeight:1.75, marginBottom:'.75rem' }}>
+        {trail.desc}
+      </p>
+      {trail.note && (
+        <div style={{ background:'rgba(224,184,92,.08)', border:'1px solid rgba(224,184,92,.2)',
+          borderRadius:7, padding:'.6rem .85rem', fontSize:'.78rem', color:'#E0B85C', marginBottom:'.75rem' }}>
+          ⚠ {trail.note}
+        </div>
+      )}
+      {trail.url && (
+        <a href={trail.url} target="_blank" rel="noopener" className="bp" style={{ textDecoration:'none' }}>
+          Permits &amp; Info →
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function ParkTrailsPage() {
   const params    = useParams();
   const slug      = typeof params.park === 'string' ? params.park : '';
@@ -119,29 +157,11 @@ export default function ParkTrailsPage() {
       </div>
 
       {/* Selected detail panel */}
-      {selected && (() => { const sel = selected as ParkTrail; return (
-        <div style={{ background:'var(--cbg)', border:`1px solid ${DIFF_COLORS[selected.difficulty]||'var(--cborder)'}`,
-          borderRadius:12, padding:'1.25rem 1.5rem', marginBottom:'1.5rem', animation:'fadeUp .2s ease' }}>
-          <div style={{ display:'flex', justifyContent:'space-between' }}>
-            <div>
-              <div className="eye">
-                {sel.difficulty}
-                {sel.distanceMi ? ` · ${selected.distanceMi} mi RT` : ''}
-                {sel.elevGainFt ? ` · +${selected.elevGainFt.toLocaleString()} ft` : ''}
-              </div>
-              <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.2rem', fontWeight:700, marginBottom:'.4rem' }}>{sel.name}</h2>
-            </div>
-            <button onClick={() => setSelected(null)} style={{ background:'none', border:'none', color:'var(--granite)', fontSize:'1.2rem', cursor:'pointer' }}>✕</button>
-          </div>
-          <p style={{ fontSize:'.84rem', color:'rgba(242,245,247,.75)', lineHeight:1.75, marginBottom:'.75rem' }}>{sel.desc}</p>
-          {sel.note && (
-            <div style={{ background:'rgba(224,184,92,.08)', border:'1px solid rgba(224,184,92,.2)',
-              borderRadius:7, padding:'.6rem .85rem', fontSize:'.78rem', color:'#E0B85C', marginBottom:'.75rem' }}>
-              ⚠ {sel.note}
-            </div>
-          )}
-          {sel.url && <a href={sel.url} target="_blank" rel="noopener" className="bp" style={{ textDecoration:'none' }}>Permits &amp; Info →</a>}
-        </div>
+      {selected && (
+        <SelectedTrailPanel
+          trail={selected as ParkTrail}
+          onClose={() => setSelected(null)}
+        />
       )}
       <Link href={`/parks/${slug}`} style={{ fontSize:'.82rem', color:'var(--granite)', fontWeight:600 }}>← Back to {park.shortName}</Link>
     </div>
