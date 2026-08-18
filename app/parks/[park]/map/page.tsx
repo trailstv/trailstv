@@ -5,10 +5,13 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { getPark } from '@/lib/parks';
 import { ZION_AMENITIES } from '@/lib/parks/zion';
+import { LAKE_TAHOE_AMENITIES } from '@/lib/parks/lake-tahoe';
 import { YELLOWSTONE_AMENITIES } from '@/lib/parks/yellowstone';
 import { GRAND_CANYON_AMENITIES } from '@/lib/parks/grand-canyon';
 import { YOSEMITE_AMENITIES } from '@/lib/parks/yosemite';
 import { GRSM_AMENITIES } from '@/lib/parks/great-smoky-mountains';
+import { TAHOE_AMENITIES } from '@/lib/parks/lake-tahoe';
+import { TAHOE_AMENITIES } from '@/lib/parks/lake-tahoe';
 import type { ParkAmenity, ParkPin } from '@/components/ParkMap';
 
 const ParkMap = dynamic(() => import('@/components/ParkMap'), {
@@ -17,11 +20,13 @@ const ParkMap = dynamic(() => import('@/components/ParkMap'), {
 });
 
 const PARK_AMENITIES: Record<string, ParkAmenity[]> = {
+  'lake-tahoe':            LAKE_TAHOE_AMENITIES,
   zion:                    ZION_AMENITIES,
   yellowstone:             YELLOWSTONE_AMENITIES,
   'grand-canyon':          GRAND_CANYON_AMENITIES,
   yosemite:                YOSEMITE_AMENITIES,
   'great-smoky-mountains': GRSM_AMENITIES,
+  'lake-tahoe':             TAHOE_AMENITIES,
 };
 
 const TYPE_LABELS: Record<string, string> = {

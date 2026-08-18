@@ -20,6 +20,7 @@ const EXCLUDED: Record<string, string[]> = {
   yellowstone:             ['climbing'],
   zion:                    [],
   yosemite:                [],
+  'lake-tahoe':            [],
 };
 
 export default function ParkActivitiesPage() {

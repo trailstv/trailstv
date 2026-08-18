@@ -1,25 +1,24 @@
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getPark } from '@/lib/parks';
-
-// Lake Tahoe hub — points to the existing Tahoe sections
-// rather than duplicating the data that already lives in the main site
 
 export const metadata = { title: 'Lake Tahoe — TrailsTV' };
 
 const SECTIONS = [
-  { href:'/activities', icon:'🎯', label:'Activities',   desc:'Hiking, MTB, climbing, boating, fishing, skiing, and more — 13 activity maps' },
-  { href:'/trails',     icon:'🥾', label:'Trails',       desc:'33 trailheads across all four shores, difficulty ratings and distances' },
-  { href:'/campsites',  icon:'⛺', label:'Camping',       desc:'14 campgrounds with live Recreation.gov availability' },
-  { href:'/map',        icon:'🗺️', label:'Amenities',    desc:'34 amenity locations — grocery, gas, bike shops, gear, rentals' },
-  { href:'/activities/boating', icon:'🚤', label:'Boating & Inspections', desc:'Marinas, ramps, and mandatory AIS inspection guide' },
+  { slug:'trails',     icon:'🥾', label:'Trails',      desc:'17 verified trailheads — summits, waterfalls, rim trail, and MTB' },
+  { slug:'camping',    icon:'⛺', label:'Camping',      desc:'14 campgrounds with live Recreation.gov availability' },
+  { slug:'activities', icon:'🎯', label:'Activities',   desc:'13 activity maps — boating, kayaking, skiing, climbing, and more' },
+  { slug:'map',        icon:'🗺️', label:'Amenities',   desc:'Gear shops, marinas, grocery, visitor centers' },
+  { slug:'permits',    icon:'📋', label:'Permits',      desc:'Boat inspections, Desolation Wilderness, backcountry permits' },
+  { slug:'conditions', icon:'🌡️', label:'Conditions',  desc:'Live weather, fire restrictions, lake level, snow report' },
 ];
 
 export default function LakeTahoeParkPage() {
-  const park = getPark('lake-tahoe')!;
+  const park = getPark('lake-tahoe');
+  if (!park) notFound();
 
   return (
     <div>
-      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="hero-unified" style={{ minHeight:'60vh' }}>
         <div className="hero-unified-overlay" style={{ background:'linear-gradient(135deg,rgba(9,20,32,.92) 0%,rgba(9,20,32,.5) 100%)' }}/>
         <div className="hero-unified-content" style={{ paddingTop:'3rem', paddingBottom:'3rem' }}>
@@ -39,8 +38,8 @@ export default function LakeTahoeParkPage() {
             {([
               [park.annualVisits, 'Annual visits'],
               ['72 mi shoreline', 'Lake size'],
-              ['6,229 ft', 'Elevation'],
-              ['Free entry', 'Admission'],
+              [park.elevationFt.high.toLocaleString() + ' ft', 'High point'],
+              [park.entranceFee.startsWith('Free') ? 'Free entry' : park.entranceFee.split('·')[0].trim(), 'Admission'],
             ] as [string,string][]).map(([val, label]) => (
               <div key={label}>
                 <div style={{ fontWeight:700, fontSize:'.9rem', color:park.heroColor }}>{val}</div>
@@ -49,14 +48,13 @@ export default function LakeTahoeParkPage() {
             ))}
           </div>
           <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap' }}>
-            <Link href="/trails" className="bp">Trail Map →</Link>
-            <Link href="/campsites" className="bs">Campsites →</Link>
-            <Link href="/activities/boating" className="bs">Boating →</Link>
+            <Link href="/parks/lake-tahoe/trails" className="bp">Trail Map →</Link>
+            <Link href="/parks/lake-tahoe/camping" className="bs">Campgrounds →</Link>
+            <Link href="/parks/lake-tahoe/permits" className="bs">Permits →</Link>
           </div>
         </div>
       </section>
 
-      {/* ── HIGHLIGHTS ───────────────────────────────────────────────── */}
       <section className="sw" style={{ paddingBottom:'2rem' }}>
         <div className="eye">Signature experiences</div>
         <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.4rem', fontWeight:700, marginBottom:'1rem' }}>
@@ -87,16 +85,15 @@ export default function LakeTahoeParkPage() {
         </div>
       </section>
 
-      {/* ── SECTION GRID ─────────────────────────────────────────────── */}
       <section style={{ background:'rgba(9,20,32,.4)', borderTop:'1px solid var(--cborder)' }}>
         <div className="sw" style={{ paddingTop:'2rem', paddingBottom:'3rem' }}>
-          <div className="eye">Full planning guides</div>
+          <div className="eye">Plan your trip</div>
           <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.3rem', fontWeight:700, marginBottom:'1rem' }}>
             Explore Lake Tahoe
           </h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))', gap:'1rem' }}>
             {SECTIONS.map(s => (
-              <Link key={s.href} href={s.href} style={{ textDecoration:'none', color:'inherit' }}>
+              <Link key={s.slug} href={`/parks/lake-tahoe/${s.slug}`} style={{ textDecoration:'none', color:'inherit' }}>
                 <div className="act-card" style={{ cursor:'pointer' }}>
                   <div style={{ fontSize:'1.6rem', marginBottom:'.5rem' }}>{s.icon}</div>
                   <div style={{ fontWeight:700, fontSize:'.95rem', marginBottom:'.3rem' }}>{s.label}</div>
@@ -109,7 +106,6 @@ export default function LakeTahoeParkPage() {
         </div>
       </section>
 
-      {/* ── SEASONS ──────────────────────────────────────────────────── */}
       <section className="sw" style={{ paddingTop:'2rem', paddingBottom:'3rem' }}>
         <div className="eye">When to visit</div>
         <h2 style={{ fontFamily:'var(--fd)', fontSize:'1.2rem', fontWeight:700, marginBottom:'1rem' }}>
@@ -125,7 +121,8 @@ export default function LakeTahoeParkPage() {
           ))}
         </div>
         <div style={{ display:'flex', gap:'.75rem', flexWrap:'wrap' }}>
-          <Link href="/" className="bs">Tahoe Home →</Link>
+          <Link href="/parks/lake-tahoe/conditions" className="bs">Live Conditions →</Link>
+          <a href={park.website} target="_blank" rel="noopener" className="bs">USFS Website →</a>
           <Link href="/parks" style={{ fontSize:'.82rem', color:'var(--granite)', fontWeight:600, alignSelf:'center' }}>← All Parks</Link>
         </div>
       </section>

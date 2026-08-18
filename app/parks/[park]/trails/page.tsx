@@ -5,10 +5,13 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { getPark } from '@/lib/parks';
 import { ZION_TRAILS } from '@/lib/parks/zion';
+import { LAKE_TAHOE_TRAILS } from '@/lib/parks/lake-tahoe';
 import { YELLOWSTONE_TRAILS } from '@/lib/parks/yellowstone';
 import { GRAND_CANYON_TRAILS } from '@/lib/parks/grand-canyon';
 import { YOSEMITE_TRAILS } from '@/lib/parks/yosemite';
 import { GRSM_TRAILS } from '@/lib/parks/great-smoky-mountains';
+import { TAHOE_TRAILS } from '@/lib/parks/lake-tahoe';
+import { TAHOE_TRAILS } from '@/lib/parks/lake-tahoe';
 import type { ParkTrail, ParkPin } from '@/components/ParkMap';
 
 const ParkMap = dynamic(() => import('@/components/ParkMap'), {
@@ -23,11 +26,13 @@ const DIFF_COLORS: Record<string, string> = {
 };
 
 const PARK_TRAILS: Record<string, ParkTrail[]> = {
+  'lake-tahoe':            LAKE_TAHOE_TRAILS,
   zion:                    ZION_TRAILS,
   yellowstone:             YELLOWSTONE_TRAILS,
   'grand-canyon':          GRAND_CANYON_TRAILS,
   yosemite:                YOSEMITE_TRAILS,
   'great-smoky-mountains': GRSM_TRAILS,
+  'lake-tahoe':             TAHOE_TRAILS,
 };
 
 

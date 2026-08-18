@@ -5,10 +5,13 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { getPark } from '@/lib/parks';
 import { ZION_CAMPGROUNDS } from '@/lib/parks/zion';
+import { LAKE_TAHOE_CAMPGROUNDS } from '@/lib/parks/lake-tahoe';
 import { YELLOWSTONE_CAMPGROUNDS } from '@/lib/parks/yellowstone';
 import { GRAND_CANYON_CAMPGROUNDS } from '@/lib/parks/grand-canyon';
 import { YOSEMITE_CAMPGROUNDS } from '@/lib/parks/yosemite';
 import { GRSM_CAMPGROUNDS } from '@/lib/parks/great-smoky-mountains';
+import { TAHOE_CAMPGROUNDS } from '@/lib/parks/lake-tahoe';
+import { TAHOE_CAMPGROUNDS } from '@/lib/parks/lake-tahoe';
 import type { ParkCampsite, ParkPin } from '@/components/ParkMap';
 
 const ParkMap = dynamic(() => import('@/components/ParkMap'), {
@@ -17,11 +20,13 @@ const ParkMap = dynamic(() => import('@/components/ParkMap'), {
 });
 
 const PARK_CAMPS: Record<string, ParkCampsite[]> = {
+  'lake-tahoe':            LAKE_TAHOE_CAMPGROUNDS,
   zion:                    ZION_CAMPGROUNDS,
   yellowstone:             YELLOWSTONE_CAMPGROUNDS,
   'grand-canyon':          GRAND_CANYON_CAMPGROUNDS,
   yosemite:                YOSEMITE_CAMPGROUNDS,
   'great-smoky-mountains': GRSM_CAMPGROUNDS,
+  'lake-tahoe':             TAHOE_CAMPGROUNDS,
 };
 
 export default function ParkCampingPage() {
