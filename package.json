@@ -1,19 +1,19 @@
 {
-  "name": "trailstv-tahoe-planner",
-  "version": "1.0.0",
+  "name": "trailstv",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev":   "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint":  "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "next":                    "^16.2.12",
     "react":                   "^19.0.0",
     "react-dom":               "^19.0.0",
     "@neondatabase/serverless": "^1.1.0",
-    "leaflet":                 "^1.9.4"
+    "leaflet":                 "^1.9.4",
+    "stripe":                  "^16.0.0"
   },
   "devDependencies": {
     "@types/node":    "^24",

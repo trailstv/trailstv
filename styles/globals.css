@@ -685,3 +685,76 @@ nav {
     border:        1px solid var(--cborder);
   }
 }
+
+/* ── Pricing ─────────────────────────────────────────────────────────────── */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+.pcrd {
+  background:    rgba(13,27,42,.7);
+  border:        1px solid var(--cborder);
+  border-radius: 14px;
+  padding:       1.75rem 1.5rem;
+  position:      relative;
+  display:       flex;
+  flex-direction: column;
+}
+.pcrd.featured { border-color: var(--glacial); background: rgba(74,173,188,.06); }
+.pcrd-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--glacial); color: #0D1B2A;
+  font-size: .68rem; font-weight: 800; letter-spacing: .08em;
+  padding: 2px 12px; border-radius: 10px; text-transform: uppercase; white-space: nowrap;
+}
+.pcrd-tier  { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--granite); margin-bottom:.5rem; }
+.pcrd-price { font-family:var(--fd); font-size:2.2rem; font-weight:900; margin-bottom:.2rem; }
+.pcrd-sub   { font-size:.72rem; color:var(--granite); margin-bottom:.75rem; }
+
+/* ── Park activity grid ──────────────────────────────────────────────────── */
+.park-activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: .85rem;
+}
+
+/* ── Condition badges ────────────────────────────────────────────────────── */
+.cond-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: rgba(13,27,42,.7); border: 1px solid var(--cborder);
+  border-radius: 8px; padding: .5rem .85rem;
+  font-size: .76rem; font-weight: 600;
+}
+.cond-badge.good    { border-color: rgba(74,188,120,.3); color: #4ABC78; }
+.cond-badge.warning { border-color: rgba(224,184,92,.3); color: #E0B85C; }
+.cond-badge.danger  { border-color: rgba(224,92,92,.3);  color: #E05050; }
+
+/* ── Data ticker ─────────────────────────────────────────────────────────── */
+.ticker-wrap {
+  overflow: hidden; background: rgba(9,20,32,.8);
+  border-top: 1px solid var(--cborder);
+  border-bottom: 1px solid var(--cborder);
+  padding: .4rem 0;
+}
+.ticker-inner {
+  display: flex; gap: 3rem; width: max-content;
+  animation: ticker 40s linear infinite;
+}
+@keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.ticker-item { font-size: .72rem; color: var(--granite); white-space: nowrap; font-weight: 500; }
+.ticker-item span { color: var(--glacial); font-weight: 700; }
+
+/* ── Alert bar ───────────────────────────────────────────────────────────── */
+.alert-bar {
+  background: rgba(224,80,80,.1); border-bottom: 1px solid rgba(224,80,80,.3);
+  padding: .65rem 2rem; display: flex; align-items: center; gap: .75rem;
+  font-size: .8rem; color: #F2F5F7;
+}
+
+/* ── fadeUp animation ────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

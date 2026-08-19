@@ -1,82 +1,49 @@
 // app/api/snow/route.ts
-// GET /api/snow — snow depth and ski resort status for the Tahoe basin
-// Cached 6 hours. No API key required — NRCS SNOTEL public data.
-//
-// SNOTEL sites used:
-//   1049:NV  — Mt. Rose (8,260 ft)      — East shore / Diamond Peak area
-//   778:CA   — Rubicon #2 (8,750 ft)    — West shore / Desolation Wilderness
-//   734:CA   — Tahoe City Cross (6,900 ft) — North shore baseline
-//   602:CA   — Donner Summit (6,900 ft) — North shore / I-80 corridor
-//
-// WTEQ = snow water equivalent (in), SNWD = snow depth (in)
-//
-// Source: https://wcc.sc.egov.usda.gov/reportGenerator/
+// GET /api/snow?lat=XX&lon=XX&park=yosemite
+// Uses Open-Meteo for snowfall/snowdepth data — free, no key required
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export const revalidate = 21600;
+export const revalidate = 21600; // 6 hours
 
-// Lightweight CSV report — one row per site
-const SNOTEL_URL =
-  'https://wcc.sc.egov.usda.gov/reportGenerator/view_csv/customMultiTimeSeriesGroupByStationReport/daily/start_of_period/' +
-  '1049:NV:SNTL%7C778:CA:SNTL%7C734:CA:SNTL%7C602:CA:SNTL%7Cid=%22%22%7Cname/' +
-  '0,0/SNWD::value,WTEQ::value';
+export async function GET(req: NextRequest) {
+  const lat  = req.nextUrl.searchParams.get('lat')  ?? '44.428';
+  const lon  = req.nextUrl.searchParams.get('lon')  ?? '-110.588';
 
-const RESORT_SITES = [
-  { name: 'Palisades Tahoe',   site: '778:CA:SNTL' },
-  { name: 'Mt. Rose',          site: '1049:NV:SNTL' },
-  { name: 'Northstar / Donner',site: '602:CA:SNTL' },
-  { name: 'South Shore',       site: '734:CA:SNTL' },
-];
-
-function parseSnotel(csv: string) {
-  const lines  = csv.split('\n').filter(l => l && !l.startsWith('#'));
-  const header = lines[0]?.split(',') ?? [];
-  return lines.slice(1).map(line => {
-    const vals = line.split(',');
-    const row: Record<string, string> = {};
-    header.forEach((h, i) => { row[h.trim()] = (vals[i] ?? '').trim(); });
-    return row;
-  });
-}
-
-export async function GET() {
   try {
-    const res = await fetch(SNOTEL_URL, { next: { revalidate: 21600 } });
-    if (!res.ok) throw new Error(`SNOTEL ${res.status}`);
+    const params = new URLSearchParams({
+      latitude:         lat,
+      longitude:        lon,
+      hourly:           'snow_depth,snowfall',
+      daily:            'snowfall_sum',
+      temperature_unit: 'fahrenheit',
+      timezone:         'auto',
+      forecast_days:    '7',
+    });
+    const res  = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`, { next: { revalidate: 21600 } });
+    if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
+    const data = await res.json();
 
-    const csv  = await res.text();
-    const rows = parseSnotel(csv);
+    const hourly       = data.hourly;
+    const nowIdx       = 0;
+    const baseDepthM   = hourly?.snow_depth?.[nowIdx] ?? 0;
+    const baseDepthIn  = Math.round(baseDepthM * 39.37);  // m → inches
 
-    // Average snow depth across all sites
-    const depths   = rows
-      .map(r => parseFloat(Object.values(r).find((v, i) => i === 1) ?? '0'))
-      .filter(v => !isNaN(v) && v >= 0);
-    const avgDepth = depths.length ? Math.round(depths.reduce((a,b)=>a+b,0) / depths.length) : 0;
+    const newSnow24    = (data.daily?.snowfall_sum?.[0] ?? 0);
+    const newSnow24In  = Math.round(newSnow24 * 0.394); // cm → inches
 
-    const season      = avgDepth > 12 ? 'open' : 'off';
-    const openResorts = season === 'open' ? Math.min(10, Math.ceil(avgDepth / 8)) : 0;
+    const seasonTotal  = (data.daily?.snowfall_sum ?? []).reduce((s:number, v:number) => s + v, 0);
+    const seasonTotalIn = Math.round(seasonTotal * 0.394);
 
     return NextResponse.json({
-      source:        'nrcs-snotel',
-      season,
-      baseDepthIn:   avgDepth,
-      newSnow48hrIn: 0, // SNOTEL daily doesn't give 48hr delta cleanly
-      resortCount:   14,
-      openResorts,
-      updatedAt:     new Date().toISOString(),
-    }, { headers: { 'Cache-Control': 'public, s-maxage=21600, stale-while-revalidate=3600' } });
-
+      source:         'open-meteo',
+      baseDepthIn:    baseDepthIn   > 0 ? baseDepthIn   : null,
+      newSnow24In:    newSnow24In   > 0 ? newSnow24In   : null,
+      seasonTotalIn:  seasonTotalIn > 0 ? seasonTotalIn : null,
+      snowpackStatus: baseDepthIn   > 24 ? 'Deep' : baseDepthIn > 6 ? 'Moderate' : baseDepthIn > 0 ? 'Shallow' : 'None',
+      updatedAt:      new Date().toISOString(),
+    }, { headers: { 'Cache-Control':'public,s-maxage=21600,stale-while-revalidate=3600' }});
   } catch (err: any) {
-    console.error('Snow API error:', err.message);
-    return NextResponse.json({
-      source:        'fallback',
-      season:        'off',
-      baseDepthIn:   0,
-      newSnow48hrIn: 0,
-      resortCount:   14,
-      openResorts:   0,
-      error:         err.message,
-    }, { headers: { 'Cache-Control': 'public, s-maxage=3600' } });
+    return NextResponse.json({ source:'error', error:err.message });
   }
 }

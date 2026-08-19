@@ -1,223 +1,380 @@
-// lib/parks/index.ts — National Parks registry
-
-export type ParkSlug = 'great-smoky-mountains' | 'zion' | 'yellowstone' | 'grand-canyon' | 'yosemite' | 'lake-tahoe';
-
-export interface ParkMeta {
-  slug:         ParkSlug;
-  npsCode:      string;
-  name:         string;
-  shortName:    string;
-  tagline:      string;
-  state:        string;
-  lat:          number;
-  lng:          number;
-  zoom:         number;
-  acreage:      string;
-  established:  number;
-  annualVisits: string;
-  elevationFt:  { low: number; high: number };
-  heroColor:    string;
-  entranceFee:  string;
-  permitRequired: boolean;
-  website:      string;
-  highlights:   string[];
-  warnings:     string[];
-  seasons:      { name: string; desc: string }[];
-}
+// lib/parks/index.ts — National Parks registry for TrailsTV v2
+import type { ParkMeta, ParkSlug } from '@/lib/types';
 
 export const PARKS: Record<ParkSlug, ParkMeta> = {
+
   'great-smoky-mountains': {
     slug:'great-smoky-mountains', npsCode:'grsm',
     name:'Great Smoky Mountains National Park', shortName:'Great Smoky Mountains',
-    tagline:'The most visited national park in America — and the most free.',
+    tagline:'The most visited national park in America — and the only one with no entrance fee.',
     state:'Tennessee & North Carolina', lat:35.6532, lng:-83.5070, zoom:10,
-    acreage:'522,427', established:1934, annualVisits:'11.5M (2025)',
+    acreage:'522,427', established:1934, annualVisits:'11.5M',
     elevationFt:{ low:875, high:6643 }, heroColor:'#4ABC78',
-    entranceFee:'Free — no entrance fee', permitRequired:false,
+    entranceFee:'Free', permitRequired:false,
     website:'https://www.nps.gov/grsm',
-    highlights:[
-      'Clingmans Dome — highest point at 6,643 ft',
-      'Cades Cove — historic valley with wildlife and log cabins',
-      'Appalachian Trail — 71 miles through the park',
-      'Alum Cave Trail — iconic geology, 4.4 mi to summit',
-      'Fall foliage — among the best in the eastern US',
-      'Free admission — only major NPS park with no entrance fee',
-    ],
-    warnings:[
-      'Bears are active — proper food storage required at all times',
-      'Cades Cove parking often full by 9am in summer',
-      'Thunderstorms develop quickly above 4,000 ft',
-      'Clingmans Dome Road closed December 1 through March 31',
-    ],
+    activities:['hiking','camping','backpacking','wildlife','fishing','mtb'],
+    highlights:['Clingmans Dome — 6,643 ft summit with observation tower','Cades Cove — wildlife-rich historic valley','Appalachian Trail — 71 miles through the park','Alum Cave Trail — iconic geology and summit views','Free admission — no entrance fee ever'],
+    warnings:['Bears active year-round — proper food storage required','Cades Cove parking full by 9am in summer','Clingmans Dome Road closes Dec 1 – Mar 31'],
     seasons:[
-      { name:'Spring (Mar–May)', desc:'Wildflowers and waterfalls at peak. Cooler temps, fewer crowds.' },
-      { name:'Summer (Jun–Aug)', desc:'Busiest season. Start early. Cades Cove fills by 9am.' },
-      { name:'Fall (Sep–Nov)',   desc:'Peak foliage mid-October. Book campsites far in advance.' },
-      { name:'Winter (Dec–Feb)', desc:'Snow at higher elevations. Clingmans Dome Road closes Dec 1.' },
+      { name:'Spring (Mar–May)', desc:'Wildflowers peak. Cooler temps, fewer crowds.' },
+      { name:'Summer (Jun–Aug)', desc:'Busiest season. Start early. Arrive before 9am.' },
+      { name:'Fall (Sep–Nov)',   desc:'Peak foliage mid-October. Book campsites early.' },
+      { name:'Winter (Dec–Feb)', desc:'Snow at elevation. Clingmans Dome Road closes.' },
     ],
   },
+
   zion: {
     slug:'zion', npsCode:'zion',
     name:'Zion National Park', shortName:'Zion',
-    tagline:"Utah's crown jewel — 5 million people in one canyon.",
+    tagline:"Utah's canyon masterpiece — 5 million visitors, one narrow gorge.",
     state:'Utah', lat:37.2982, lng:-113.0263, zoom:11,
-    acreage:'147,242', established:1919, annualVisits:'4.98M (2025)',
+    acreage:'147,242', established:1919, annualVisits:'4.98M',
     elevationFt:{ low:3666, high:8726 }, heroColor:'#E07040',
-    entranceFee:'$35/vehicle · America the Beautiful pass accepted', permitRequired:true,
+    entranceFee:'$35/vehicle', permitRequired:true,
     website:'https://www.nps.gov/zion',
-    highlights:[
-      'The Narrows — wade the Virgin River between 1,000 ft walls',
-      'Angels Landing — chains route, permit required, 5.4 mi RT',
-      'Emerald Pools — three tiered pools, accessible for most',
-      'Subway — technical slot canyon, permit required',
-      'Canyon Overlook Trail — best view for the effort, 1 mi RT',
-      'Kolob Canyons — quieter, less-visited section of the park',
-    ],
-    warnings:[
-      'Angels Landing requires a permit — lottery at recreation.gov',
-      'Flash floods can be fatal — check weather before any slot canyon',
-      'Shuttle mandatory Apr–Nov — no private vehicles on scenic drive',
-      'Heat exhaustion common Jun–Aug — carry 1L water per hour',
-    ],
+    activities:['hiking','camping','backpacking','climbing','kayaking','swimming','wildlife'],
+    highlights:['The Narrows — wade the Virgin River between 1,000 ft walls','Angels Landing — permit required, 1,488 ft gain','Canyon Overlook — best view for least effort','Subway — technical slot canyon permit route','Kolob Canyons — quiet, less-visited section'],
+    warnings:['Angels Landing requires a permit — apply 3 months ahead','Flash floods deadly — check forecast before slot canyons','Shuttle mandatory Apr–Nov on Zion Canyon Scenic Drive','110°F+ in summer — carry 1L water per hour hiking'],
     seasons:[
-      { name:'Spring (Mar–May)', desc:'Best conditions. Wildflowers, moderate temps.' },
-      { name:'Summer (Jun–Aug)', desc:'Very hot (100°F+). Flash flood risk high. Start before 7am.' },
-      { name:'Fall (Sep–Nov)',   desc:'Ideal weather. Best Narrows conditions. Still crowded.' },
-      { name:'Winter (Dec–Feb)', desc:'Quietest season. Angels Landing icy. Narrows needs dry suit.' },
+      { name:'Spring (Mar–May)', desc:'Best all-around. Wildflowers, moderate temps.' },
+      { name:'Summer (Jun–Aug)', desc:'Extremely hot. Flash flood season. Start before 7am.' },
+      { name:'Fall (Sep–Nov)',   desc:'Ideal. Best Narrows conditions. Still crowded Oct.' },
+      { name:'Winter (Dec–Feb)', desc:'Quietest. Angels Landing icy. Narrows needs dry suit.' },
     ],
   },
+
   yellowstone: {
     slug:'yellowstone', npsCode:'yell',
     name:'Yellowstone National Park', shortName:'Yellowstone',
     tagline:"America's first national park. The world's largest active supervolcano.",
     state:'Wyoming, Montana & Idaho', lat:44.4280, lng:-110.5885, zoom:9,
-    acreage:'2,219,791', established:1872, annualVisits:'4.76M (2025)',
+    acreage:'2,219,791', established:1872, annualVisits:'4.76M',
     elevationFt:{ low:5282, high:11358 }, heroColor:'#D4A853',
-    entranceFee:'$35/vehicle · Valid 7 days', permitRequired:false,
+    entranceFee:'$35/vehicle', permitRequired:false,
     website:'https://www.nps.gov/yell',
-    highlights:[
-      'Old Faithful — erupts every 44–125 minutes',
-      'Grand Prismatic Spring — largest hot spring in the US',
-      'Lamar Valley — best wildlife viewing in North America',
-      'Grand Canyon of the Yellowstone — 308 ft Lower Falls',
-      'Mammoth Hot Springs — terraced travertine formations',
-      'Norris Geyser Basin — hottest thermal area in the park',
-    ],
-    warnings:[
-      'Stay on boardwalks — thermal features can be scalding',
-      'Stay 25 yards from bison, 100 yards from bears and wolves',
-      'Altitude sickness possible above 8,000 ft',
-      'Book lodging and campsites 6+ months in advance',
-    ],
+    activities:['hiking','camping','backpacking','wildlife','fishing','skiing','snowshoeing'],
+    highlights:['Old Faithful — erupts every 44–125 minutes','Grand Prismatic Spring — largest hot spring in US','Lamar Valley — best wildlife viewing in North America','Grand Canyon of Yellowstone — 308 ft Lower Falls','Mammoth Hot Springs — terraced travertine formations'],
+    warnings:['Stay on boardwalks — thermal features scalding, people die yearly','25 yards from bison, 100 yards from bears and wolves','Book campsites 6+ months in advance','Most roads close in winter — snowcoach access only'],
     seasons:[
-      { name:'Spring (Apr–May)', desc:'Fewer crowds, baby bison, dramatic geyser steam.' },
-      { name:'Summer (Jun–Aug)', desc:'All roads open. Best wildlife in Lamar Valley.' },
-      { name:'Fall (Sep–Oct)',   desc:'Elk rut in September. Fewer people, great light.' },
-      { name:'Winter (Nov–Mar)', desc:'Most roads closed. Snowcoach access only. Extraordinary.' },
+      { name:'Spring (Apr–May)', desc:'Fewer crowds. Baby bison. Roads just reopening.' },
+      { name:'Summer (Jun–Aug)', desc:'All roads open. Old Faithful busy. Best Lamar Valley wildlife.' },
+      { name:'Fall (Sep–Oct)',   desc:'Elk rut in September. Fewer people. Great photography.' },
+      { name:'Winter (Nov–Mar)', desc:'Snowcoach access only. Extraordinary thermal steam.' },
     ],
   },
+
   'grand-canyon': {
     slug:'grand-canyon', npsCode:'grca',
     name:'Grand Canyon National Park', shortName:'Grand Canyon',
-    tagline:'277 river miles. A billion years of Earth history.',
+    tagline:'277 river miles. A billion years of Earth history. One of the seven natural wonders.',
     state:'Arizona', lat:36.1069, lng:-112.1129, zoom:10,
-    acreage:'1,217,262', established:1919, annualVisits:'4.9M (2024)',
+    acreage:'1,217,262', established:1919, annualVisits:'4.9M',
     elevationFt:{ low:1200, high:9165 }, heroColor:'#C4603A',
-    entranceFee:'$35/vehicle · Valid 7 days', permitRequired:true,
+    entranceFee:'$35/vehicle', permitRequired:true,
     website:'https://www.nps.gov/grca',
-    highlights:[
-      'South Rim — Mather Point, Yavapai Point, 13 miles of Rim Trail',
-      'Bright Angel Trail — classic corridor route, 9.5 mi to river',
-      'North Rim — cooler, quieter, 1,000 ft higher than South Rim',
-      'Colorado River — multi-day whitewater raft trips',
-      'Phantom Ranch — only lodging below the rim, book a year ahead',
-      'Havasu Falls — turquoise waterfalls on Havasupai tribal land',
-    ],
-    warnings:[
-      'Do NOT hike to the river and back in one day — people die attempting this',
-      'Inner canyon exceeds 110°F in summer — hike only before 10am and after 4pm',
-      'Bright Angel overnight permit required — apply via lottery',
-      'Havasupai Falls requires a separate tribal permit, not NPS',
-    ],
+    activities:['hiking','camping','backpacking','kayaking','wildlife','climbing'],
+    highlights:['South Rim — Mather Point, 13 miles of Rim Trail','Bright Angel Trail — 9.5 mi classic corridor to river','North Rim — cooler, quieter, 1,000 ft higher','Colorado River — multi-day whitewater rafting','Phantom Ranch — only lodging below the rim'],
+    warnings:['Do NOT hike to river and back in one day — people die doing this','Inner canyon 110°F+ in summer — hike before 10am only','Overnight permits via lottery 4 months in advance','Havasupai Falls requires separate tribal permit'],
     seasons:[
-      { name:'Spring (Mar–May)', desc:'Best inner canyon weather. Wildflowers on rim.' },
-      { name:'Summer (Jun–Aug)', desc:'South Rim accessible. Inner canyon dangerously hot.' },
-      { name:'Fall (Sep–Nov)',   desc:'Ideal temperatures. Best time for inner canyon hikes.' },
-      { name:'Winter (Dec–Feb)', desc:'North Rim closed. South Rim open. Snow transforms canyon.' },
+      { name:'Spring (Mar–May)', desc:'Best inner canyon conditions. Wildflowers on rim.' },
+      { name:'Summer (Jun–Aug)', desc:'South Rim busy. Inner canyon dangerously hot.' },
+      { name:'Fall (Sep–Nov)',   desc:'Ideal temperatures. Best inner canyon hiking.' },
+      { name:'Winter (Dec–Feb)', desc:'North Rim closed. South Rim open year-round.' },
     ],
   },
+
   yosemite: {
     slug:'yosemite', npsCode:'yose',
     name:'Yosemite National Park', shortName:'Yosemite',
-    tagline:'Granite. Waterfalls. Half Dome. The park that created conservation.',
+    tagline:'Granite. Waterfalls. Half Dome. The park that started the conservation movement.',
     state:'California', lat:37.8651, lng:-119.5383, zoom:10,
-    acreage:'759,620', established:1890, annualVisits:'4.28M (2025)',
+    acreage:'759,620', established:1890, annualVisits:'4.28M',
     elevationFt:{ low:2127, high:13114 }, heroColor:'#4AADBC',
     entranceFee:'$35/vehicle · Reservation required Mar–Nov', permitRequired:true,
     website:'https://www.nps.gov/yose',
-    highlights:[
-      'Half Dome — 17 mi RT hike with cables, permit required',
-      'El Capitan — 3,000 ft granite wall, world capital of big wall climbing',
-      'Yosemite Falls — tallest waterfall in North America at 2,425 ft',
-      'Glacier Point — 360° views over the valley',
-      'Mariposa Grove — 500 giant sequoias',
-      'Tuolumne Meadows — high country at 8,600 ft, less crowded',
-    ],
-    warnings:[
-      'Valley day-use reservation required March–November',
-      'Half Dome cables permit required — apply in March for summer',
-      'Tioga Road closed November through May/June',
-      'Bears active in all areas — never leave food in vehicles',
-    ],
+    activities:['hiking','camping','climbing','backpacking','mtb','wildlife','fishing','skiing'],
+    highlights:['Half Dome — permit required, 5,000 ft gain, cables section','El Capitan — 3,000 ft wall, world capital of big wall climbing','Yosemite Falls — tallest waterfall in North America (2,425 ft)','Glacier Point — 360° valley views accessible by road','Mariposa Grove — 500 giant sequoias'],
+    warnings:['Valley day-use reservation required Mar–Nov','Half Dome cables permit — apply in March for summer dates','Tioga Road closed Nov–May/June depending on snowpack','Bears active — use bear boxes, never leave food in vehicles'],
     seasons:[
-      { name:'Spring (Apr–Jun)', desc:'Waterfalls at peak. Valley Reservation required.' },
+      { name:'Spring (Apr–Jun)', desc:'Waterfalls peak. Reservation system in effect.' },
       { name:'Summer (Jul–Sep)', desc:'All areas open. Half Dome permits required. Very crowded.' },
       { name:'Fall (Sep–Nov)',   desc:'Fewer crowds in October. Best photography light.' },
       { name:'Winter (Dec–Mar)', desc:'Snow in valley. Badger Pass skiing. Tioga Road closed.' },
     ],
   },
 
-  'lake-tahoe': {
-    slug:         'lake-tahoe' as ParkSlug,
-    npsCode:      'tahoebf',
-    name:         'Lake Tahoe Basin',
-    shortName:    'Lake Tahoe',
-    tagline:      'The crown jewel of the Sierra Nevada — 72 miles of shoreline, 70 ft of visibility, and adventure on every shore.',
-    state:        'California & Nevada',
-    lat:          39.0968, lng: -120.0324, zoom: 10,
-    acreage:      '191,000',
-    established:  1899,
-    annualVisits: '15M+ (2025)',
-    elevationFt:  { low: 6229, high: 10881 },
-    heroColor:    '#4AADBC',
-    entranceFee:  'Free entry — no entrance fee',
-    permitRequired: false,
-    website:      'https://www.fs.usda.gov/ltbmu',
-    highlights: [
-      '70+ feet of water clarity — among the clearest lakes in the world',
-      'Emerald Bay — the most photographed spot in California',
-      'Desolation Wilderness — stunning alpine backcountry',
-      '33 trailheads across all four shores',
-      '16 ski resorts including Palisades, Heavenly, and Northstar',
-      '13 activity categories — boating, MTB, climbing, fishing, kayaking, and more',
+  'rocky-mountain': {
+    slug:'rocky-mountain', npsCode:'romo',
+    name:'Rocky Mountain National Park', shortName:'Rocky Mountain',
+    tagline:'Trail Ridge Road at 12,183 ft — the highest continuous paved road in the US.',
+    state:'Colorado', lat:40.3428, lng:-105.6836, zoom:10,
+    acreage:'265,807', established:1915, annualVisits:'4.4M',
+    elevationFt:{ low:7860, high:14259 }, heroColor:'#8BB8E8',
+    entranceFee:'$35/vehicle · Timed entry reservation required', permitRequired:true,
+    website:'https://www.nps.gov/romo',
+    activities:['hiking','camping','backpacking','wildlife','climbing','fishing','skiing','snowshoeing'],
+    highlights:['Trail Ridge Road — highest paved road in US at 12,183 ft','Longs Peak — 14,259 ft summit, permit required in summer','Bear Lake — most accessible alpine lake in the park','Elk rut — September rutting season in Horseshoe Park','Wild Basin — remote waterfalls and alpine wilderness'],
+    warnings:['Timed entry reservation required May–Oct — book at recreation.gov','Altitude sickness real above 10,000 ft — acclimatize first','Afternoon thunderstorms develop fast — be below treeline by noon','Longs Peak requires very early start — turn back if clouds build'],
+    seasons:[
+      { name:'Spring (Apr–May)', desc:'Elk calves, wildflowers. Some roads still closed.' },
+      { name:'Summer (Jun–Aug)', desc:'Timed entry required. Trail Ridge Road open.' },
+      { name:'Fall (Sep–Oct)',   desc:'Elk rut spectacular. Aspens peak mid-September.' },
+      { name:'Winter (Nov–Mar)', desc:'Fewer visitors. Snowshoeing and cross-country skiing.' },
     ],
-    warnings: [
-      'Boat inspections mandatory — all motorized watercraft must be inspected before launching',
-      'Desolation Wilderness permits required for overnight camping',
-      'Bears are active — use bear boxes, never leave food in vehicles',
-      'Mountain road closures common in winter — check Caltrans before driving',
+  },
+
+  glacier: {
+    slug:'glacier', npsCode:'glac',
+    name:'Glacier National Park', shortName:'Glacier',
+    tagline:"Going-to-the-Sun Road — 50 miles across the Continental Divide.",
+    state:'Montana', lat:48.6962, lng:-113.7185, zoom:9,
+    acreage:'1,013,572', established:1910, annualVisits:'3.08M',
+    elevationFt:{ low:3154, high:10466 }, heroColor:'#4AADBC',
+    entranceFee:'$35/vehicle · Vehicle reservation required Jul–Sep', permitRequired:true,
+    website:'https://www.nps.gov/glac',
+    activities:['hiking','camping','backpacking','kayaking','fishing','wildlife','skiing'],
+    highlights:['Going-to-the-Sun Road — one of the most scenic drives in the US','Grinnell Glacier — iconic hike to a retreating glacier','Highline Trail — 11.8 miles along the Garden Wall','Many Glacier — best wildlife corridor in the park','St. Mary Lake — dramatic eastern entrance viewpoint'],
+    warnings:['Vehicle reservation required on Going-to-the-Sun Road Jul–Sep','Grizzly bear and mountain lion territory — carry bear spray','Road typically open late June through mid-October only','Backcountry permit required — quotas fill fast'],
+    seasons:[
+      { name:'Spring (Apr–May)', desc:'Most facilities closed. Snow on high routes.' },
+      { name:'Summer (Jun–Aug)', desc:'Peak season. Going-to-Sun opens late June.' },
+      { name:'Fall (Sep–Oct)',   desc:'Larch trees turn gold. Road closes mid-October.' },
+      { name:'Winter (Nov–Mar)', desc:'Most services closed. Cross-country ski access.' },
     ],
-    seasons: [
-      { name: 'Spring (Apr-Jun)', desc: 'Snowmelt waterfalls, wildflowers, uncrowded trails. Ski season winding down.' },
-      { name: 'Summer (Jul-Sep)', desc: 'Busiest season. Boating, hiking, swimming. Reserve campsites 6 months ahead.' },
-      { name: 'Fall (Sep-Nov)',   desc: 'Aspen color, cooler temps, fewer crowds. Best hiking weather of the year.' },
-      { name: 'Winter (Dec-Mar)', desc: 'World-class skiing at 16 resorts. Chains required on mountain roads.' },
+  },
+
+  olympic: {
+    slug:'olympic', npsCode:'olym',
+    name:'Olympic National Park', shortName:'Olympic',
+    tagline:'Three ecosystems in one park — alpine peaks, temperate rainforest, and wild coastline.',
+    state:'Washington', lat:47.8021, lng:-123.6044, zoom:9,
+    acreage:'922,650', established:1938, annualVisits:'2.7M',
+    elevationFt:{ low:0, high:7980 }, heroColor:'#4ABC78',
+    entranceFee:'$30/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/olym',
+    activities:['hiking','camping','backpacking','kayaking','wildlife','fishing','swimming'],
+    highlights:['Hoh Rainforest — Hall of Mosses, temperate rainforest wonder','Hurricane Ridge — 17 miles of alpine meadows and summit views','Rialto Beach — wild Pacific coastline, sea stacks, tidepools','Sol Duc Falls — triple waterfall in old-growth forest','Lake Crescent — impossibly clear glacially-carved lake'],
+    warnings:['Weather changes rapidly — layers required year-round','Pacific coast tide schedules critical for beach hiking','Wilderness permits required for most backcountry camping','Black bears and cougars active — make noise on trails'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Rainforest lush. Hurricane Ridge still snowy.' },
+      { name:'Summer (Jun–Aug)', desc:'Best alpine access. Coastal beaches at their best.' },
+      { name:'Fall (Sep–Nov)',   desc:'Dramatic storms on coast. Mushroom season in forest.' },
+      { name:'Winter (Dec–Feb)', desc:'Rainforest stunning. Hurricane Ridge skiing.' },
+    ],
+  },
+
+  acadia: {
+    slug:'acadia', npsCode:'acad',
+    name:'Acadia National Park', shortName:'Acadia',
+    tagline:"New England's only national park — granite peaks, rocky shores, and carriage roads.",
+    state:'Maine', lat:44.3386, lng:-68.2733, zoom:11,
+    acreage:'49,052', established:1919, annualVisits:'4.1M',
+    elevationFt:{ low:0, high:1530 }, heroColor:'#4ABC78',
+    entranceFee:'$35/vehicle · Timed entry required May–Oct', permitRequired:true,
+    website:'https://www.nps.gov/acad',
+    activities:['hiking','camping','mtb','kayaking','wildlife','climbing','fishing'],
+    highlights:['Cadillac Mountain — first place in US to see sunrise Oct–Mar','Jordan Pond — 3.3 mile flat loop with iconic Bubbles view','Carriage Roads — 45 miles of car-free gravel for biking and hiking','Thunder Hole — wave-carved inlet, spectacular in storms','Bar Harbor — adjacent village with food, gear, and lodging'],
+    warnings:['Timed entry required May–October for Cadillac Summit Road','Limited parking throughout — arrive before 9am in summer','Rocky coastline is slippery — sturdy footwear required','Ocean Path tide pools — watch for rogue waves'],
+    seasons:[
+      { name:'Spring (Apr–May)', desc:'Quiet. Wildflowers emerging. Timed entry not yet required.' },
+      { name:'Summer (Jun–Aug)', desc:'Peak season. Timed entry required. Book early.' },
+      { name:'Fall (Sep–Nov)',   desc:'Best foliage in October. Fewer crowds. Ideal conditions.' },
+      { name:'Winter (Dec–Mar)', desc:'Carriage roads for skiing. Dramatic frozen coastline.' },
+    ],
+  },
+
+  shenandoah: {
+    slug:'shenandoah', npsCode:'shen',
+    name:'Shenandoah National Park', shortName:'Shenandoah',
+    tagline:'Skyline Drive for 105 miles — 75 overlooks across the Blue Ridge Mountains.',
+    state:'Virginia', lat:38.4755, lng:-78.4535, zoom:10,
+    acreage:'199,045', established:1935, annualVisits:'1.8M',
+    elevationFt:{ low:600, high:4049 }, heroColor:'#4ABC78',
+    entranceFee:'$30/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/shen',
+    activities:['hiking','camping','backpacking','wildlife','fishing','mtb'],
+    highlights:['Skyline Drive — 105 miles with 75 overlooks','Old Rag Mountain — most popular hike in the park, rock scramble','Dark Hollow Falls — 70 ft waterfall, 1.4 mi RT','Appalachian Trail — 101 miles through the park','White-tailed deer — nearly guaranteed wildlife sighting'],
+    warnings:['Old Rag requires day-use ticket Mar 1–Nov 30','Bears active — food storage required at all backcountry sites','Skyline Drive fog common — 35 mph speed limit enforced'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Wildflowers. Waterfalls full. Quiet before summer crowds.' },
+      { name:'Summer (Jun–Aug)', desc:'Busy weekends. Cool compared to DC/Charlottesville.' },
+      { name:'Fall (Sep–Nov)',   desc:'Peak foliage October. Most popular time of year.' },
+      { name:'Winter (Dec–Feb)', desc:'Icy roads. Some facilities close. Quiet and peaceful.' },
+    ],
+  },
+
+  sequoia: {
+    slug:'sequoia', npsCode:'seki',
+    name:'Sequoia & Kings Canyon National Parks', shortName:'Sequoia',
+    tagline:'The largest trees on Earth by volume — some over 2,000 years old.',
+    state:'California', lat:36.5765, lng:-118.7658, zoom:10,
+    acreage:'865,952', established:1890, annualVisits:'2.1M',
+    elevationFt:{ low:1370, high:14505 }, heroColor:'#4ABC78',
+    entranceFee:'$35/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/seki',
+    activities:['hiking','camping','backpacking','climbing','wildlife','skiing','snowshoeing'],
+    highlights:['General Sherman Tree — largest living tree on Earth by volume','Moro Rock — 350-step climb to 360° Sierra Nevada panorama','Crystal Cave — marble cave tours available summer only','Kings Canyon — one of the deepest canyons in North America','Giant Forest — 8,000+ sequoias in one concentrated grove'],
+    warnings:['Generals Highway closes in winter between the parks','Altitude sickness possible — Mount Whitney base at 10,840 ft','Reserve tickets for Crystal Cave tours in advance','Black bears frequent campgrounds — bear boxes mandatory'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Wildflowers. Waterfalls full. Some roads still closed.' },
+      { name:'Summer (Jun–Aug)', desc:'Peak season. All facilities open. Book early.' },
+      { name:'Fall (Sep–Nov)',   desc:'Crowds thin. Giant Forest spectacular in autumn light.' },
+      { name:'Winter (Dec–Feb)', desc:'Skiing at Wolverton. Giant Forest often snowy.' },
+    ],
+  },
+
+  'bryce-canyon': {
+    slug:'bryce-canyon', npsCode:'brca',
+    name:'Bryce Canyon National Park', shortName:'Bryce Canyon',
+    tagline:'The world\'s largest concentration of hoodoos — red and orange spires without end.',
+    state:'Utah', lat:37.5930, lng:-112.1871, zoom:11,
+    acreage:'35,835', established:1928, annualVisits:'2.9M',
+    elevationFt:{ low:6620, high:9115 }, heroColor:'#E07040',
+    entranceFee:'$35/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/brca',
+    activities:['hiking','camping','backpacking','skiing','snowshoeing','wildlife'],
+    highlights:['Bryce Amphitheater — sunrise and sunset views over the hoodoos','Navajo Loop — 2.9 mi descent through Wall Street canyon','Queens Garden — gentler 3 mi loop through hoodoo gardens','Fairyland Loop — 8 mi less-crowded wilderness trail','Stargazing — one of the darkest sky parks in the US'],
+    warnings:['High altitude (8,000 ft) — acclimatize before strenuous hikes','Afternoon thunderstorms common Jun–Aug — start early','Narrow canyon trails icy in winter — microspikes recommended'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Snow still possible. Crowds smaller. Great light for photos.' },
+      { name:'Summer (Jun–Aug)', desc:'Peak season. Afternoon thunderstorms. Start hikes early.' },
+      { name:'Fall (Sep–Nov)',   desc:'Best conditions. Golden light on red hoodoos.' },
+      { name:'Winter (Dec–Feb)', desc:'Snow on hoodoos is magical. Snowshoe the rim trail.' },
+    ],
+  },
+
+  arches: {
+    slug:'arches', npsCode:'arch',
+    name:'Arches National Park', shortName:'Arches',
+    tagline:'Over 2,000 natural stone arches — more than anywhere else on Earth.',
+    state:'Utah', lat:38.7331, lng:-109.5925, zoom:11,
+    acreage:'76,679', established:1929, annualVisits:'1.9M',
+    elevationFt:{ low:4085, high:5653 }, heroColor:'#C4603A',
+    entranceFee:'$35/vehicle · Timed entry required Apr–Oct', permitRequired:true,
+    website:'https://www.nps.gov/arch',
+    activities:['hiking','camping','backpacking','climbing','wildlife'],
+    highlights:['Delicate Arch — most iconic arch in the world, 3 mi RT','Landscape Arch — longest natural arch in North America','Windows Section — easy loop past four arches','Devils Garden — 7.8 mi trail through the most arches','Dark Angel — remote wilderness spire at trail end'],
+    warnings:['Timed entry reservation required Apr–Oct at recreation.gov','Fiery Furnace requires ranger-led tour or permit','110°F+ in summer — hike before 8am or after 5pm only','Cryptobiotic soil crust — stay on marked trails only'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Best conditions. Comfortable temperatures. Book early.' },
+      { name:'Summer (Jun–Aug)', desc:'Extremely hot. Timed entry. Dawn or dusk only.' },
+      { name:'Fall (Sep–Nov)',   desc:'Ideal. Comfortable temps. Slickrock in perfect condition.' },
+      { name:'Winter (Dec–Feb)', desc:'Cold but uncrowded. Snow on red rock is stunning.' },
+    ],
+  },
+
+  canyonlands: {
+    slug:'canyonlands', npsCode:'cany',
+    name:'Canyonlands National Park', shortName:'Canyonlands',
+    tagline:'The Colorado and Green rivers carved three distinct districts of canyon wilderness.',
+    state:'Utah', lat:38.2000, lng:-109.9300, zoom:10,
+    acreage:'337,598', established:1964, annualVisits:'937K',
+    elevationFt:{ low:3880, high:6987 }, heroColor:'#C4603A',
+    entranceFee:'$35/vehicle', permitRequired:true,
+    website:'https://www.nps.gov/cany',
+    activities:['hiking','camping','backpacking','kayaking','climbing','wildlife'],
+    highlights:['Mesa Verde Overlook — 1,000 ft sheer canyon walls','Chesler Park — remote sandstone spire wilderness','Needles District — technical hiking through rock fins','White Rim Road — 100 mi 4WD route around Island in the Sky','Colorado/Green River confluence — viewable from Confluence Overlook'],
+    warnings:['Most backcountry requires advance permit — apply months ahead','No water sources in most of the park — carry all you need','4WD required for most dirt roads — no rentals in park','Extreme heat May–September — plan accordingly'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Best hiking conditions. Wildflowers in Needles.' },
+      { name:'Summer (Jun–Aug)', desc:'Dangerously hot. River trips popular. Stay on rim.' },
+      { name:'Fall (Sep–Nov)',   desc:'Ideal. White Rim Road perfect conditions.' },
+      { name:'Winter (Dec–Feb)', desc:'Cold nights. Roads may ice. Solitude guaranteed.' },
+    ],
+  },
+
+  'joshua-tree': {
+    slug:'joshua-tree', npsCode:'jotr',
+    name:'Joshua Tree National Park', shortName:'Joshua Tree',
+    tagline:'Two deserts meet — the Mojave and Sonoran — in one surreal boulder landscape.',
+    state:'California', lat:33.8734, lng:-115.9010, zoom:10,
+    acreage:'795,156', established:1994, annualVisits:'3.2M',
+    elevationFt:{ low:536, high:5814 }, heroColor:'#D4A853',
+    entranceFee:'$35/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/jotr',
+    activities:['hiking','camping','climbing','wildlife','backpacking'],
+    highlights:['Skull Rock Nature Trail — 1.7 mi geology walk through boulder piles','Ryan Mountain — 3 mi summit with desert panorama','Cholla Cactus Garden — surreal jumping cholla at sunset','Hidden Valley — rock climbing paradise in a natural corral','Keys View — 5,185 ft overlook to Salton Sea and Mexico'],
+    warnings:['Water scarce — carry minimum 4L per person per day in summer','Flash flood risk in lower elevations — check forecasts','Rattlesnakes, scorpions, and cholla cactus — watch where you step','No shade on most trails — start before 8am in warm months'],
+    seasons:[
+      { name:'Spring (Mar–May)', desc:'Best conditions. Wildflower bloom possible Feb–Apr.' },
+      { name:'Summer (Jun–Sep)', desc:'Dangerously hot. 110°F possible. Avoid midday outdoors.' },
+      { name:'Fall (Oct–Nov)',   desc:'Second best season. Comfortable days, cool nights.' },
+      { name:'Winter (Dec–Feb)', desc:'Peak season. Comfortable days. Near-freezing nights.' },
+    ],
+  },
+
+  'death-valley': {
+    slug:'death-valley', npsCode:'deva',
+    name:'Death Valley National Park', shortName:'Death Valley',
+    tagline:'The hottest, driest, lowest place in North America — and one of the most dramatic.',
+    state:'California & Nevada', lat:36.2679, lng:-116.9325, zoom:9,
+    acreage:'3,422,024', established:1994, annualVisits:'1.7M',
+    elevationFt:{ low:-282, high:11049 }, heroColor:'#D4A853',
+    entranceFee:'$35/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/deva',
+    activities:['hiking','camping','backpacking','wildlife'],
+    highlights:['Badwater Basin — lowest point in North America at -282 ft','Mesquite Flat Sand Dunes — photogenic star dune field','Zabriskie Point — golden badlands sunrise','Dante\'s View — 5,475 ft panorama over the valley','Artist\'s Palette — multicolored volcanic ash hillside'],
+    warnings:['World record heat — 134°F recorded. Hiking mid-May through mid-Sep dangerous','Carry minimum 1 gallon of water per person per day','Cell service nearly nonexistent — download offline maps','Gas stations rare — fill up before entering'],
+    seasons:[
+      { name:'Spring (Mar–Apr)', desc:'Best season. Wildflower blooms possible.' },
+      { name:'Summer (May–Sep)', desc:'Dangerously hot. Only Telescope Peak hike safe.' },
+      { name:'Fall (Oct–Nov)',   desc:'Cooling. Second best season. Astronomy spectacular.' },
+      { name:'Winter (Dec–Feb)', desc:'Peak season. Warm days, cold nights. Snow on peaks.' },
+    ],
+  },
+
+  'mount-rainier': {
+    slug:'mount-rainier', npsCode:'mora',
+    name:'Mount Rainier National Park', shortName:'Mount Rainier',
+    tagline:'The most glaciated peak in the contiguous US — 26 named glaciers.',
+    state:'Washington', lat:46.8800, lng:-121.7269, zoom:10,
+    acreage:'236,381', established:1899, annualVisits:'1.5M',
+    elevationFt:{ low:1761, high:14411 }, heroColor:'#8BB8E8',
+    entranceFee:'$30/vehicle', permitRequired:true,
+    website:'https://www.nps.gov/mora',
+    activities:['hiking','camping','backpacking','climbing','skiing','snowshoeing','wildlife'],
+    highlights:['Wonderland Trail — 93 mi circumnavigation of the mountain','Paradise — most-visited area, wildflower meadows in summer','Spray Park — less-crowded meadows with Rainier reflections','Camp Muir — base camp at 10,188 ft for summit climbers','Carbon Glacier — lowest elevation glacier in contiguous US'],
+    warnings:['Summit climbing requires permit, guide, and extensive preparation','Weather changes rapidly — whiteout conditions possible year-round','Wilderness camping permit required for most backcountry','Roads to Paradise and Sunrise typically open June–November'],
+    seasons:[
+      { name:'Spring (Apr–May)', desc:'Upper roads closed. Lower trails emerging from snow.' },
+      { name:'Summer (Jun–Aug)', desc:'Wildflowers at Paradise peak July. Crowded weekends.' },
+      { name:'Fall (Sep–Oct)',   desc:'Dramatic light. Fewer crowds. Roads close Oct–Nov.' },
+      { name:'Winter (Nov–Mar)', desc:'Skiing and snowshoeing at Paradise. Chains required.' },
+    ],
+  },
+
+  'crater-lake': {
+    slug:'crater-lake', npsCode:'crla',
+    name:'Crater Lake National Park', shortName:'Crater Lake',
+    tagline:'The deepest lake in the US — 1,943 feet of impossibly blue volcanic water.',
+    state:'Oregon', lat:42.8684, lng:-122.1685, zoom:11,
+    acreage:'183,224', established:1902, annualVisits:'762K',
+    elevationFt:{ low:3978, high:8929 }, heroColor:'#4AADBC',
+    entranceFee:'$30/vehicle', permitRequired:false,
+    website:'https://www.nps.gov/crla',
+    activities:['hiking','camping','backpacking','kayaking','wildlife','skiing','snowshoeing'],
+    highlights:['Crater Lake — 1,943 ft deep, deepest lake in US, impossibly blue','Wizard Island — cinder cone inside the lake, boat tour required','Rim Drive — 33 miles around the caldera, 30 overlooks','Cleetwood Cove Trail — only access to lakeshore','Garfield Peak — 2.8 mi ridge hike with caldera panorama'],
+    warnings:['Rim Drive typically closed mid-October through June due to snow','Average 44 ft of snow per year — park accessible year-round on snowshoes','Boat tours to Wizard Island sell out — book early','Cleetwood Cove Trail is steep — strenuous descent to lake'],
+    seasons:[
+      { name:'Summer (Jul–Sep)', desc:'Only full-access season. Boat tours. Rim Drive open.' },
+      { name:'Fall (Oct)',       desc:'Brief window before snow. Dramatic light on the lake.' },
+      { name:'Winter (Nov–Jun)', desc:'44 ft average snowfall. Skiing and snowshoeing the rim.' },
+      { name:'Spring (May–Jun)', desc:'Snow still deep. Snowshoe access to rim views.' },
     ],
   },
 };
 
 export const PARK_SLUGS  = Object.keys(PARKS) as ParkSlug[];
 export const PARK_LIST   = Object.values(PARKS);
+
 export function getPark(slug: string): ParkMeta | null {
   return PARKS[slug as ParkSlug] ?? null;
 }
+
+// Parks grouped by region
+export const PARK_REGIONS: Record<string, ParkSlug[]> = {
+  'Southwest':   ['grand-canyon','zion','bryce-canyon','arches','canyonlands','joshua-tree','death-valley'],
+  'West':        ['yosemite','sequoia','glacier','olympic','mount-rainier','crater-lake'],
+  'Mountain':    ['yellowstone','rocky-mountain'],
+  'East':        ['great-smoky-mountains','shenandoah','acadia'],
+};
