@@ -37,16 +37,6 @@ const PERMIT_GUIDES: Record<string, { title:string; permits:{ name:string; requi
     ],
   },
   'lake-tahoe': {
-    title: 'Lake Tahoe has no entrance fee but several wilderness and boating permits to know about.',
-    permits: [
-      { name:'Desolation Wilderness Permit', required:true,  how:'Self-issue at trailheads for day use. Overnight permits required — book at recreation.gov. Quota applies Jun 15 – Sep 15.', when:'Overnight permits: book at recreation.gov starting April 1.', url:'https://www.recreation.gov/permits/233260', note:'Day hikers must still self-register at the trailhead kiosk — it is free' },
-      { name:'Boat Inspection (AIS)', required:true, how:'All motorized watercraft must be inspected at Meyers, Spooner Summit, or Alpine Meadows station before launching. Mandatory decontamination fee $30.', when:'Stations open May 1 – Sep 30 · 8:30am – 5:30pm. Book appointment at TahoeBoatInspections.com.', url:'https://tahoeboatinspections.com/appt', note:'Mandatory for every motorized boat — no exceptions. Knowingly transporting AIS: $5,000 minimum penalty' },
-      { name:'No Entrance Fee', required:false, how:'Lake Tahoe Basin has no entrance fee. State park campgrounds (D.L. Bliss, Emerald Bay, Sugar Pine) charge camping fees but no day-use gate fee.', when:'Always open.', url:'https://www.fs.usda.gov/ltbmu' },
-      { name:'Campfire Permits', required:true, how:'Free campfire permit required for any open fire outside a developed campground. Download at CAFire.ca.gov (California) or NVFireSafe.com (Nevada).', when:'Required year-round · Fire restrictions often in effect July–October.', url:'https://www.readyforwildfire.org/permits/campfire-permit/' },
-    ],
-  },
-
-  'lake-tahoe': {
     title: 'Lake Tahoe has no entrance fee, but boats require inspection and the backcountry requires a permit.',
     permits: [
       { name:'Boat AIS Inspection', required:true, how:'All motorized watercraft must stop at one of three inspection stations before launching. Mandatory decontamination fee: $30. Book an appointment at TahoeBoatInspections.com.', when:'Required every launch. Stations open May 1–Sep 30, 8:30am–5:30pm. Last inspection 4:30pm.', url:'https://tahoeboatinspections.com/appt', note:'Green seal = Fallen Leaf Lake · Yellow seal = Echo Lakes · Intact Tahoe seal = skip line' },

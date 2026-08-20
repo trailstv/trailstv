@@ -13,10 +13,13 @@ const inter = Inter({
   variable: '--font-body', display: 'swap',
 });
 
+export const viewport = {
+  themeColor: '#0D1B2A',
+};
+
 export const metadata: Metadata = {
   title: { default: 'TrailsTV', template: '%s — TrailsTV' },
   description: 'Hiking, MTB, camping, kayaking, climbing, and wildlife maps for every national park in the continental US.',
-  themeColor: '#0D1B2A',
   icons: { icon: '/assets/favicon.ico', apple: '/assets/icon-180.png' },
   openGraph: {
     title: 'TrailsTV — National Parks Planner',
